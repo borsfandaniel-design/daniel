@@ -1,692 +1,334 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Layout,
-  MessageSquare,
-  FileText,
-  Mail,
+  Palette,
   Send,
-  Globe,
-  ArrowRight,
+  CalendarCheck,
   CheckCircle2,
-  Image as ImageIcon,
-  PhoneCall,
-  Flame,
-  Zap,
+  Mail,
+  User,
+  AlertCircle,
+  MessageSquare,
+  Sparkles,
   Menu,
   X
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-const translations = {
-  RO: {
-    nav: {
-      services: "Servicii",
-      about: "Despre Mine",
-      approach: "Abordare",
-      contact: "Contact",
-      cta: "Hai să vorbim",
-    },
-    hero: {
-      badge: "Graphic Design & Direct Lead Generation",
-      titleName: "Daniel Moisă",
-      aka: "(a.k.a. Swing)",
-      subtitle: "Ajut afacerile și creatorii să iasă în evidență prin vizualuri curate și outreach direct, fără bullshit sau promisiuni exagerate.",
-      primaryCta: "Trimite un mesaj",
-      secondaryCta: "Vezi ce pot face",
-    },
-    skills: {
-      tag: "Competențe Directe",
-      title: "Ce fac cu adevărat bine",
-      sub: "Fără agenții umflate, fără cifre fabricate. Doar muncă practică și orientată spre rezultate.",
-      items: [
-        {
-          icon: Layout,
-          title: "Prezentări & Pitch Deck-uri",
-          desc: "Structurez și desenez prezentări clare în Canva și Figma care captează atenția investitorilor și clienților.",
-        },
-        {
-          icon: ImageIcon,
-          title: "Thumbnails & Vizualuri Social Media",
-          desc: "Thumbnails optimizate pentru rata de click (CTR) și elemente grafice de impact pentru branduri personale.",
-        },
-        {
-          icon: Mail,
-          title: "Cold Outreach & Prospectare",
-          desc: "Mesaje directe, personalizate, fără spam automatizat. Găsesc decidenții și inițiez conversații reale.",
-        },
-        {
-          icon: PhoneCall,
-          title: "Appointment Setting",
-          desc: "Preluarea lead-urilor calificate și programarea lor direct în calendarul tău de vânzări.",
-        },
-        {
-          icon: FileText,
-          title: "Design de Materiale de Vânzare",
-          desc: "PDF-uri, ghiduri, one-pagere și propuneri comerciale lizibile, estetice și ușor de parcurs.",
-        },
-        {
-          icon: MessageSquare,
-          title: "Comunicare Directă & Follow-up",
-          desc: "Menținerea relației cu posibilii clienți prin răspunsuri rapide și follow-up consecvent.",
-        },
-      ],
-    },
-    about: {
-      tag: "Autenticitate",
-      title: "Cine este Daniel Moisă (a.k.a. Swing)?",
-      p1: "Nu spun că am condus agenții de milioane sau că am lucrat cu corporații Fortune 500 dacă nu este cazul. Sunt un profesionist independent determinat, orientat pe execuție curată.",
-      p2: "Mă concentrez pe două verticale mari care mișcă acul în orice afacere: aspectul vizual (cum arăți în fața clienților) și comunicarea directă (cum ajungi la ei).",
-      bullets: [
-        "Muncă transparentă și comunicare zilnică",
-        "Atenție la detalii în Canva, Figma și unelte de outreach",
-        "Mă adaptez rapid la stilul și tonul brandului tău",
-        "Corectitudine: dacă nu pot face ceva, îți spun din start",
-      ],
-    },
-    process: {
-      tag: "Cum lucrăm",
-      title: "Un proces simplu și direct",
-      steps: [
-        {
-          num: "01",
-          title: "Discuția Inițială",
-          desc: "Clarificăm exact ce ai nevoie: fie că e vorba de o prezentare, thumbnails sau o campanie de outreach.",
-        },
-        {
-          num: "02",
-          title: "Execuția & Draftul",
-          desc: "Trec la treabă repede și îți trimit o primă versiune pentru feedback concret.",
-        },
-        {
-          num: "03",
-          title: "Rafinarea",
-          desc: "Ajustăm detaliile până când materialul sau campania este exact așa cum trebuie.",
-        },
-        {
-          num: "04",
-          title: "Livrarea & Rezultatul",
-          desc: "Primești fișierele finale sau începem prospectarea efectivă și programarea întâlnirilor.",
-        },
-      ],
-    },
-    contact: {
-      tag: "Contact Direct",
-      title: "Să începem o conversație",
-      sub: "Scrie-mi un mesaj mai jos sau contactează-mă direct. Răspund de obicei în câteva ore.",
-      form: {
-        name: "Numele tău",
-        namePlaceholder: "ex. Ion Popescu",
-        email: "Adresa de email",
-        emailPlaceholder: "ex. ion@company.com",
-        service: "Serviciul dorit",
-        serviceDefault: "Selectează o opțiune",
-        serviceOptions: [
-          "Graphic Design / Pitch Decks",
-          "Thumbnails / Social Media",
-          "Cold Outreach / Lead Gen",
-          "Appointment Setting",
-          "Altele / Discuție generală",
-        ],
-        message: "Mesajul tău",
-        messagePlaceholder: "Spune-mi scurt despre proiectul sau ideea ta...",
-        submit: "Trimite Mesajul",
-        sending: "Se trimite...",
-        success: "Mesajul a fost trimis cu succes! Îți voi răspunde în cel mai scurt timp.",
-        error: "A apărut o eroare la trimiterea mesajului. Te rog încearcă din nou.",
-      },
-    },
-    footer: {
-      rights: "Toate drepturile rezervate.",
-      tagline: "Design simplu. Outreach eficient. Comunicare directă.",
-    },
-  },
-  EN: {
-    nav: {
-      services: "Services",
-      about: "About",
-      approach: "Approach",
-      contact: "Contact",
-      cta: "Let's Talk",
-    },
-    hero: {
-      badge: "Graphic Design & Direct Lead Generation",
-      titleName: "Daniel Moisă",
-      aka: "(a.k.a. Swing)",
-      subtitle: "Helping businesses and creators stand out through clean visuals and direct outreach—no fluff, no exaggerated claims.",
-      primaryCta: "Send a Message",
-      secondaryCta: "See What I Do",
-    },
-    skills: {
-      tag: "Core Competencies",
-      title: "What I Actually Do Well",
-      sub: "No bloated agency speak, no fabricated numbers. Just practical, result-driven execution.",
-      items: [
-        {
-          icon: Layout,
-          title: "Presentations & Pitch Decks",
-          desc: "Structuring and designing clear pitch decks in Canva & Figma that capture client and investor attention.",
-        },
-        {
-          icon: ImageIcon,
-          title: "Thumbnails & Social Visuals",
-          desc: "CTR-optimized thumbnails and high-impact graphic assets for personal brands and channels.",
-        },
-        {
-          icon: Mail,
-          title: "Cold Outreach & Prospecting",
-          desc: "Direct, highly personalized messages without automated spam. Reaching real decision-makers.",
-        },
-        {
-          icon: PhoneCall,
-          title: "Appointment Setting",
-          desc: "Handling qualified leads and placing booked calls directly into your sales calendar.",
-        },
-        {
-          icon: FileText,
-          title: "Sales Asset Design",
-          desc: "Clean, visually appealing PDFs, one-pagers, and proposal documents that are easy to digest.",
-        },
-        {
-          icon: MessageSquare,
-          title: "Direct Outreach & Follow-up",
-          desc: "Maintaining prospect engagement with quick response times and persistent, respectful follow-ups.",
-        },
-      ],
-    },
-    about: {
-      tag: "Authenticity",
-      title: "Who is Daniel Moisă (a.k.a. Swing)?",
-      p1: "I won't claim to have run multi-million dollar agencies or worked with Fortune 500s unless that's the truth. I am a dedicated independent professional focused on clean execution.",
-      p2: "I focus on two major drivers of business growth: visual presentation (how you look to prospective clients) and direct outreach (how you actually reach them).",
-      bullets: [
-        "Transparent workflow and daily communication",
-        "Attention to detail in Canva, Figma, and outreach tools",
-        "Quick adaptation to your brand's voice and aesthetic",
-        "Honesty first: if I can't deliver something, I'll tell you upfront",
-      ],
-    },
-    process: {
-      tag: "Workflow",
-      title: "A Simple & Straightforward Process",
-      steps: [
-        {
-          num: "01",
-          title: "Initial Contact",
-          desc: "We clarify exactly what you need—whether it's pitch decks, thumbnails, or outbound outreach.",
-        },
-        {
-          num: "02",
-          title: "Drafting & Execution",
-          desc: "I get straight to work and send over an initial draft or campaign strategy for your input.",
-        },
-        {
-          num: "03",
-          title: "Refinement",
-          desc: "We tweak and adjust until the design assets or message sequences hit the exact right tone.",
-        },
-        {
-          num: "04",
-          title: "Delivery & Execution",
-          desc: "You get the final ready-to-use files, or we initiate active prospect engagement.",
-        },
-      ],
-    },
-    contact: {
-      tag: "Direct Contact",
-      title: "Let's Start a Conversation",
-      sub: "Drop me a message below or reach out directly. I usually reply within a few hours.",
-      form: {
-        name: "Your Name",
-        namePlaceholder: "e.g. John Doe",
-        email: "Email Address",
-        emailPlaceholder: "e.g. john@company.com",
-        service: "Interested Service",
-        serviceDefault: "Select an option",
-        serviceOptions: [
-          "Graphic Design / Pitch Decks",
-          "Thumbnails / Social Media",
-          "Cold Outreach / Lead Gen",
-          "Appointment Setting",
-          "Other / General Inquiry",
-        ],
-        message: "Your Message",
-        messagePlaceholder: "Tell me briefly about your project or goals...",
-        submit: "Send Message",
-        sending: "Sending...",
-        success: "Message sent successfully! I will get back to you shortly.",
-        error: "There was an error sending your message. Please try again.",
-      },
-    },
-    footer: {
-      rights: "All rights reserved.",
-      tagline: "Clean design. Effective outreach. Direct communication.",
-    },
-  },
-};
-
-export default function Page() {
-  const [lang, setLang] = useState<"RO" | "EN">("RO");
+// --- NAVBAR COMPONENT MĂRIT CU LOGO SWING ---
+function AppleNavbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [formState, setFormState] = useState({
-    name: "",
-    email: "",
-    service: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
 
-  const t = translations[lang];
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const navLinks = [
+    { name: "Despre", href: "#about" },
+    { name: "Servicii", href: "#services" },
+    { name: "Abilități", href: "#skills" },
+    { name: "Contact", href: "#contact" },
+  ];
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-black/80 backdrop-blur-2xl border-b border-white/10 shadow-2xl py-1"
+          : "bg-black/50 backdrop-blur-md py-2"
+      }`}
+    >
+      <div className="max-w-6xl mx-auto px-6 sm:px-8">
+        <div className="flex items-center justify-between h-16 text-sm font-medium text-white/80">
+          
+          {/* LOGO SWING (logo.png) */}
+          <a href="#" className="flex items-center gap-3 text-white hover:opacity-80 transition-all group">
+            <img
+              src="/logo.png"
+              alt="Swing Logo"
+              className="w-10 h-10 object-contain rounded-xl group-hover:scale-105 transition-transform"
+            />
+            <span className="font-extrabold tracking-widest text-lg bg-gradient-to-r from-[#FF5722] to-[#FF9800] bg-clip-text text-transparent">
+              SWING
+            </span>
+          </a>
+
+          {/* LINK-URI DESKTOP */}
+          <div className="hidden md:flex items-center space-x-10 text-sm font-semibold">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="hover:text-white transition-colors duration-200 tracking-wide"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+
+          {/* BUTON MOBIL */}
+          <div className="flex items-center text-white/80">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden hover:text-white p-2 rounded-lg bg-white/5 border border-white/10"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* MENIU MOBIL */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="md:hidden bg-black/95 backdrop-blur-2xl border-b border-white/10 px-8 py-8 space-y-6"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-xl font-bold text-white/90 hover:text-white transition-colors"
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </nav>
+  );
+}
+
+// --- MAIN PAGE ---
+export default function Home() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("sending");
+    setFormStatus("submitting");
 
     try {
-      const response = await fetch("/api/contact", {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formState),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        setStatus("success");
-        setFormState({ name: "", email: "", service: "", message: "" });
+      if (res.ok) {
+        setFormStatus("success");
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        setStatus("error");
+        setFormStatus("error");
       }
-    } catch (error) {
-      console.error("Form submission error:", error);
-      setStatus("error");
+    } catch {
+      setFormStatus("error");
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0f12] text-[#f3f4f6] font-sans antialiased selection:bg-[#FF5722] selection:text-white">
-      {/* Header / Navigation */}
-      <header className="sticky top-0 z-50 bg-[#0d0f12]/90 backdrop-blur-md border-b border-[#1f2430]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Logo & Brand Name */}
-          <a href="#" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl bg-[#161920] border border-white/10 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105">
-              <img
-                src="/logo.png"
-                alt="Swing Logo"
-                className="w-10 h-10 object-contain rounded-lg"
-                onError={(e) => {
-                  // Hide image if image file is not found in public directory
-                  (e.target as HTMLElement).style.display = "none";
-                }}
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-lg text-white tracking-wide group-hover:text-[#FF5722] transition-colors">
-                Swing
-              </span>
-              <span className="text-xs text-gray-400">Daniel Moisă</span>
-            </div>
-          </a>
+    <div className="min-h-screen bg-[#0d0f12] text-white selection:bg-[#FF5722] selection:text-white font-sans antialiased overflow-x-hidden scroll-smooth">
+      <AppleNavbar />
 
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-sm text-gray-300 hover:text-[#FF5722] transition-colors">
-              {t.nav.services}
-            </a>
-            <a href="#about" className="text-sm text-gray-300 hover:text-[#FF5722] transition-colors">
-              {t.nav.about}
-            </a>
-            <a href="#approach" className="text-sm text-gray-300 hover:text-[#FF5722] transition-colors">
-              {t.nav.approach}
-            </a>
-            <a href="#contact" className="text-sm text-gray-300 hover:text-[#FF5722] transition-colors">
-              {t.nav.contact}
-            </a>
-          </nav>
+      {/* HERO / DESPRE SECTION */}
+      <section id="about" className="relative pt-40 pb-20 md:pt-52 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#FF5722]/10 rounded-full blur-[140px] pointer-events-none" />
 
-          {/* Right Controls: Language Switch, CTA & Mobile Toggle */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <button
-              onClick={() => setLang(lang === "RO" ? "EN" : "RO")}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#161920] border border-white/10 text-xs font-semibold text-gray-300 hover:text-white hover:border-[#FF5722]/50 transition-all"
-              aria-label="Toggle Language"
-            >
-              <Globe className="w-3.5 h-3.5 text-[#FF5722]" />
-              <span>{lang}</span>
-            </button>
+        <div className="relative z-10 text-center max-w-3xl mx-auto space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md"
+          >
+            <Sparkles size={14} className="text-[#FF5722]" />
+            <span className="text-xs font-semibold tracking-wide text-white/90">
+              Disponibil pentru proiecte & colaborări
+            </span>
+          </motion.div>
 
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-[1.1]"
+          >
+            Soluții Vizuale{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF5722] to-[#FF9800]">
+              Premium & Outreach
+            </span>{" "}
+            Strategic
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-lg sm:text-xl text-white/70 leading-relaxed font-normal"
+          >
+            Daniel Moisă (a.k.a. Swing) — Specialist în Graphic Design, Canva, Cold Outreach & Appointment Setting.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+          >
             <a
               href="#contact"
-              className="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-lg bg-[#FF5722] text-white font-medium text-sm hover:bg-[#FF6D00] transition-all shadow-lg shadow-[#FF5722]/20"
+              className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#FF5722] hover:bg-[#FF6D00] text-white font-bold text-base transition-all shadow-[0_0_30px_rgba(255,87,34,0.4)] text-center"
             >
-              {t.nav.cta}
+              Discută un proiect
             </a>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg bg-[#161920] border border-white/10 text-gray-300 hover:text-white"
-              aria-label="Toggle Menu"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-[#161920] border-b border-[#1f2430] px-4 py-6 space-y-4">
-            <a
-              href="#services"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-medium text-gray-300 hover:text-[#FF5722]"
-            >
-              {t.nav.services}
-            </a>
-            <a
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-medium text-gray-300 hover:text-[#FF5722]"
-            >
-              {t.nav.about}
-            </a>
-            <a
-              href="#approach"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-medium text-gray-300 hover:text-[#FF5722]"
-            >
-              {t.nav.approach}
-            </a>
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block text-base font-medium text-gray-300 hover:text-[#FF5722]"
-            >
-              {t.nav.contact}
-            </a>
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="inline-block w-full text-center px-4 py-3 rounded-lg bg-[#FF5722] text-white font-semibold text-sm hover:bg-[#FF6D00]"
-            >
-              {t.nav.cta}
-            </a>
-          </div>
-        )}
-      </header>
-
-      {}
-      <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto overflow-hidden">
-        <div className="max-w-3xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#161920] border border-[#FF5722]/30 text-[#FF5722] text-xs font-semibold mb-6">
-            <Flame className="w-4 h-4 text-[#FF5722]" />
-            <span>{t.hero.badge}</span>
-          </div>
-
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight">
-            {t.hero.titleName}{" "}
-            <span className="text-[#FF5722] font-normal block sm:inline">{t.hero.aka}</span>
-          </h1>
-
-          <p className="mt-6 text-lg sm:text-xl text-gray-300 leading-relaxed font-normal">
-            {t.hero.subtitle}
-          </p>
-
-          <div className="mt-10 flex flex-col sm:flex-row gap-4">
-            <a
-              href="#contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#FF5722] hover:bg-[#FF6D00] text-white font-semibold text-base transition-all shadow-xl shadow-[#FF5722]/25"
-            >
-              <span>{t.hero.primaryCta}</span>
-              <ArrowRight className="w-5 h-5" />
-            </a>
-
-            <a
-              href="#services"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#161920] hover:bg-white/5 border border-white/10 text-white font-semibold text-base transition-all"
-            >
-              <span>{t.hero.secondaryCta}</span>
-            </a>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {}
-      <section id="services" className="py-20 bg-[#161920]/40 border-y border-[#1f2430] px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-12">
-            <span className="text-[#FF5722] text-sm font-semibold tracking-wider uppercase">
-              {t.skills.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mt-2">
-              {t.skills.title}
-            </h2>
-            <p className="text-gray-400 mt-2 max-w-2xl">
-              {t.skills.sub}
+      {/* SERVICII SECTION */}
+      <section id="services" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/5">
+        <div className="text-center space-y-3 mb-16">
+          <span className="text-xs font-bold tracking-widest text-[#FF5722] uppercase">Ce Ofer</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Servicii Principale</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-[#161920] border border-white/10 rounded-2xl p-8 space-y-4 hover:border-[#FF5722]/50 transition-colors">
+            <Palette className="w-10 h-10 text-[#FF5722]" />
+            <h3 className="text-xl font-bold text-white">Graphic Design & Canva</h3>
+            <p className="text-sm text-white/60 leading-relaxed">
+              Design vizual modern, identități de brand, postări Social Media și prezentări profesionale.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {t.skills.items.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <div
-                  key={idx}
-                  className="p-6 rounded-2xl bg-[#161920] border border-white/5 hover:border-[#FF5722]/40 transition-all group flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-[#0d0f12] border border-white/10 flex items-center justify-center text-[#FF5722] mb-5 group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      {item.desc}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="bg-[#161920] border border-white/10 rounded-2xl p-8 space-y-4 hover:border-[#FF5722]/50 transition-colors">
+            <Send className="w-10 h-10 text-[#FF5722]" />
+            <h3 className="text-xl font-bold text-white">Cold Outreach</h3>
+            <p className="text-sm text-white/60 leading-relaxed">
+              Strategii personalizate de contactare a clienților potențiali prin Email și Social Media.
+            </p>
+          </div>
+
+          <div className="bg-[#161920] border border-white/10 rounded-2xl p-8 space-y-4 hover:border-[#FF5722]/50 transition-colors">
+            <CalendarCheck className="w-10 h-10 text-[#FF5722]" />
+            <h3 className="text-xl font-bold text-white">Appointment Setting</h3>
+            <p className="text-sm text-white/60 leading-relaxed">
+              Preluarea conversațiilor și programarea de întâlniri calificate pentru afacerea ta.
+            </p>
           </div>
         </div>
       </section>
 
-      {}
-      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <span className="text-[#FF5722] text-sm font-semibold tracking-wider uppercase">
-              {t.about.tag}
+      {/* ABILITATI SECTION */}
+      <section id="skills" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto border-t border-white/5">
+        <div className="text-center space-y-3 mb-12">
+          <span className="text-xs font-bold tracking-widest text-[#FF5722] uppercase">Competențe</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Abilități & Unelte</h2>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
+          {["Canva Pro", "Graphic Design", "Cold Emailing", "Appointment Setting", "Copywriting", "Lead Generation", "UI/UX Basics", "Social Media Strategy"].map((skill) => (
+            <span key={skill} className="px-5 py-2.5 rounded-xl bg-[#161920] border border-white/10 text-sm font-medium text-white/90">
+              {skill}
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mt-2 mb-6">
-              {t.about.title}
-            </h2>
+          ))}
+        </div>
+      </section>
 
-            <div className="space-y-4 text-gray-300 leading-relaxed">
-              <p>{t.about.p1}</p>
-              <p>{t.about.p2}</p>
-            </div>
+      {/* CONTACT SECTION */}
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-white/5">
+        <div className="bg-[#161920] border border-white/10 rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+          <div className="text-center space-y-3 mb-10">
+            <span className="text-xs font-bold tracking-widest text-[#FF5722] uppercase">Hai să vorbim</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-white">Trimite-mi un Mesaj</h2>
+          </div>
 
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {t.about.bullets.map((bullet, idx) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-[#FF5722] shrink-0 mt-0.5" />
-                  <span className="text-sm text-gray-200">{bullet}</span>
+          <form onSubmit={handleFormSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-semibold text-white/80 mb-2">Numele tău</label>
+                <div className="relative">
+                  <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="ex. Alexandru Popescu"
+                    className="w-full bg-[#0d0f12] border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-[#FF5722]"
+                  />
                 </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="lg:col-span-5">
-            <div className="p-8 rounded-3xl bg-[#161920] border border-white/10 relative overflow-hidden">
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#FF5722]/10 rounded-full blur-2xl pointer-events-none" />
-              <Zap className="w-10 h-10 text-[#FF5722] mb-4" />
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Focus pe Execuție Curată
-              </h3>
-              <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                Nimic inutil, fără livrabile complicate care nu aduc valoare. Fiecare material de design sau mesaj trimis are un scop clar.
-              </p>
-              <div className="p-4 rounded-xl bg-[#0d0f12] border border-white/5 flex items-center justify-between">
-                <span className="text-xs text-gray-400">Direct Availability</span>
-                <span className="text-xs font-semibold text-[#FF5722]">Open for projects</span>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {}
-      <section id="approach" className="py-20 bg-[#161920]/40 border-y border-[#1f2430] px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-12 text-center">
-            <span className="text-[#FF5722] text-sm font-semibold tracking-wider uppercase">
-              {t.process.tag}
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mt-2">
-              {t.process.title}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {t.process.steps.map((step, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-[#161920] border border-white/5 relative">
-                <span className="text-4xl font-black text-white/10 mb-4 block">
-                  {step.num}
-                </span>
-                <h3 className="text-lg font-bold text-white mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {step.desc}
-                </p>
+              <div>
+                <label className="block text-xs font-semibold text-white/80 mb-2">Adresa de email</label>
+                <div className="relative">
+                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
+                  <input
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="ex. alex@companie.ro"
+                    className="w-full bg-[#0d0f12] border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-[#FF5722]"
+                  />
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <span className="text-[#FF5722] text-sm font-semibold tracking-wider uppercase">
-            {t.contact.tag}
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mt-2">
-            {t.contact.title}
-          </h2>
-          <p className="text-gray-400 mt-2">
-            {t.contact.sub}
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-8 rounded-3xl bg-[#161920] border border-white/10 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
-                {t.contact.form.name}
-              </label>
-              <input
-                type="text"
-                required
-                value={formState.name}
-                onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                placeholder={t.contact.form.namePlaceholder}
-                className="w-full px-4 py-3 rounded-xl bg-[#0d0f12] border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF5722] transition-colors"
-              />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
-                {t.contact.form.email}
-              </label>
-              <input
-                type="email"
-                required
-                value={formState.email}
-                onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                placeholder={t.contact.form.emailPlaceholder}
-                className="w-full px-4 py-3 rounded-xl bg-[#0d0f12] border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF5722] transition-colors"
-              />
+              <label className="block text-xs font-semibold text-white/80 mb-2">Mesajul tău</label>
+              <div className="relative">
+                <MessageSquare size={18} className="absolute left-4 top-4 text-white/30" />
+                <textarea
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  placeholder="Descrie pe scurt ce ai nevoie..."
+                  className="w-full bg-[#0d0f12] border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-[#FF5722] resize-none"
+                />
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
-              {t.contact.form.service}
-            </label>
-            <select
-              required
-              value={formState.service}
-              onChange={(e) => setFormState({ ...formState, service: e.target.value })}
-              className="w-full px-4 py-3 rounded-xl bg-[#0d0f12] border border-white/10 text-white focus:outline-none focus:border-[#FF5722] transition-colors"
-            >
-              <option value="" disabled>
-                {t.contact.form.serviceDefault}
-              </option>
-              {t.contact.form.serviceOptions.map((opt, i) => (
-                <option key={i} value={opt} className="bg-[#0d0f12] text-white">
-                  {opt}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold uppercase text-gray-400 mb-2">
-              {t.contact.form.message}
-            </label>
-            <textarea
-              rows={5}
-              required
-              value={formState.message}
-              onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-              placeholder={t.contact.form.messagePlaceholder}
-              className="w-full px-4 py-3 rounded-xl bg-[#0d0f12] border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-[#FF5722] transition-colors resize-none"
-            />
-          </div>
-
-          {status === "success" && (
-            <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
-              {t.contact.form.success}
-            </div>
-          )}
-
-          {status === "error" && (
-            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-              {t.contact.form.error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={status === "sending"}
-            className="w-full py-4 rounded-xl bg-[#FF5722] hover:bg-[#FF6D00] text-white font-bold text-base transition-all shadow-xl shadow-[#FF5722]/20 flex items-center justify-center gap-2 disabled:opacity-50"
-          >
-            {status === "sending" ? (
-              <span>{t.contact.form.sending}</span>
-            ) : (
-              <>
-                <span>{t.contact.form.submit}</span>
-                <Send className="w-4 h-4" />
-              </>
+            {formStatus === "success" && (
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-3 text-emerald-400 text-sm">
+                <CheckCircle2 size={18} />
+                <span>Mesajul a fost trimis cu succes!</span>
+              </div>
             )}
-          </button>
-        </form>
+
+            {formStatus === "error" && (
+              <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center gap-3 text-rose-400 text-sm">
+                <AlertCircle size={18} />
+                <span>A apărut o eroare. Te rog să încerci din nou.</span>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={formStatus === "submitting"}
+              className="w-full py-4 rounded-xl bg-[#FF5722] hover:bg-[#FF6D00] text-white font-bold text-sm transition-all disabled:opacity-50"
+            >
+              {formStatus === "submitting" ? "Se trimite..." : "Trimite Mesajul"}
+            </button>
+          </form>
+        </div>
       </section>
 
-      {}
-      <footer className="py-8 border-t border-[#1f2430] bg-[#0d0f12] px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <span className="font-bold text-white">Swing</span> — Daniel Moisă
-          </div>
-          <div>{t.footer.tagline}</div>
-          <div>
-            © {new Date().getFullYear()} Daniel Moisă. {t.footer.rights}
-          </div>
-        </div>
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 py-8 text-center text-xs text-white/40">
+        © {new Date().getFullYear()} Swing (Daniel Moisă). Toate drepturile rezervate.
       </footer>
     </div>
   );
