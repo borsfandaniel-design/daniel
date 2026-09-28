@@ -14,7 +14,9 @@ import {
   Menu,
   X,
   ArrowUpRight,
-  Target
+  Target,
+  FileText,
+  ShieldCheck
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -192,12 +194,107 @@ function AppleNavbar() {
   );
 }
 
+{/* MODAL TERMENI SI CONDITII */}
+function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          className="bg-[#0e1015] border border-white/10 rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
+        >
+          {/* Header Modal */}
+          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+            <div className="flex items-center gap-3">
+              <FileText className="text-[#ccff00]" size={22} />
+              <h3 className="text-lg font-extrabold text-white">Termeni și Condiții Legal</h3>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Continut Modal */}
+          <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-sm text-white/70 leading-relaxed font-normal custom-scrollbar">
+            <p className="text-xs text-white/40">Ultima actualizare: Septembrie 2026</p>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">1. Introducere și Dispoziții Generale</h4>
+              <p>
+                Prezentul site web este administrat de Daniel Moisă (SWING). Prin accesarea și utilizarea acestui landing page, vă exprimați acordul expres cu privire la termenii și condițiile descrise mai jos. Acești termeni sunt redactați în conformitate cu legislația din România și Regulamentele Europene în vigoare (Regulamentul GDPR 2016/679, OUG 34/2014 și Directiva Omnibus).
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">2. Servicii Oferite</h4>
+              <p>
+                SWING furnizează servicii profesionale B2B de Graphic Design (Canva Pro), Cold Outreach / Email Marketing și Appointment Setting. Informațiile prezentate pe site au caracter informativ și nu constituie o ofertă contractuală fermă până la încheierea unui acord formal sau contract de prestări servicii între părți.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">3. Drepturi de Proprietate Intelectuală</h4>
+              <p>
+                Toate materialele vizuale, elementele de design, conceptele, logo-urile și conținutul text de pe acest site aparțin Daniel Moisă (SWING) și sunt protejate de Legea nr. 8/1996 privind dreptul de autor. Este interzisă copierea, reproducerea sau distribuirea conținutului fără acordul scris prealabil.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">4. Protecția Datelor cu Caracter Personal (GDPR)</h4>
+              <p>
+                Conform Regulamentului (UE) 2016/679, colectăm date personale (nume, adresă de email) exclusiv prin intermediul formularului de contact pentru a răspunde solicitărilor dumneavoastră. Datele dumneavoastră nu vor fi vândute, închiriate sau înstrăinate către terți fără consimțământul explicit. Puteți solicita oricând ștergerea sau modificarea datelor trimitând un mesaj pe adresa de contact.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">5. Limitarea Răspunderii</h4>
+              <p>
+                Ne străduim ca informațiile oferite pe site să fie corecte și actualizate. Totuși, nu ne asumăm răspunderea pentru eventuale erori tehnice de funcționare a site-ului sau pentru interpretările eronate ale materialelor prezentate.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h4 className="text-white font-bold text-base">6. Soluționarea Litigiilor</h4>
+              <p>
+                Orice neînțelegere sau litigiu decurgând din utilizarea site-ului va fi soluționat pe cale amiabilă. În cazul în care acest lucru nu este posibil, competența revine instanțelor judecătorești competente din România. Consumatorii au dreptul de a apela la platformele ANPC (Autoritatea Națională pentru Protecția Consumatorilor) și SOL (Soluționarea Online a Litigiilor).
+              </p>
+            </section>
+          </div>
+
+          {/* Footer Modal */}
+          <div className="px-6 py-4 border-t border-white/10 flex justify-end bg-white/[0.02]">
+            <button
+              onClick={onClose}
+              className="px-6 py-2.5 rounded-xl bg-[#ccff00] text-black font-extrabold text-xs uppercase tracking-wider hover:bg-[#b8e600] transition-colors"
+            >
+              Am Înțeles
+            </button>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+}
+
 export default function Home() {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({ name: "", email: "", message: "", acceptedTerms: false });
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [termsOpen, setTermsOpen] = useState(false);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.acceptedTerms) {
+      alert("Te rugăm să accepți Termenii și Condițiile pentru a continua.");
+      return;
+    }
+
     setFormStatus("submitting");
 
     try {
@@ -209,7 +306,7 @@ export default function Home() {
 
       if (res.ok) {
         setFormStatus("success");
-        setFormData({ name: "", email: "", message: "" });
+        setFormData({ name: "", email: "", message: "", acceptedTerms: false });
       } else {
         setFormStatus("error");
       }
@@ -251,6 +348,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#07080a] text-white selection:bg-[#ccff00] selection:text-black font-sans antialiased overflow-x-hidden relative">
       <CustomCursor />
       <AppleNavbar />
+      <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} />
 
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[500px] bg-gradient-to-b from-[#ccff00]/8 via-[#ccff00]/3 to-transparent blur-[160px] opacity-70" />
@@ -261,7 +359,6 @@ export default function Home() {
         
         {/* SECTIUNEA DESPRE / HERO */}
         <section id="about" className="scroll-mt-40 space-y-16">
-          
           <div className="text-center space-y-6 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
@@ -289,7 +386,6 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
-            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -359,7 +455,6 @@ export default function Home() {
                 </div>
               </div>
             </motion.div>
-
           </div>
         </section>
 
@@ -396,7 +491,6 @@ export default function Home() {
                     {service.desc}
                   </p>
                 </div>
-                
               </motion.div>
             ))}
           </div>
@@ -500,6 +594,28 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* Bifa de acord GDPR / Termeni */}
+                <div className="flex items-start gap-3 pt-1">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    required
+                    checked={formData.acceptedTerms}
+                    onChange={(e) => setFormData({ ...formData, acceptedTerms: e.target.checked })}
+                    className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-[#ccff00] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                  />
+                  <label htmlFor="terms" className="text-xs text-white/50 leading-normal cursor-pointer select-none">
+                    Sunt de acord cu prelucrarea datelor cu caracter personal și am citit{" "}
+                    <button
+                      type="button"
+                      onClick={() => setTermsOpen(true)}
+                      className="text-[#ccff00] underline hover:text-white transition-colors"
+                    >
+                      Termenii și Condițiile
+                    </button>.
+                  </label>
+                </div>
+
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
@@ -537,13 +653,19 @@ export default function Home() {
 
       </main>
 
+      {/* FOOTER CU LINK-URI LEGALE */}
       <footer className="border-t border-white/[0.08] py-12 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/40">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). Toate drepturile rezervate.</p>
-        <div className="flex items-center gap-8">
-          <a href="#about" className="hover:text-white transition-colors">Despre</a>
-          <a href="#services" className="hover:text-white transition-colors">Servicii</a>
-          <a href="#skills" className="hover:text-white transition-colors">Abilități</a>
-          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          <button onClick={() => setTermsOpen(true)} className="hover:text-white transition-colors">
+            Termeni & Condiții
+          </button>
+          <button onClick={() => setTermsOpen(true)} className="hover:text-white transition-colors">
+            Confidențialitate (GDPR)
+          </button>
+          <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            ANPC
+          </a>
         </div>
       </footer>
     </div>
