@@ -472,7 +472,64 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
     </AnimatePresence>
   );
 }
+// --- COMPONENTĂ PENTRU FORME GEOMETRICE ANIMATE (BACKGROUND) ---
+function FloatingGridBackground() {
+  // Generăm un set fix/memoizat de pătrățele/cuburi cu proprietăți aleatorii
+  const squares = React.useMemo(() => {
+    const items = [];
+    const count = 24; // Numărul de cuburi/forme de pe fundal
 
+    for (let i = 0; i < count; i++) {
+      items.push({
+        id: i,
+        size: Math.floor(Math.random() * 32) + 16, // Dimensiuni între 16px și 48px
+        left: Math.floor(Math.random() * 95),      // Poziție orizontală (%)
+        top: Math.floor(Math.random() * 95),       // Poziție verticală (%)
+        duration: Math.random() * 6 + 5,           // Durată animație (secunde)
+        delay: Math.random() * 4,                  // Delay start
+        distance: Math.random() * 30 + 15,         // Distanța de mișcare (px)
+        opacity: Math.random() * 0.2 + 0.05,       // Transparență fină
+        isFilled: Math.random() > 0.6,             // Unele sunt pline, altele doar contur
+      });
+    }
+    return items;
+  }, []);
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {/* Pătrățelele/cuburile geometrice ce plutesc subtil */}
+      {squares.map((sq) => (
+        <motion.div
+          key={sq.id}
+          className={`absolute rounded-lg border border-[#075E46]/60 backdrop-blur-[1px] ${
+            sq.isFilled
+              ? "bg-[#075E46]/15 shadow-[0_0_15px_rgba(7,94,70,0.2)]"
+              : "bg-transparent"
+          }`}
+          style={{
+            width: sq.size,
+            height: sq.size,
+            left: `${sq.left}%`,
+            top: `${sq.top}%`,
+          }}
+          initial={{ y: 0, opacity: sq.opacity }}
+          animate={{
+            y: [-sq.distance, sq.distance, -sq.distance],
+            rotate: [0, sq.id % 2 === 0 ? 45 : -45, 0],
+            opacity: [sq.opacity, sq.opacity * 1.8, sq.opacity],
+          }}
+          transition={{
+            duration: sq.duration,
+            repeat: Infinity,
+            repeatType: "mirror",
+            ease: "easeInOut",
+            delay: sq.delay,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 export default function Home() {
   const [lang, setLang] = useState<"ro" | "en">("ro");
   const [formData, setFormData] = useState({ name: "", email: "", message: "", acceptedTerms: false });
@@ -563,7 +620,7 @@ export default function Home() {
       </div>
 
       <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-36 md:space-y-44">
-        
+        <FloatingGridBackground />
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-40 space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
