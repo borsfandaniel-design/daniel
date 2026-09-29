@@ -15,8 +15,12 @@ import {
   X,
   ArrowUpRight,
   Target,
-  FileText,
-  ShieldCheck
+  Zap,
+  ChevronRight,
+  ShieldCheck,
+  Scale,
+  Terminal,
+  Cpu
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -49,148 +53,196 @@ function CustomCursor() {
       <div
         className="pointer-events-none fixed inset-0 z-50 transition-opacity duration-500 hidden md:block"
         style={{
-          background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(204, 255, 0, 0.04), transparent 80%)`,
+          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(232, 255, 242, 0.05), transparent 80%)`,
         }}
       />
       
       <motion.div
-        className="fixed top-0 left-0 z-50 pointer-events-none hidden md:flex items-center justify-center rounded-full bg-[#ccff00] text-black font-extrabold text-[11px] uppercase tracking-wider shadow-[0_0_25px_rgba(204,255,0,0.5)]"
+        className="fixed top-0 left-0 z-50 pointer-events-none hidden md:flex items-center justify-center rounded-full bg-[#E8FFF2] text-[#075E46] font-black text-[10px] uppercase tracking-widest shadow-[0_0_30px_rgba(232,255,242,0.5)] border border-white/50"
         animate={{
-          x: mousePos.x - (isHovered ? 44 : 6),
+          x: mousePos.x - (isHovered ? 48 : 6),
           y: mousePos.y - (isHovered ? 18 : 6),
-          width: isHovered ? 88 : 12,
+          width: isHovered ? 96 : 12,
           height: isHovered ? 36 : 12,
         }}
-        transition={{ type: "spring", stiffness: 400, damping: 30, mass: 0.6 }}
+        transition={{ type: "spring", stiffness: 450, damping: 32, mass: 0.5 }}
       >
-        {isHovered && <span className="px-2 truncate">{cursorText || "Vezi"}</span>}
+        {isHovered && <span className="px-2 truncate">{cursorText || "Explorează"}</span>}
       </motion.div>
     </>
   );
 }
 
-function AppleNavbar() {
+{/* NAVBAR ULTRA-FUTURISTIC & CLEAN (FĂRĂ BUTONUL DISCUTĂ ACUM) */}
+function FuturisticNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("about");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
+
+      const sections = ["about", "services", "skills", "contact"];
+      const scrollPosition = window.scrollY + 220;
+
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPosition >= top && scrollPosition < top + height) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const navLinks = [
-    { name: "Despre", href: "#about" },
-    { name: "Servicii", href: "#services" },
-    { name: "Abilități", href: "#skills" },
-    { name: "Contact", href: "#contact" },
+    { name: "Despre", href: "#about", id: "about" },
+    { name: "Servicii", href: "#services", id: "services" },
+    { name: "Abilități", href: "#skills", id: "skills" },
+    { name: "Contact", href: "#contact", id: "contact" },
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
-        isScrolled
-          ? "bg-[#07080a]/70 backdrop-blur-2xl border-b border-white/[0.08] py-4 shadow-2xl"
-          : "bg-transparent py-7"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 sm:px-8">
-        <div className="flex items-center justify-between h-12">
-          
+    <>
+      <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 pt-5 transition-all duration-300 pointer-events-none flex justify-center">
+        <div
+          className={`relative max-w-3xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
+            isScrolled
+              ? "bg-[#070A09]/85 border border-[#075E46]/80 backdrop-blur-2xl shadow-[0_10px_40px_rgba(7,94,70,0.25)]"
+              : "bg-[#0B0F0D]/50 border border-white/10 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
+          }`}
+        >
+          {/* Futuristic Border Glow */}
+          <div className="absolute -inset-[1px] rounded-full bg-gradient-to-r from-[#075E46]/0 via-[#E8FFF2]/20 to-[#075E46]/0 opacity-50 blur-sm pointer-events-none" />
+
+          {/* BRAND LOGO / IDENTITY */}
           <a
             href="#"
-            className="flex items-center gap-3 text-white hover:opacity-90 transition-all group"
+            className="flex items-center gap-3 pl-1 group relative z-10"
           >
-            <div className="relative flex items-center justify-center w-11 h-11 rounded-2xl bg-gradient-to-br from-[#16181f] to-[#0c0d11] border border-white/10 group-hover:border-[#ccff00]/40 transition-colors shadow-lg">
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#075E46]/40 border border-[#E8FFF2]/30 backdrop-blur-xl group-hover:border-[#E8FFF2] transition-colors">
               <img
                 src="/logo.png"
                 alt="Swing Logo"
-                className="w-7 h-7 object-contain rounded-lg group-hover:scale-105 transition-transform"
+                className="w-4 h-4 object-contain rounded-md"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                   if (e.currentTarget.parentElement) {
-                    e.currentTarget.parentElement.innerHTML = '<span class="text-[#ccff00] font-black text-xl">S</span>';
+                    e.currentTarget.parentElement.innerHTML = '<span class="text-[#E8FFF2] font-black text-sm tracking-tighter">S</span>';
                   }
                 }}
               />
+              <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#E8FFF2] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E8FFF2]"></span>
+              </span>
             </div>
+
             <div className="flex flex-col">
-              <span className="font-black tracking-wider text-lg text-white group-hover:text-[#ccff00] transition-colors">
+              <span className="font-black tracking-[0.2em] text-xs text-white group-hover:text-[#E8FFF2] transition-colors">
                 SWING
               </span>
-              <span className="text-[10px] text-white/40 tracking-widest uppercase font-semibold">
-                Daniel Moisă
+              <span className="text-[8px] text-[#E8FFF2]/70 tracking-widest uppercase font-mono">
+                DANIEL MOISĂ
               </span>
             </div>
           </a>
 
-          <div className="hidden md:flex items-center space-x-2 p-1.5 rounded-full bg-white/[0.02] border border-white/[0.08] backdrop-blur-md">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-6 py-2.5 rounded-full text-xs font-semibold text-white/60 hover:text-white hover:bg-white/5 transition-all tracking-wide"
-              >
-                {link.name}
-              </a>
-            ))}
+          {/* DESKTOP NAV - CLEAN & BALANCED (CENTRATA) */}
+          <nav className="hidden md:flex items-center gap-1 relative z-10">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.id;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
+                    isActive ? "text-[#075E46]" : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="futuristicTab"
+                      className="absolute inset-0 bg-[#E8FFF2] rounded-full shadow-[0_0_15px_rgba(232,255,242,0.6)]"
+                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10">{link.name}</span>
+                </a>
+              );
+            })}
+          </nav>
+
+          {/* STATUS DISPLAY - FUTURISTIC MINIMAL BADGE */}
+          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#075E46]/30 border border-[#075E46]/60 text-[10px] font-mono text-[#E8FFF2] tracking-wider uppercase relative z-10">
+            <Cpu size={12} className="text-[#E8FFF2] animate-pulse" />
+            <span>ONLINE</span>
           </div>
 
-          <div className="hidden md:flex items-center">
-            <a
-              href="#contact"
-              data-cursor="Contact"
-              className="relative inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#ccff00] hover:bg-[#b8e600] text-black font-extrabold text-xs tracking-wide transition-all shadow-[0_0_25px_rgba(204,255,0,0.2)] hover:shadow-[0_0_35px_rgba(204,255,0,0.35)] hover:-translate-y-0.5"
-            >
-              <span>Discută un proiect</span>
-              <ArrowUpRight size={15} />
-            </a>
-          </div>
-
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-3 rounded-2xl bg-white/5 border border-white/10 text-white hover:text-[#ccff00] transition-colors"
-              aria-label="Toggle Menu"
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+          {/* TOGGLE MOBIL */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-full bg-[#075E46]/40 border border-[#075E46]/60 text-white hover:text-[#E8FFF2] transition-colors relative z-10"
+            aria-label="Toggle Navigation"
+          >
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
         </div>
-      </div>
+      </header>
 
+      {/* MENIU MOBIL OVERLAY FUTURISTIC */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-[#0a0b0d]/95 backdrop-blur-2xl border-b border-white/10 px-8 py-8 space-y-5"
+            initial={{ opacity: 0, y: -20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.98 }}
+            className="fixed inset-0 z-30 bg-[#070A09]/95 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-[#075E46]/50"
           >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-xl font-bold text-white/80 hover:text-[#ccff00] transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-[#ccff00] text-black font-extrabold text-sm mt-6 shadow-lg"
-            >
-              <span>Discută un proiect</span>
-              <ArrowUpRight size={16} />
-            </a>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <span className="text-[10px] font-mono text-[#E8FFF2] tracking-widest uppercase bg-[#075E46]/40 px-3 py-1 rounded-full border border-[#075E46]/60">
+                  SYSTEM // NAVIGATION
+                </span>
+                <span className="text-[10px] font-mono text-white/40">v2.6</span>
+              </div>
+
+              <div className="space-y-3">
+                {navLinks.map((link, idx) => (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-4 rounded-2xl bg-[#0B0F0D]/80 border border-[#075E46]/40 text-base font-bold text-white hover:text-[#E8FFF2] hover:border-[#E8FFF2]/40 transition-all active:scale-[0.98]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs font-mono text-[#E8FFF2]/50">0{idx + 1}</span>
+                      <span>{link.name}</span>
+                    </div>
+                    <ChevronRight size={16} className="text-[#E8FFF2]" />
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4 pt-6 border-t border-white/10">
+              <div className="flex items-center justify-between text-xs text-white/50 font-mono">
+                <span>STATUS: DISPONIBIL</span>
+                <span>SWING STUDIO</span>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }
 
@@ -200,18 +252,20 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-2xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-[#0e1015] border border-white/10 rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden"
+          className="bg-[#0B0F0D] border border-[#075E46] rounded-3xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-[0_0_50px_rgba(7,94,70,0.3)] overflow-hidden"
         >
-          {/* Header Modal */}
-          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+          <div className="px-6 py-5 border-b border-[#075E46]/40 flex items-center justify-between bg-[#075E46]/20">
             <div className="flex items-center gap-3">
-              <FileText className="text-[#ccff00]" size={22} />
-              <h3 className="text-lg font-extrabold text-white">Termeni și Condiții Legal</h3>
+              <Scale className="text-[#E8FFF2]" size={22} />
+              <div>
+                <h3 className="text-base font-extrabold text-white tracking-wide">Termeni, Condiții și Cadrul Legal</h3>
+                <p className="text-[10px] font-mono text-[#E8FFF2]/70">SWING Studio / Daniel Moisă</p>
+              </div>
             </div>
             <button
               onClick={onClose}
@@ -221,60 +275,60 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             </button>
           </div>
 
-          {/* Continut Modal */}
           <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-sm text-white/70 leading-relaxed font-normal custom-scrollbar">
-            <p className="text-xs text-white/40">Ultima actualizare: Septembrie 2026</p>
+            <div className="flex items-center justify-between bg-[#075E46]/20 p-4 rounded-2xl border border-[#075E46]/40 text-xs font-mono">
+              <span className="text-[#E8FFF2] font-semibold flex items-center gap-2">
+                <ShieldCheck size={16} /> Conformitate Legislație RO & UE
+              </span>
+              <span className="text-white/40">2026</span>
+            </div>
 
             <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">1. Introducere și Dispoziții Generale</h4>
+              <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
+                1. Cadru General și Identificarea Operatorului
+              </h4>
               <p>
-                Prezentul site web este administrat de Daniel Moisă (SWING). Prin accesarea și utilizarea acestui landing page, vă exprimați acordul expres cu privire la termenii și condițiile descrise mai jos. Acești termeni sunt redactați în conformitate cu legislația din România și Regulamentele Europene în vigoare (Regulamentul GDPR 2016/679, OUG 34/2014 și Directiva Omnibus).
+                Prezentul site este operat de <strong>Daniel Moisă (SWING)</strong>. Utilizarea site-ului, trimiterea de mesaje prin formularul de contact și contractarea serviciilor presupun acceptarea necondiționată a tuturor termenilor descriși în continuare.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">2. Servicii Oferite</h4>
+              <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
+                2. Serviciile Societății Informaționale (Legea nr. 365/2002)
+              </h4>
               <p>
-                SWING furnizează servicii profesionale B2B de Graphic Design (Canva Pro), Cold Outreach / Email Marketing și Appointment Setting. Informațiile prezentate pe site au caracter informativ și nu constituie o ofertă contractuală fermă până la încheierea unui acord formal sau contract de prestări servicii între părți.
+                În conformitate cu <strong>Legea nr. 365/2002 privind comerțul electronic</strong>, conținutul furnizat pe acest site web reprezintă o invitație la negociere B2B și informare comercială generală.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">3. Drepturi de Proprietate Intelectuală</h4>
+              <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
+                3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679 & Legea nr. 190/2018)
+              </h4>
               <p>
-                Toate materialele vizuale, elementele de design, conceptele, logo-urile și conținutul text de pe acest site aparțin Daniel Moisă (SWING) și sunt protejate de Legea nr. 8/1996 privind dreptul de autor. Este interzisă copierea, reproducerea sau distribuirea conținutului fără acordul scris prealabil.
+                Datele trimise prin formular (nume, adresă de email, mesaj) sunt procesate exclusiv în scopul furnizării de răspunsuri solicitărilor dumneavoastră și comunicării comerciale aferente.
               </p>
             </section>
 
             <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">4. Protecția Datelor cu Caracter Personal (GDPR)</h4>
+              <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
+                4. Dreptul de Autor și Proprietatea Intelectuală (Legea nr. 8/1996)
+              </h4>
               <p>
-                Conform Regulamentului (UE) 2016/679, colectăm date personale (nume, adresă de email) exclusiv prin intermediul formularului de contact pentru a răspunde solicitărilor dumneavoastră. Datele dumneavoastră nu vor fi vândute, închiriate sau înstrăinate către terți fără consimțământul explicit. Puteți solicita oricând ștergerea sau modificarea datelor trimitând un mesaj pe adresa de contact.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">5. Limitarea Răspunderii</h4>
-              <p>
-                Ne străduim ca informațiile oferite pe site să fie corecte și actualizate. Totuși, nu ne asumăm răspunderea pentru eventuale erori tehnice de funcționare a site-ului sau pentru interpretările eronate ale materialelor prezentate.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h4 className="text-white font-bold text-base">6. Soluționarea Litigiilor</h4>
-              <p>
-                Orice neînțelegere sau litigiu decurgând din utilizarea site-ului va fi soluționat pe cale amiabilă. În cazul în care acest lucru nu este posibil, competența revine instanțelor judecătorești competente din România. Consumatorii au dreptul de a apela la platformele ANPC (Autoritatea Națională pentru Protecția Consumatorilor) și SOL (Soluționarea Online a Litigiilor).
+                Toate materialele grafice, conceptele vizuale, codul sursă, elementele UI/UX și brand-ul "SWING" sunt protejate de <strong>Legea nr. 8/1996 privind dreptul de autor</strong>.
               </p>
             </section>
           </div>
 
-          {/* Footer Modal */}
-          <div className="px-6 py-4 border-t border-white/10 flex justify-end bg-white/[0.02]">
+          <div className="px-6 py-4 border-t border-[#075E46]/30 flex items-center justify-between bg-[#075E46]/10">
+            <span className="text-[11px] font-mono text-white/50 hidden sm:inline">
+              [CONFIRMATION_REQUIRED]
+            </span>
             <button
               onClick={onClose}
-              className="px-6 py-2.5 rounded-xl bg-[#ccff00] text-black font-extrabold text-xs uppercase tracking-wider hover:bg-[#b8e600] transition-colors"
+              className="px-6 py-2.5 rounded-xl bg-[#E8FFF2] text-[#075E46] font-black text-xs uppercase tracking-wider hover:bg-white transition-colors ml-auto"
             >
-              Am Înțeles
+              Am Înțeles și Accept
             </button>
           </div>
         </motion.div>
@@ -291,7 +345,7 @@ export default function Home() {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.acceptedTerms) {
-      alert("Te rugăm să accepți Termenii și Condițiile pentru a continua.");
+      alert("Te rugăm să bifezi acordul pentru Termeni și Condiții pentru a trimite mesajul.");
       return;
     }
 
@@ -317,57 +371,71 @@ export default function Home() {
 
   const servicesList = [
     {
+      num: "01",
       title: "Graphic Design & Canva Pro",
-      desc: "Creare de vizualuri atractive pentru social media, prezentări, bannere și materiale promoționale cu impact vizual de lungă durată.",
-      icon: <Palette size={26} className="text-[#ccff00]" />,
+      desc: "Materiale vizuale moderne, pitch deck-uri, bannere promoționale și vizualuri social media concepute pentru a converti.",
+      icon: <Palette size={24} className="text-[#E8FFF2]" />,
+      tag: "Design"
     },
     {
+      num: "02",
       title: "Cold Emailing & Outreach",
-      desc: "Strategii personalizate de cold outreach, redactare de script-uri persuasive și generare de lead-uri ultra-calificate.",
-      icon: <Send size={26} className="text-[#ccff00]" />,
+      desc: "Campanii strategice de cold email, redactare de script-uri persuasive și infrastructură optimizată pentru rata de livrare.",
+      icon: <Send size={24} className="text-[#E8FFF2]" />,
+      tag: "Outreach"
     },
     {
+      num: "03",
       title: "Appointment Setting",
-      desc: "Setare de întâlniri calificate pentru afacerea ta, transformând posibilii clienți în oportunități reale și constante de vânzare.",
-      icon: <CalendarCheck size={26} className="text-[#ccff00]" />,
+      desc: "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
+      icon: <CalendarCheck size={24} className="text-[#E8FFF2]" />,
+      tag: "Vânzări"
     },
   ];
 
   const skillsList = [
     "Canva Pro",
     "Graphic Design",
-    "Cold Emailing",
+    "Cold Outreach",
     "Appointment Setting",
-    "Copywriting",
-    "Lead Generation",
-    "UI/UX Basics",
-    "Social Media Strategy",
+    "Copywriting Persuasiv",
+    "Generare Lead-uri",
+    "UI/UX Visuals",
+    "Social Media Branding",
   ];
 
   return (
-    <div className="min-h-screen bg-[#07080a] text-white selection:bg-[#ccff00] selection:text-black font-sans antialiased overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#070A09] text-white selection:bg-[#E8FFF2] selection:text-[#075E46] font-sans antialiased overflow-x-hidden relative">
       <CustomCursor />
-      <AppleNavbar />
+      <FuturisticNavbar />
       <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} />
 
+      {/* BACKGROUND SCI-FI MESH & AMBIENT GLOW */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[500px] bg-gradient-to-b from-[#ccff00]/8 via-[#ccff00]/3 to-transparent blur-[160px] opacity-70" />
-        <div className="absolute top-[45%] right-[-10%] w-[600px] h-[600px] bg-[#ccff00]/3 rounded-full blur-[180px]" />
+        <div 
+          className="absolute inset-0 opacity-10" 
+          style={{
+            backgroundImage: `linear-gradient(#075E46 1px, transparent 1px), linear-gradient(to right, #075E46 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }} 
+        />
+        <div className="absolute top-[-15%] left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-[#075E46]/20 blur-[180px] rounded-full" />
+        <div className="absolute top-[50%] left-[-10%] w-[500px] h-[500px] bg-[#075E46]/15 blur-[170px] rounded-full" />
       </div>
 
-      <main className="relative z-10 pt-36 sm:pt-48 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-36 md:space-y-48">
+      <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-36 md:space-y-44">
         
-        {/* SECTIUNEA DESPRE / HERO */}
-        <section id="about" className="scroll-mt-40 space-y-16">
+        {/* HERO SECTION */}
+        <section id="about" className="scroll-mt-40 space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#075E46]/30 border border-[#075E46]/60 backdrop-blur-xl shadow-[0_0_20px_rgba(7,94,70,0.3)]"
             >
-              <span className="w-2 h-2 rounded-full bg-[#ccff00] animate-pulse" />
-              <span className="text-xs font-bold tracking-widest text-white/80 uppercase">
-                Disponibil pentru proiecte & colaborări
+              <Zap size={13} className="text-[#E8FFF2]" />
+              <span className="text-[11px] font-mono font-bold tracking-widest text-[#E8FFF2] uppercase">
+                SYSTEM ACTIVE // AVAILABLE FOR PROJECTS
               </span>
             </motion.div>
 
@@ -375,98 +443,114 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.12]"
+              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.08]"
             >
-              Soluții Vizuale{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#e2ff66] to-[#ccff00]">
-                Premium
-              </span>{" "}
-              & Outreach Strategic.
+              Design Vizual High-End &{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8FFF2] via-emerald-200 to-[#075E46]">
+                Cold Outreach
+              </span>
             </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto font-normal leading-relaxed"
+            >
+              Ajut brandurile și companiile să se remarce prin estetică impecabilă și să își crească vânzările prin campanii de outreach bine calibrate.
+            </motion.p>
           </div>
 
+          {/* BENTO GRID HERO */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
+            
+            {/* Card Profile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               data-cursor="Swing"
-              className="md:col-span-5 bg-gradient-to-b from-[#111319] to-[#0b0c0e] border border-white/10 hover:border-[#ccff00]/30 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 hover:shadow-[0_0_40px_rgba(204,255,0,0.08)]"
+              className="md:col-span-5 bg-gradient-to-b from-[#075E46]/20 to-[#0B0F0D] border border-[#075E46]/50 hover:border-[#E8FFF2]/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-xl"
             >
-              <div className="space-y-6 relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-[#ccff00]/10 border border-[#ccff00]/20 flex items-center justify-center text-[#ccff00]">
-                  <Sparkles size={26} />
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-[#075E46]/40 border border-[#E8FFF2]/30 flex items-center justify-center text-[#E8FFF2] shadow-lg">
+                    <Sparkles size={22} />
+                  </div>
+                  <span className="text-[10px] font-mono text-[#E8FFF2]/60">[PROFILE]</span>
                 </div>
-                <div className="space-y-2">
+
+                <div className="space-y-1">
                   <h3 className="text-3xl font-black text-white">Daniel Moisă</h3>
-                  <p className="text-sm font-semibold text-[#ccff00]/80 tracking-wider uppercase">a.k.a. Swing</p>
+                  <p className="text-xs font-mono font-bold text-[#E8FFF2] tracking-widest uppercase">SWING STUDIO</p>
                 </div>
-                <p className="text-sm sm:text-base text-white/60 leading-relaxed font-normal pt-2">
-                  Specialist în Graphic Design, Canva, Cold Outreach & Appointment Setting. Pasionat de estetică curată și conversii reale.
+                <p className="text-sm text-white/70 leading-relaxed font-normal">
+                  Pasionat de minimalism, estetică curată și strategie digitală orientată spre rezultate clare.
                 </p>
               </div>
 
-              <div className="pt-10 flex items-center gap-3 relative z-10">
+              <div className="pt-8">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2 text-xs font-extrabold text-[#ccff00] hover:text-white tracking-widest uppercase transition-colors"
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#075E46]/40 hover:bg-[#E8FFF2] text-[#E8FFF2] hover:text-[#075E46] text-xs font-extrabold uppercase tracking-wider transition-all duration-300 border border-[#075E46]"
                 >
-                  <span>Contactează-mă</span>
+                  <span>Hai să vorbim</span>
                   <ArrowUpRight size={14} />
                 </a>
               </div>
-
-              <div className="absolute right-[-20px] bottom-[-20px] w-48 h-48 bg-[#ccff00]/5 rounded-full blur-3xl group-hover:bg-[#ccff00]/10 transition-colors" />
             </motion.div>
 
+            {/* Card Objective */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              data-cursor="Servicii"
-              className="md:col-span-7 bg-gradient-to-b from-[#111319] to-[#0b0c0e] border border-white/10 hover:border-[#ccff00]/30 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 hover:shadow-[0_0_40px_rgba(204,255,0,0.08)]"
+              data-cursor="Misiune"
+              className="md:col-span-7 bg-gradient-to-b from-[#075E46]/20 to-[#0B0F0D] border border-[#075E46]/50 hover:border-[#E8FFF2]/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-xl"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-4 max-w-lg">
-                  <span className="text-[11px] font-extrabold text-[#ccff00] uppercase tracking-widest bg-[#ccff00]/10 px-3.5 py-1.5 rounded-full border border-[#ccff00]/20 inline-block">
-                    Direcție Principală
+                  <span className="text-[10px] font-mono font-bold text-[#E8FFF2] uppercase tracking-widest bg-[#075E46]/50 px-3.5 py-1.5 rounded-full border border-[#E8FFF2]/20 inline-block">
+                    [TARGET_MISSION]
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-white leading-snug">
-                    Transform ideile în materiale vizuale de impact și conversații calificate.
+                    Transformă atenția privitorilor în oportunități reale de afaceri.
                   </h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-white/80 hidden sm:block">
-                  <Target size={30} className="text-[#ccff00]" />
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-[#E8FFF2] hidden sm:block">
+                  <Target size={26} />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-12">
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <p className="text-xs font-bold text-white">Visual Design</p>
-                  <p className="text-[11px] text-white/40">Canva & Branding</p>
+              <div className="grid grid-cols-3 gap-4 pt-10">
+                <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
+                  <p className="text-xl font-black text-[#E8FFF2]">100%</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Atenție Detalii</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1">
-                  <p className="text-xs font-bold text-white">Cold Email</p>
-                  <p className="text-[11px] text-white/40">Lead Gen & Copy</p>
+                <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
+                  <p className="text-xl font-black text-[#E8FFF2]">Fast</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Livrabile Rapide</p>
                 </div>
-                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 col-span-2 sm:col-span-1 space-y-1">
-                  <p className="text-xs font-bold text-white">Appointment</p>
-                  <p className="text-[11px] text-white/40">Setting & Sales</p>
+                <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
+                  <p className="text-xl font-black text-[#E8FFF2]">B2B</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Focus Rezultate</p>
                 </div>
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* SECTIUNEA SERVICII */}
+        {/* SERVICII */}
         <section id="services" className="scroll-mt-40 space-y-12">
-          <div className="space-y-3">
-            <span className="text-xs font-extrabold text-[#ccff00] uppercase tracking-widest">
-              Ce Pot Face Pentru Tine
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              Serviciile Mele
-            </h2>
+          <div className="flex items-end justify-between border-b border-[#075E46]/30 pb-6">
+            <div className="space-y-2">
+              <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
+                // 01. SERVICII
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
+                Cu ce te pot ajuta
+              </h2>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -477,17 +561,23 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                data-cursor="Detalii"
-                className="bg-gradient-to-b from-[#111319] to-[#0b0c0e] border border-white/10 hover:border-[#ccff00]/40 rounded-[2rem] p-8 sm:p-10 flex flex-col justify-between group transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_15px_35px_rgba(204,255,0,0.08)]"
+                data-cursor="Serviciu"
+                className="bg-gradient-to-b from-[#075E46]/15 to-[#070A09] border border-[#075E46]/50 hover:border-[#E8FFF2]/50 rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(7,94,70,0.25)] relative overflow-hidden"
               >
-                <div className="space-y-6">
-                  <div className="w-14 h-14 rounded-2xl bg-[#ccff00]/10 border border-[#ccff00]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    {service.icon}
+                <div className="space-y-6 relative z-10">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-2xl bg-[#075E46]/40 border border-[#E8FFF2]/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                      {service.icon}
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-[#E8FFF2]/70 uppercase tracking-widest bg-[#075E46]/30 px-3 py-1 rounded-full border border-[#075E46]/50">
+                      [{service.num}] {service.tag}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-white group-hover:text-[#ccff00] transition-colors">
+
+                  <h3 className="text-xl font-bold text-white group-hover:text-[#E8FFF2] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-white/50 leading-relaxed font-normal">
+                  <p className="text-sm text-white/60 leading-relaxed font-normal">
                     {service.desc}
                   </p>
                 </div>
@@ -496,27 +586,27 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTIUNEA ABILITATI */}
-        <section id="skills" className="scroll-mt-40 space-y-12">
-          <div className="space-y-3">
-            <span className="text-xs font-extrabold text-[#ccff00] uppercase tracking-widest">
-              Expertiză
+        {/* ABILITATI */}
+        <section id="skills" className="scroll-mt-40 space-y-10">
+          <div className="space-y-2 border-b border-[#075E46]/30 pb-6">
+            <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
+              // 02. CAPABILITĂȚI
             </span>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              Abilități & Instrumente
+              Abilități & Stack
             </h2>
           </div>
 
-          <div className="flex flex-wrap gap-4 pt-2">
+          <div className="flex flex-wrap gap-3.5">
             {skillsList.map((skill, index) => (
               <motion.div
                 key={skill}
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.04 }}
+                transition={{ delay: index * 0.03 }}
                 data-cursor="Skill"
-                className="px-6 py-3.5 rounded-2xl bg-[#111319] border border-white/10 hover:border-[#ccff00]/50 hover:bg-[#ccff00]/10 text-white/90 font-semibold text-sm transition-all duration-300 cursor-default shadow-sm"
+                className="px-6 py-3.5 rounded-2xl bg-[#075E46]/20 border border-[#075E46]/50 hover:border-[#E8FFF2] hover:bg-[#075E46]/40 text-white/90 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm"
               >
                 {skill}
               </motion.div>
@@ -524,27 +614,27 @@ export default function Home() {
           </div>
         </section>
 
-        {/* SECTIUNEA CONTACT */}
+        {/* CONTACT */}
         <section id="contact" className="scroll-mt-40">
-          <div className="bg-gradient-to-b from-[#111319] to-[#0b0c0e] border border-white/10 rounded-[2.5rem] p-8 sm:p-16 relative overflow-hidden shadow-2xl">
-            <div className="max-w-2xl space-y-10 relative z-10">
-              <div className="space-y-4">
-                <span className="text-xs font-extrabold text-[#ccff00] uppercase tracking-widest">
-                  Să colaborăm
+          <div className="bg-gradient-to-b from-[#075E46]/25 to-[#070A09] border border-[#075E46]/60 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-2xl">
+            <div className="max-w-2xl space-y-8 relative z-10">
+              <div className="space-y-3">
+                <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
+                  // 03. TRANSMITE UN MESAJ
                 </span>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-                  Ai un proiect în minte?
+                  Începe o colaborare
                 </h2>
-                <p className="text-sm sm:text-base text-white/50 leading-relaxed">
-                  Trimite-mi un mesaj și hai să discutăm despre cum te pot ajuta să îți atingi obiectivele.
+                <p className="text-sm text-white/60 leading-relaxed">
+                  Scrie-mi un mesaj și îți voi răspunde în cel mai scurt timp posibil.
                 </p>
               </div>
 
-              <form onSubmit={handleFormSubmit} className="space-y-6">
+              <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-white/70 uppercase tracking-wider">
-                      Nume
+                    <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
+                      Nume Complete
                     </label>
                     <div className="relative">
                       <input
@@ -553,15 +643,15 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Numele tău"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#ccff00] transition-colors pl-12"
+                        className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12"
                       />
-                      <User size={18} className="absolute left-4 top-4 text-white/30" />
+                      <User size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-xs font-bold text-white/70 uppercase tracking-wider">
-                      Email
+                    <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
+                      Adresă Email
                     </label>
                     <div className="relative">
                       <input
@@ -570,31 +660,30 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="adresa@email.com"
-                        className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#ccff00] transition-colors pl-12"
+                        className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12"
                       />
-                      <Mail size={18} className="absolute left-4 top-4 text-white/30" />
+                      <Mail size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs font-bold text-white/70 uppercase tracking-wider">
-                    Mesaj
+                  <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
+                    Detalii Proiect / Solicitare
                   </label>
                   <div className="relative">
                     <textarea
                       required
-                      rows={5}
+                      rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Descrie pe scurt ce ai nevoie..."
-                      className="w-full bg-white/[0.03] border border-white/10 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-[#ccff00] transition-colors pl-12 pt-4 resize-none"
+                      placeholder="Detalii despre proiectul tău..."
+                      className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12 pt-3.5 resize-none"
                     />
-                    <MessageSquare size={18} className="absolute left-4 top-4 text-white/30" />
+                    <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
                   </div>
                 </div>
 
-                {/* Bifa de acord GDPR / Termeni */}
                 <div className="flex items-start gap-3 pt-1">
                   <input
                     type="checkbox"
@@ -602,16 +691,16 @@ export default function Home() {
                     required
                     checked={formData.acceptedTerms}
                     onChange={(e) => setFormData({ ...formData, acceptedTerms: e.target.checked })}
-                    className="mt-1 w-4 h-4 rounded border-white/20 bg-white/5 text-[#ccff00] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded border-[#075E46] bg-[#070A09] text-[#075E46] focus:ring-0 focus:ring-offset-0 cursor-pointer"
                   />
-                  <label htmlFor="terms" className="text-xs text-white/50 leading-normal cursor-pointer select-none">
-                    Sunt de acord cu prelucrarea datelor cu caracter personal și am citit{" "}
+                  <label htmlFor="terms" className="text-xs text-white/60 leading-normal cursor-pointer select-none">
+                    Sunt de acord cu prelucrarea datelor personale conform GDPR și am citit{" "}
                     <button
                       type="button"
                       onClick={() => setTermsOpen(true)}
-                      className="text-[#ccff00] underline hover:text-white transition-colors"
+                      className="text-[#E8FFF2] underline hover:text-white font-semibold transition-colors"
                     >
-                      Termenii și Condițiile
+                      Termenii, Condițiile și Cadrul Legal
                     </button>.
                   </label>
                 </div>
@@ -619,7 +708,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#ccff00] hover:bg-[#b8e600] text-black font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_0_25px_rgba(204,255,0,0.2)] hover:shadow-[0_0_35px_rgba(204,255,0,0.35)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5"
+                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#E8FFF2] hover:bg-white text-[#075E46] font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(232,255,242,0.25)] hover:shadow-[0_0_30px_rgba(232,255,242,0.5)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5"
                 >
                   {formStatus === "submitting" ? (
                     <span>Se trimite...</span>
@@ -632,39 +721,40 @@ export default function Home() {
                 </button>
 
                 {formStatus === "success" && (
-                  <div className="flex items-center gap-2.5 text-green-400 text-sm font-semibold pt-2">
+                  <div className="flex items-center gap-2.5 text-[#E8FFF2] text-sm font-semibold pt-2">
                     <CheckCircle2 size={18} />
-                    <span>Mesajul a fost trimis cu succes! Îți voi răspunde în cel mai scurt timp.</span>
+                    <span>Mesajul a fost trimis cu succes! Îți voi răspunde curând.</span>
                   </div>
                 )}
 
                 {formStatus === "error" && (
                   <div className="flex items-center gap-2.5 text-red-400 text-sm font-semibold pt-2">
                     <AlertCircle size={18} />
-                    <span>A apărut o eroare. Te rog să încerci din nou mai târziu.</span>
+                    <span>A apărut o eroare. Te rog să încerci din nou.</span>
                   </div>
                 )}
               </form>
             </div>
-
-            <div className="absolute right-[-120px] bottom-[-120px] w-[450px] h-[450px] bg-[#ccff00]/5 rounded-full blur-3xl pointer-events-none" />
           </div>
         </section>
 
       </main>
 
-      {/* FOOTER CU LINK-URI LEGALE */}
-      <footer className="border-t border-white/[0.08] py-12 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/40">
-        <p>© {new Date().getFullYear()} SWING (Daniel Moisă). Toate drepturile rezervate.</p>
+      {/* FOOTER */}
+      <footer className="border-t border-[#075E46]/30 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/40 font-mono">
+        <p>© {new Date().getFullYear()} SWING (Daniel Moisă). All rights reserved.</p>
         <div className="flex flex-wrap items-center justify-center gap-6">
-          <button onClick={() => setTermsOpen(true)} className="hover:text-white transition-colors">
-            Termeni & Condiții
+          <button onClick={() => setTermsOpen(true)} className="hover:text-[#E8FFF2] transition-colors">
+            Termeni & Condiții Legal
           </button>
-          <button onClick={() => setTermsOpen(true)} className="hover:text-white transition-colors">
-            Confidențialitate (GDPR)
+          <button onClick={() => setTermsOpen(true)} className="hover:text-[#E8FFF2] transition-colors">
+            Confidențialitate GDPR
           </button>
-          <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+          <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-[#E8FFF2] transition-colors">
             ANPC
+          </a>
+          <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener noreferrer" className="hover:text-[#E8FFF2] transition-colors">
+            Platforma SOL (UE)
           </a>
         </div>
       </footer>
