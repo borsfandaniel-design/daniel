@@ -19,10 +19,108 @@ import {
   ChevronRight,
   ShieldCheck,
   Scale,
-  Terminal,
+  Globe,
   Cpu
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+// --- DICȚIONAR PENTRU TRADUCERI (RO / EN) ---
+const translations = {
+  ro: {
+    navAbout: "Despre",
+    navServices: "Servicii",
+    navSkills: "Abilități",
+    navContact: "Contact",
+    systemActive: "SISTEM ACTIV // DISPONIBIL PENTRU PROIECTE",
+    heroTitlePart1: "Design Vizual High-End & ",
+    heroTitlePart2: "Cold Outreach",
+    heroSubtitle: "Ajut brandurile și companiile să se remarce prin estetică impecabilă și să își crească vânzările prin campanii de outreach bine calibrate.",
+    profileName: "Daniel Moisă",
+    profileRole: "SWING STUDIO",
+    profileBio: "Pasionat de minimalism, estetică curată și strategie digitală orientată spre rezultate clare.",
+    talkBtn: "Hai să vorbim",
+    missionTitle: "Transformă atenția privitorilor în oportunități reale de afaceri.",
+    statAttention: "Atenție Detalii",
+    statFast: "Livrabile Rapide",
+    statFocus: "Focus Rezultate",
+    servicesTagline: "// 01. SERVICII",
+    servicesHeader: "Cu ce te pot ajuta",
+    serv1Title: "Graphic Design & Canva Pro",
+    serv1Desc: "Materiale vizuale moderne, pitch deck-uri, bannere promoționale și vizualuri social media concepute pentru a converti.",
+    serv2Title: "Cold Emailing & Outreach",
+    serv2Desc: "Campanii strategice de cold email, redactare de script-uri persuasive și infrastructură optimizată pentru rata de livrare.",
+    serv3Title: "Appointment Setting",
+    serv3Desc: "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
+    skillsTagline: "// 02. CAPABILITĂȚI",
+    skillsHeader: "Abilități & Stack",
+    contactTagline: "// 03. TRANSMITE UN MESAJ",
+    contactHeader: "Începe o colaborare",
+    contactSubtitle: "Scrie-mi un mesaj și îți voi răspunde în cel mai scurt timp posibil.",
+    fieldName: "Nume Complet",
+    fieldEmail: "Adresă Email",
+    fieldMessage: "Detalii Proiect / Solicitare",
+    placeholderName: "Numele tău",
+    placeholderEmail: "adresa@email.com",
+    placeholderMessage: "Detalii despre proiectul tău...",
+    termsCheckbox: "Sunt de acord cu prelucrarea datelor personale conform GDPR și am citit ",
+    termsLink: "Termenii, Condițiile și Cadrul Legal",
+    sendBtn: "Trimite Mesajul",
+    sendingBtn: "Se trimite...",
+    successMsg: "Mesajul a fost trimis cu succes! Îți voi răspunde curând.",
+    errorMsg: "A apărut o eroare. Te rog să încerci din nou.",
+    alertTerms: "Te rugăm să bifezi acordul pentru Termeni și Condiții pentru a trimite mesajul.",
+    termsTitle: "Termeni, Condiții și Cadrul Legal",
+    termsUnderstandBtn: "Am Înțeles și Accept",
+    footerRights: "All rights reserved."
+  },
+  en: {
+    navAbout: "About",
+    navServices: "Services",
+    navSkills: "Skills",
+    navContact: "Contact",
+    systemActive: "SYSTEM ACTIVE // AVAILABLE FOR PROJECTS",
+    heroTitlePart1: "High-End Visual Design & ",
+    heroTitlePart2: "Cold Outreach",
+    heroSubtitle: "I help brands and companies stand out with clean aesthetics and boost their sales with well-calibrated outreach campaigns.",
+    profileName: "Daniel Moisă",
+    profileRole: "SWING STUDIO",
+    profileBio: "Passionate about minimalism, clean aesthetics, and digital strategy focused on clear results.",
+    talkBtn: "Let's talk",
+    missionTitle: "Turn viewer attention into real business opportunities.",
+    statAttention: "Detail Focus",
+    statFast: "Fast Delivery",
+    statFocus: "Results Driven",
+    servicesTagline: "// 01. SERVICES",
+    servicesHeader: "How I can help you",
+    serv1Title: "Graphic Design & Canva Pro",
+    serv1Desc: "Modern visual materials, pitch decks, promotional banners, and social media visuals crafted to convert.",
+    serv2Title: "Cold Emailing & Outreach",
+    serv2Desc: "Strategic cold email campaigns, persuasive scriptwriting, and deliverability-optimized infrastructure.",
+    serv3Title: "Appointment Setting",
+    serv3Desc: "Converting cold leads into qualified business meetings booked directly into your calendar.",
+    skillsTagline: "// 02. CAPABILITIES",
+    skillsHeader: "Skills & Tech Stack",
+    contactTagline: "// 03. SEND A MESSAGE",
+    contactHeader: "Start a project",
+    contactSubtitle: "Drop me a message and I will get back to you as soon as possible.",
+    fieldName: "Full Name",
+    fieldEmail: "Email Address",
+    fieldMessage: "Project Details / Request",
+    placeholderName: "Your name",
+    placeholderEmail: "address@email.com",
+    placeholderMessage: "Details about your project...",
+    termsCheckbox: "I agree to personal data processing under GDPR and I have read the ",
+    termsLink: "Terms, Conditions & Legal Framework",
+    sendBtn: "Send Message",
+    sendingBtn: "Sending...",
+    successMsg: "Message sent successfully! I will reply soon.",
+    errorMsg: "An error occurred. Please try again.",
+    alertTerms: "Please check the Terms & Conditions agreement to send your message.",
+    termsTitle: "Terms, Conditions & Legal Framework",
+    termsUnderstandBtn: "Understood & Accepted",
+    footerRights: "All rights reserved."
+  }
+};
 
 function CustomCursor() {
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
@@ -67,17 +165,18 @@ function CustomCursor() {
         }}
         transition={{ type: "spring", stiffness: 450, damping: 32, mass: 0.5 }}
       >
-        {isHovered && <span className="px-2 truncate">{cursorText || "Explorează"}</span>}
+        {isHovered && <span className="px-2 truncate">{cursorText || "Explore"}</span>}
       </motion.div>
     </>
   );
 }
 
-{/* NAVBAR ULTRA-FUTURISTIC & CLEAN (FĂRĂ BUTONUL DISCUTĂ ACUM) */}
-function FuturisticNavbar() {
+{/* NAVBAR ULTRA-FUTURISTIC CU TRADUCERE RO / EN */}
+function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "ro" | "en") => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = translations[lang];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,17 +203,17 @@ function FuturisticNavbar() {
   }, []);
 
   const navLinks = [
-    { name: "Despre", href: "#about", id: "about" },
-    { name: "Servicii", href: "#services", id: "services" },
-    { name: "Abilități", href: "#skills", id: "skills" },
-    { name: "Contact", href: "#contact", id: "contact" },
+    { name: t.navAbout, href: "#about", id: "about" },
+    { name: t.navServices, href: "#services", id: "services" },
+    { name: t.navSkills, href: "#skills", id: "skills" },
+    { name: t.navContact, href: "#contact", id: "contact" },
   ];
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 pt-5 transition-all duration-300 pointer-events-none flex justify-center">
         <div
-          className={`relative max-w-3xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
+          className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
             isScrolled
               ? "bg-[#070A09]/85 border border-[#075E46]/80 backdrop-blur-2xl shadow-[0_10px_40px_rgba(7,94,70,0.25)]"
               : "bg-[#0B0F0D]/50 border border-white/10 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
@@ -124,10 +223,7 @@ function FuturisticNavbar() {
           <div className="absolute -inset-[1px] rounded-full bg-gradient-to-r from-[#075E46]/0 via-[#E8FFF2]/20 to-[#075E46]/0 opacity-50 blur-sm pointer-events-none" />
 
           {/* BRAND LOGO / IDENTITY */}
-          <a
-            href="#"
-            className="flex items-center gap-3 pl-1 group relative z-10"
-          >
+          <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
             <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#075E46]/40 border border-[#E8FFF2]/30 backdrop-blur-xl group-hover:border-[#E8FFF2] transition-colors">
               <img
                 src="/logo.png"
@@ -156,13 +252,13 @@ function FuturisticNavbar() {
             </div>
           </a>
 
-          {/* DESKTOP NAV - CLEAN & BALANCED (CENTRATA) */}
+          {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-1 relative z-10">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
                 <a
-                  key={link.name}
+                  key={link.id}
                   href={link.href}
                   className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
                     isActive ? "text-[#075E46]" : "text-white/70 hover:text-white"
@@ -181,24 +277,63 @@ function FuturisticNavbar() {
             })}
           </nav>
 
-          {/* STATUS DISPLAY - FUTURISTIC MINIMAL BADGE */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#075E46]/30 border border-[#075E46]/60 text-[10px] font-mono text-[#E8FFF2] tracking-wider uppercase relative z-10">
-            <Cpu size={12} className="text-[#E8FFF2] animate-pulse" />
-            <span>ONLINE</span>
-          </div>
+          {/* LANGUAGE SWITCHER + STATUS BADGE */}
+          <div className="flex items-center gap-2 relative z-10">
+            {/* CYBER LANGUAGE TOGGLE */}
+            <div className="flex items-center bg-[#070A09]/90 border border-[#075E46]/70 rounded-full p-1 relative shadow-inner">
+              <Globe size={13} className="text-[#E8FFF2]/70 ml-1.5 mr-1 hidden sm:block" />
+              <button
+                onClick={() => setLang("ro")}
+                className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors ${
+                  lang === "ro" ? "text-[#075E46]" : "text-white/50 hover:text-white"
+                }`}
+              >
+                {lang === "ro" && (
+                  <motion.div
+                    layoutId="langPill"
+                    className="absolute inset-0 bg-[#E8FFF2] rounded-full"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10">RO</span>
+              </button>
 
-          {/* TOGGLE MOBIL */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-full bg-[#075E46]/40 border border-[#075E46]/60 text-white hover:text-[#E8FFF2] transition-colors relative z-10"
-            aria-label="Toggle Navigation"
-          >
-            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
+              <button
+                onClick={() => setLang("en")}
+                className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors ${
+                  lang === "en" ? "text-[#075E46]" : "text-white/50 hover:text-white"
+                }`}
+              >
+                {lang === "en" && (
+                  <motion.div
+                    layoutId="langPill"
+                    className="absolute inset-0 bg-[#E8FFF2] rounded-full"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  />
+                )}
+                <span className="relative z-10">EN</span>
+              </button>
+            </div>
+
+            {/* STATUS DISPLAY - FUTURISTIC BADGE */}
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#075E46]/30 border border-[#075E46]/60 text-[10px] font-mono text-[#E8FFF2] tracking-wider uppercase">
+              <Cpu size={12} className="text-[#E8FFF2] animate-pulse" />
+              <span>ONLINE</span>
+            </div>
+
+            {/* TOGGLE MOBIL */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-full bg-[#075E46]/40 border border-[#075E46]/60 text-white hover:text-[#E8FFF2] transition-colors"
+              aria-label="Toggle Navigation"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* MENIU MOBIL OVERLAY FUTURISTIC */}
+      {/* MENIU MOBIL OVERLAY */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -218,7 +353,7 @@ function FuturisticNavbar() {
               <div className="space-y-3">
                 {navLinks.map((link, idx) => (
                   <a
-                    key={link.name}
+                    key={link.id}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center justify-between p-4 rounded-2xl bg-[#0B0F0D]/80 border border-[#075E46]/40 text-base font-bold text-white hover:text-[#E8FFF2] hover:border-[#E8FFF2]/40 transition-all active:scale-[0.98]"
@@ -235,7 +370,7 @@ function FuturisticNavbar() {
 
             <div className="space-y-4 pt-6 border-t border-white/10">
               <div className="flex items-center justify-between text-xs text-white/50 font-mono">
-                <span>STATUS: DISPONIBIL</span>
+                <span>STATUS: ONLINE</span>
                 <span>SWING STUDIO</span>
               </div>
             </div>
@@ -247,8 +382,9 @@ function FuturisticNavbar() {
 }
 
 {/* MODAL TERMENI SI CONDITII */}
-function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () => void; lang: "ro" | "en" }) {
   if (!isOpen) return null;
+  const t = translations[lang];
 
   return (
     <AnimatePresence>
@@ -263,7 +399,7 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             <div className="flex items-center gap-3">
               <Scale className="text-[#E8FFF2]" size={22} />
               <div>
-                <h3 className="text-base font-extrabold text-white tracking-wide">Termeni, Condiții și Cadrul Legal</h3>
+                <h3 className="text-base font-extrabold text-white tracking-wide">{t.termsTitle}</h3>
                 <p className="text-[10px] font-mono text-[#E8FFF2]/70">SWING Studio / Daniel Moisă</p>
               </div>
             </div>
@@ -278,7 +414,7 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
           <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-sm text-white/70 leading-relaxed font-normal custom-scrollbar">
             <div className="flex items-center justify-between bg-[#075E46]/20 p-4 rounded-2xl border border-[#075E46]/40 text-xs font-mono">
               <span className="text-[#E8FFF2] font-semibold flex items-center gap-2">
-                <ShieldCheck size={16} /> Conformitate Legislație RO & UE
+                <ShieldCheck size={16} /> Conformitate Legislație RO & UE / GDPR Compliance
               </span>
               <span className="text-white/40">2026</span>
             </div>
@@ -303,7 +439,7 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
-                3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679 & Legea nr. 190/2018)
+                3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679)
               </h4>
               <p>
                 Datele trimise prin formular (nume, adresă de email, mesaj) sunt procesate exclusiv în scopul furnizării de răspunsuri solicitărilor dumneavoastră și comunicării comerciale aferente.
@@ -312,10 +448,10 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
-                4. Dreptul de Autor și Proprietatea Intelectuală (Legea nr. 8/1996)
+                4. Dreptul de Autor și Proprietatea Intelectuală
               </h4>
               <p>
-                Toate materialele grafice, conceptele vizuale, codul sursă, elementele UI/UX și brand-ul "SWING" sunt protejate de <strong>Legea nr. 8/1996 privind dreptul de autor</strong>.
+                Toate materialele grafice, conceptele vizuale, codul sursă, elementele UI/UX și brand-ul "SWING" sunt protejate de dreptul de autor.
               </p>
             </section>
           </div>
@@ -328,7 +464,7 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
               onClick={onClose}
               className="px-6 py-2.5 rounded-xl bg-[#E8FFF2] text-[#075E46] font-black text-xs uppercase tracking-wider hover:bg-white transition-colors ml-auto"
             >
-              Am Înțeles și Accept
+              {t.termsUnderstandBtn}
             </button>
           </div>
         </motion.div>
@@ -338,14 +474,17 @@ function TermsModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
 }
 
 export default function Home() {
+  const [lang, setLang] = useState<"ro" | "en">("ro");
   const [formData, setFormData] = useState({ name: "", email: "", message: "", acceptedTerms: false });
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [termsOpen, setTermsOpen] = useState(false);
 
+  const t = translations[lang];
+
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.acceptedTerms) {
-      alert("Te rugăm să bifezi acordul pentru Termeni și Condiții pentru a trimite mesajul.");
+      alert(t.alertTerms);
       return;
     }
 
@@ -372,24 +511,24 @@ export default function Home() {
   const servicesList = [
     {
       num: "01",
-      title: "Graphic Design & Canva Pro",
-      desc: "Materiale vizuale moderne, pitch deck-uri, bannere promoționale și vizualuri social media concepute pentru a converti.",
+      title: t.serv1Title,
+      desc: t.serv1Desc,
       icon: <Palette size={24} className="text-[#E8FFF2]" />,
       tag: "Design"
     },
     {
       num: "02",
-      title: "Cold Emailing & Outreach",
-      desc: "Campanii strategice de cold email, redactare de script-uri persuasive și infrastructură optimizată pentru rata de livrare.",
+      title: t.serv2Title,
+      desc: t.serv2Desc,
       icon: <Send size={24} className="text-[#E8FFF2]" />,
       tag: "Outreach"
     },
     {
       num: "03",
-      title: "Appointment Setting",
-      desc: "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
+      title: t.serv3Title,
+      desc: t.serv3Desc,
       icon: <CalendarCheck size={24} className="text-[#E8FFF2]" />,
-      tag: "Vânzări"
+      tag: "Sales"
     },
   ];
 
@@ -407,8 +546,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#070A09] text-white selection:bg-[#E8FFF2] selection:text-[#075E46] font-sans antialiased overflow-x-hidden relative">
       <CustomCursor />
-      <FuturisticNavbar />
-      <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} />
+      <FuturisticNavbar lang={lang} setLang={setLang} />
+      <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} lang={lang} />
 
       {/* BACKGROUND SCI-FI MESH & AMBIENT GLOW */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -435,7 +574,7 @@ export default function Home() {
             >
               <Zap size={13} className="text-[#E8FFF2]" />
               <span className="text-[11px] font-mono font-bold tracking-widest text-[#E8FFF2] uppercase">
-                SYSTEM ACTIVE // AVAILABLE FOR PROJECTS
+                {t.systemActive}
               </span>
             </motion.div>
 
@@ -445,9 +584,9 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-[1.08]"
             >
-              Design Vizual High-End &{" "}
+              {t.heroTitlePart1}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E8FFF2] via-emerald-200 to-[#075E46]">
-                Cold Outreach
+                {t.heroTitlePart2}
               </span>
             </motion.h1>
 
@@ -457,7 +596,7 @@ export default function Home() {
               transition={{ delay: 0.15 }}
               className="text-base sm:text-lg text-white/60 max-w-2xl mx-auto font-normal leading-relaxed"
             >
-              Ajut brandurile și companiile să se remarce prin estetică impecabilă și să își crească vânzările prin campanii de outreach bine calibrate.
+              {t.heroSubtitle}
             </motion.p>
           </div>
 
@@ -481,11 +620,11 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="text-3xl font-black text-white">Daniel Moisă</h3>
-                  <p className="text-xs font-mono font-bold text-[#E8FFF2] tracking-widest uppercase">SWING STUDIO</p>
+                  <h3 className="text-3xl font-black text-white">{t.profileName}</h3>
+                  <p className="text-xs font-mono font-bold text-[#E8FFF2] tracking-widest uppercase">{t.profileRole}</p>
                 </div>
                 <p className="text-sm text-white/70 leading-relaxed font-normal">
-                  Pasionat de minimalism, estetică curată și strategie digitală orientată spre rezultate clare.
+                  {t.profileBio}
                 </p>
               </div>
 
@@ -494,7 +633,7 @@ export default function Home() {
                   href="#contact"
                   className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#075E46]/40 hover:bg-[#E8FFF2] text-[#E8FFF2] hover:text-[#075E46] text-xs font-extrabold uppercase tracking-wider transition-all duration-300 border border-[#075E46]"
                 >
-                  <span>Hai să vorbim</span>
+                  <span>{t.talkBtn}</span>
                   <ArrowUpRight size={14} />
                 </a>
               </div>
@@ -505,7 +644,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              data-cursor="Misiune"
+              data-cursor="Mission"
               className="md:col-span-7 bg-gradient-to-b from-[#075E46]/20 to-[#0B0F0D] border border-[#075E46]/50 hover:border-[#E8FFF2]/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-xl"
             >
               <div className="flex items-start justify-between">
@@ -514,7 +653,7 @@ export default function Home() {
                     [TARGET_MISSION]
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-white leading-snug">
-                    Transformă atenția privitorilor în oportunități reale de afaceri.
+                    {t.missionTitle}
                   </h3>
                 </div>
                 <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-[#E8FFF2] hidden sm:block">
@@ -525,15 +664,15 @@ export default function Home() {
               <div className="grid grid-cols-3 gap-4 pt-10">
                 <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
                   <p className="text-xl font-black text-[#E8FFF2]">100%</p>
-                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Atenție Detalii</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">{t.statAttention}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
                   <p className="text-xl font-black text-[#E8FFF2]">Fast</p>
-                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Livrabile Rapide</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">{t.statFast}</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
                   <p className="text-xl font-black text-[#E8FFF2]">B2B</p>
-                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">Focus Rezultate</p>
+                  <p className="text-[9px] font-mono text-white/50 uppercase tracking-wider">{t.statFocus}</p>
                 </div>
               </div>
             </motion.div>
@@ -545,10 +684,10 @@ export default function Home() {
           <div className="flex items-end justify-between border-b border-[#075E46]/30 pb-6">
             <div className="space-y-2">
               <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
-                // 01. SERVICII
+                {t.servicesTagline}
               </span>
               <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-                Cu ce te pot ajuta
+                {t.servicesHeader}
               </h2>
             </div>
           </div>
@@ -561,7 +700,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                data-cursor="Serviciu"
+                data-cursor="Service"
                 className="bg-gradient-to-b from-[#075E46]/15 to-[#070A09] border border-[#075E46]/50 hover:border-[#E8FFF2]/50 rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_15px_30px_rgba(7,94,70,0.25)] relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
@@ -590,10 +729,10 @@ export default function Home() {
         <section id="skills" className="scroll-mt-40 space-y-10">
           <div className="space-y-2 border-b border-[#075E46]/30 pb-6">
             <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
-              // 02. CAPABILITĂȚI
+              {t.skillsTagline}
             </span>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-              Abilități & Stack
+              {t.skillsHeader}
             </h2>
           </div>
 
@@ -620,13 +759,13 @@ export default function Home() {
             <div className="max-w-2xl space-y-8 relative z-10">
               <div className="space-y-3">
                 <span className="text-xs font-mono font-bold text-[#E8FFF2] uppercase tracking-widest">
-                  // 03. TRANSMITE UN MESAJ
+                  {t.contactTagline}
                 </span>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white">
-                  Începe o colaborare
+                  {t.contactHeader}
                 </h2>
                 <p className="text-sm text-white/60 leading-relaxed">
-                  Scrie-mi un mesaj și îți voi răspunde în cel mai scurt timp posibil.
+                  {t.contactSubtitle}
                 </p>
               </div>
 
@@ -634,7 +773,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
                     <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
-                      Nume Complete
+                      {t.fieldName}
                     </label>
                     <div className="relative">
                       <input
@@ -642,7 +781,7 @@ export default function Home() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        placeholder="Numele tău"
+                        placeholder={t.placeholderName}
                         className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12"
                       />
                       <User size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
@@ -651,7 +790,7 @@ export default function Home() {
 
                   <div className="space-y-2">
                     <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
-                      Adresă Email
+                      {t.fieldEmail}
                     </label>
                     <div className="relative">
                       <input
@@ -659,7 +798,7 @@ export default function Home() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="adresa@email.com"
+                        placeholder={t.placeholderEmail}
                         className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12"
                       />
                       <Mail size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
@@ -669,7 +808,7 @@ export default function Home() {
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
-                    Detalii Proiect / Solicitare
+                    {t.fieldMessage}
                   </label>
                   <div className="relative">
                     <textarea
@@ -677,7 +816,7 @@ export default function Home() {
                       rows={4}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Detalii despre proiectul tău..."
+                      placeholder={t.placeholderMessage}
                       className="w-full bg-[#070A09]/90 border border-[#075E46]/60 rounded-2xl px-5 py-3.5 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#E8FFF2] transition-colors pl-12 pt-3.5 resize-none"
                     />
                     <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
@@ -694,13 +833,13 @@ export default function Home() {
                     className="mt-1 w-4 h-4 rounded border-[#075E46] bg-[#070A09] text-[#075E46] focus:ring-0 focus:ring-offset-0 cursor-pointer"
                   />
                   <label htmlFor="terms" className="text-xs text-white/60 leading-normal cursor-pointer select-none">
-                    Sunt de acord cu prelucrarea datelor personale conform GDPR și am citit{" "}
+                    {t.termsCheckbox}
                     <button
                       type="button"
                       onClick={() => setTermsOpen(true)}
                       className="text-[#E8FFF2] underline hover:text-white font-semibold transition-colors"
                     >
-                      Termenii, Condițiile și Cadrul Legal
+                      {t.termsLink}
                     </button>.
                   </label>
                 </div>
@@ -711,10 +850,10 @@ export default function Home() {
                   className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#E8FFF2] hover:bg-white text-[#075E46] font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(232,255,242,0.25)] hover:shadow-[0_0_30px_rgba(232,255,242,0.5)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5"
                 >
                   {formStatus === "submitting" ? (
-                    <span>Se trimite...</span>
+                    <span>{t.sendingBtn}</span>
                   ) : (
                     <>
-                      <span>Trimite Mesajul</span>
+                      <span>{t.sendBtn}</span>
                       <Send size={15} />
                     </>
                   )}
@@ -723,14 +862,14 @@ export default function Home() {
                 {formStatus === "success" && (
                   <div className="flex items-center gap-2.5 text-[#E8FFF2] text-sm font-semibold pt-2">
                     <CheckCircle2 size={18} />
-                    <span>Mesajul a fost trimis cu succes! Îți voi răspunde curând.</span>
+                    <span>{t.successMsg}</span>
                   </div>
                 )}
 
                 {formStatus === "error" && (
                   <div className="flex items-center gap-2.5 text-red-400 text-sm font-semibold pt-2">
                     <AlertCircle size={18} />
-                    <span>A apărut o eroare. Te rog să încerci din nou.</span>
+                    <span>{t.errorMsg}</span>
                   </div>
                 )}
               </form>
@@ -742,7 +881,7 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="border-t border-[#075E46]/30 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/40 font-mono">
-        <p>© {new Date().getFullYear()} SWING (Daniel Moisă). All rights reserved.</p>
+        <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
         <div className="flex flex-wrap items-center justify-center gap-6">
           <button onClick={() => setTermsOpen(true)} className="hover:text-[#E8FFF2] transition-colors">
             Termeni & Condiții Legal
