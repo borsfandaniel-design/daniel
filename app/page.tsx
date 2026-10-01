@@ -32,7 +32,7 @@ const translations = {
     navServices: "Servicii",
     navSkills: "Abilități",
     navContact: "Contact",
-    systemActive: "SISTEM ACTIV // DISPONIBIL PENTRU PROIECTE",
+    systemActive: "SISTEM ACTIV, DISPONIBIL PENTRU PROIECTE",
     heroTitlePart1: "Design Vizual High-End & ",
     heroTitlePart2: "Cold Outreach",
     heroSubtitle:
@@ -46,7 +46,7 @@ const translations = {
     statAttention: "Atenție Detalii",
     statFast: "Livrabile Rapide",
     statFocus: "Focus Rezultate",
-    servicesTagline: "// 01. SERVICII",
+    servicesTagline: " 01. SERVICII",
     servicesHeader: "Cu ce te pot ajuta",
     serv1Title: "Graphic Design & Canva Pro",
     serv1Desc:
@@ -57,9 +57,9 @@ const translations = {
     serv3Title: "Appointment Setting",
     serv3Desc:
       "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
-    skillsTagline: "// 02. CAPABILITATI",
+    skillsTagline: " 02. CAPABILITATI",
     skillsHeader: "Abilități & Stack",
-    contactTagline: "// 03. TRANSMITE UN MESAJ",
+    contactTagline: " 03. TRANSMITE UN MESAJ",
     contactHeader: "Începe o colaborare",
     contactSubtitle: "Scrie-mi un mesaj și îți voi răspunde în cel mai scurt timp posibil.",
     fieldName: "Nume Complet",
@@ -101,7 +101,7 @@ const translations = {
       s7Title: "7. Cold emailing și outreach",
       s7a: "a) Clientul răspunde de legalitatea listelor de contacte furnizate sau aprobate de el și de activitatea sa comercială.",
       s7b: "b) Campaniile respectă legislația aplicabilă (GDPR, Legea 506/2004): mesajele indică expeditorul, motivul contactării și o modalitate simplă de dezabonare, iar cererile de dezabonare se respectă prompt.",
-      s7c: "c) Prestatorul poate refuza sau opri o campanie despre care are motive rezonabile să creadă că încalcă legea, politicile furnizorilor de email sau drepturile terților.",
+      s7c: "c) Prestatorul poate refuza sau opri o campanie despre care are motive rezonabile să credă că încalcă legea, politicile furnizorilor de email sau drepturile terților.",
       s7d: "d) Când prelucrează date în numele clientului, părțile încheie un acord de prelucrare a datelor (DPA) conform art. 28 GDPR.",
       s7e: "e) Prestatorul nu garantează rate de deschidere, de răspuns sau un anumit număr de întâlniri; rezultatele depind de ofertă, piață, listă și mesaj.",
       s8Title: "8. Appointment setting",
@@ -227,52 +227,6 @@ const translations = {
   },
 };
 
-function CustomCursor() {
-  const [mousePos, setMousePos] = useState({ x: 100, y: 100 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [cursorText, setCursorText] = useState("");
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-      const target = e.target as HTMLElement | null;
-      const hoverEl = target?.closest("[data-cursor]");
-      if (hoverEl) {
-        setIsHovered(true);
-        setCursorText(hoverEl.getAttribute("data-cursor") || "");
-      } else {
-        setIsHovered(false);
-        setCursorText("");
-      }
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  return (
-    <>
-      <div
-        className="pointer-events-none fixed inset-0 z-50 transition-opacity duration-500 hidden md:block"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(214, 40, 40, 0.12), transparent 80%)`,
-        }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 z-50 pointer-events-none hidden md:flex items-center justify-center rounded-full bg-[#D62828] text-[#FFF3E0] font-black text-[10px] uppercase tracking-widest shadow-[0_0_20px_rgba(214,40,40,0.4)] border border-[#D62828]"
-        animate={{
-          x: mousePos.x - (isHovered ? 48 : 6),
-          y: mousePos.y - (isHovered ? 18 : 6),
-          width: isHovered ? 96 : 12,
-          height: isHovered ? 36 : 12,
-        }}
-        transition={{ type: "spring", stiffness: 450, damping: 32, mass: 0.5 }}
-      >
-        {isHovered && <span className="px-2 truncate">{cursorText || "Explore"}</span>}
-      </motion.div>
-    </>
-  );
-}
-
 function FuturisticNavbar({
   lang,
   setLang,
@@ -324,7 +278,6 @@ function FuturisticNavbar({
           }`}
         >
           <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
-            {/* CONTAINER LOGO PE WARM CREAM (#FFF3E0) CU BORDURĂ ROȘIE */}
             <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#FFF3E0] border border-[#D62828]/30 shadow-md group-hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
@@ -338,7 +291,6 @@ function FuturisticNavbar({
                   }
                 }}
               />
-              {/* BULINĂ PULSANTĂ WARM CREAM CU CONTUR ROȘU */}
               <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFF3E0] opacity-90"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FFF3E0] border border-[#D62828]/50 shadow-sm"></span>
@@ -379,7 +331,6 @@ function FuturisticNavbar({
           </nav>
 
           <div className="flex items-center gap-2 relative z-10">
-            {/* TOGGLE TRADUCERE */}
             <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 relative shadow-inner">
               <Globe size={13} className="text-[#D62828] ml-1.5 mr-1 hidden sm:block" />
               <button
@@ -497,7 +448,6 @@ function TermsPage({
   return (
     <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] font-sans antialiased py-12 px-4 sm:px-8 relative z-20">
       <div className="max-w-4xl mx-auto space-y-8">
-        {/* Bară de sus: Înapoi & Limba */}
         <div className="flex items-center justify-between">
           <button
             type="button"
@@ -508,7 +458,6 @@ function TermsPage({
             <span>{t.backBtn}</span>
           </button>
 
-          {/* Selector Limba */}
           <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 relative shadow-inner">
             <button
               type="button"
@@ -531,7 +480,6 @@ function TermsPage({
           </div>
         </div>
 
-        {/* Conținutul Termenilor */}
         <div className="bg-[#FCE8D5]/80 border border-[#D62828]/30 rounded-3xl p-6 sm:p-10 shadow-lg space-y-6">
           <div className="flex items-center gap-3 border-b border-[#D62828]/20 pb-6">
             <Scale className="text-[#D62828]" size={32} />
@@ -688,25 +636,19 @@ export default function Home() {
 
   const servicesList = [
     {
-      num: "01",
       title: t.serv1Title,
       desc: t.serv1Desc,
       icon: <Palette size={24} className="text-[#D62828]" />,
-      tag: "Design",
     },
     {
-      num: "02",
       title: t.serv2Title,
       desc: t.serv2Desc,
       icon: <Send size={24} className="text-[#D62828]" />,
-      tag: "Outreach",
     },
     {
-      num: "03",
       title: t.serv3Title,
       desc: t.serv3Desc,
       icon: <CalendarCheck size={24} className="text-[#D62828]" />,
-      tag: "Sales",
     },
   ];
 
@@ -727,7 +669,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] selection:bg-[#D62828] selection:text-[#FFF3E0] font-sans antialiased overflow-x-hidden relative">
-      <CustomCursor />
       <FuturisticNavbar lang={lang} setLang={setLang} />
 
       {/* BACKGROUND MESH & AMBIENT GLOW */}
@@ -785,7 +726,6 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              data-cursor="Swing"
               className="md:col-span-5 bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-sm"
             >
               <div className="space-y-6">
@@ -823,7 +763,6 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              data-cursor="Mission"
               className="md:col-span-7 bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-sm"
             >
               <div className="flex items-start justify-between">
@@ -883,7 +822,6 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                data-cursor="Service"
                 className="bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-500 hover:-translate-y-2 hover:shadow-md relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
@@ -891,9 +829,6 @@ export default function Home() {
                     <div className="w-12 h-12 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                       {service.icon}
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-[#D62828] uppercase tracking-widest bg-[#D62828]/10 px-3 py-1 rounded-full border border-[#D62828]/30">
-                      [{service.num}] {service.tag}
-                    </span>
                   </div>
                   <h3 className="text-xl font-bold text-[#2B0808] group-hover:text-[#D62828] transition-colors">
                     {service.title}
@@ -925,7 +860,6 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.03 }}
-                data-cursor="Skill"
                 className="px-6 py-3.5 rounded-2xl bg-[#FCE8D5] border border-[#D62828]/30 hover:border-[#D62828] hover:bg-[#D62828] hover:text-[#FFF3E0] text-[#2B0808] font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm"
               >
                 {skill}
