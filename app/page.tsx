@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
 import {
   Palette,
@@ -20,11 +19,12 @@ import {
   ShieldCheck,
   Scale,
   Globe,
-  Cpu
+  Cpu,
+  ArrowLeft
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// --- DICȚIONAR PENTRU TRADUCERI (RO / EN) ---
+//--- DICȚIONAR PENTRU TRADUCERI (RO / EN) ---
 const translations = {
   ro: {
     navAbout: "Despre",
@@ -51,7 +51,7 @@ const translations = {
     serv2Desc: "Campanii strategice de cold email, redactare de script-uri persuasive și infrastructură optimizată pentru rata de livrare.",
     serv3Title: "Appointment Setting",
     serv3Desc: "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
-    skillsTagline: "// 02. CAPABILITĂȚI",
+    skillsTagline: "// 02. CAPABILITATI",
     skillsHeader: "Abilități & Stack",
     contactTagline: "// 03. TRANSMITE UN MESAJ",
     contactHeader: "Începe o colaborare",
@@ -62,7 +62,7 @@ const translations = {
     placeholderName: "Numele tău",
     placeholderEmail: "adresa@email.com",
     placeholderMessage: "Detalii despre proiectul tău...",
-    termsCheckbox: "Sunt de acord cu prelucrarea datelor personale conform GDPR și am citit ",
+    termsCheckbox: "Sunt de acord cu prelucrarea datelor personale conform GDPR și am citit",
     termsLink: "Termenii, Condițiile și Cadrul Legal",
     sendBtn: "Trimite Mesajul",
     sendingBtn: "Se trimite...",
@@ -130,7 +130,6 @@ function CustomCursor() {
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePos({ x: e.clientX, y: e.clientY });
-
       const target = e.target as HTMLElement | null;
       const hoverEl = target?.closest("[data-cursor]");
       if (hoverEl) {
@@ -141,7 +140,6 @@ function CustomCursor() {
         setCursorText("");
       }
     };
-
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
@@ -154,7 +152,6 @@ function CustomCursor() {
           background: `radial-gradient(600px circle at ${mousePos.x}px ${mousePos.y}px, rgba(232, 255, 242, 0.05), transparent 80%)`,
         }}
       />
-      
       <motion.div
         className="fixed top-0 left-0 z-50 pointer-events-none hidden md:flex items-center justify-center rounded-full bg-[#E8FFF2] text-[#075E46] font-black text-[10px] uppercase tracking-widest shadow-[0_0_30px_rgba(232,255,242,0.5)] border border-white/50"
         animate={{
@@ -171,7 +168,6 @@ function CustomCursor() {
   );
 }
 
-{/* NAVBAR ULTRA-FUTURISTIC CU TRADUCERE RO / EN */}
 function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "ro" | "en") => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
@@ -181,10 +177,8 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
-
       const sections = ["about", "services", "skills", "contact"];
       const scrollPosition = window.scrollY + 220;
-
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el) {
@@ -197,7 +191,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
         }
       }
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -219,10 +212,8 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
               : "bg-[#0B0F0D]/50 border border-white/10 backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.5)]"
           }`}
         >
-          {/* Futuristic Border Glow */}
-          <div className="absolute -inset-[1px] rounded-full bg-gradient-to-r from-[#075E46]/0 via-[#E8FFF2]/20 to-[#075E46]/0 opacity-50 blur-sm pointer-events-none" />
-
-          {/* BRAND LOGO / IDENTITY */}
+          <div className="absolute inset-[1px] rounded-full bg-gradient-to-r from-[#075E46]/0 via-[#E8FFF2]/20 to-[#075E46]/0 opacity-50 blur-sm pointer-events-none" />
+          
           <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
             <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#075E46]/40 border border-[#E8FFF2]/30 backdrop-blur-xl group-hover:border-[#E8FFF2] transition-colors">
               <img
@@ -241,7 +232,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#E8FFF2]"></span>
               </span>
             </div>
-
             <div className="flex flex-col">
               <span className="font-black tracking-[0.2em] text-xs text-white group-hover:text-[#E8FFF2] transition-colors">
                 SWING
@@ -252,7 +242,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
             </div>
           </a>
 
-          {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-1 relative z-10">
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
@@ -277,9 +266,7 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
             })}
           </nav>
 
-          {/* LANGUAGE SWITCHER + STATUS BADGE */}
           <div className="flex items-center gap-2 relative z-10">
-            {/* CYBER LANGUAGE TOGGLE */}
             <div className="flex items-center bg-[#070A09]/90 border border-[#075E46]/70 rounded-full p-1 relative shadow-inner">
               <Globe size={13} className="text-[#E8FFF2]/70 ml-1.5 mr-1 hidden sm:block" />
               <button
@@ -297,7 +284,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
                 )}
                 <span className="relative z-10">RO</span>
               </button>
-
               <button
                 onClick={() => setLang("en")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors ${
@@ -315,13 +301,11 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
               </button>
             </div>
 
-            {/* STATUS DISPLAY - FUTURISTIC BADGE */}
             <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#075E46]/30 border border-[#075E46]/60 text-[10px] font-mono text-[#E8FFF2] tracking-wider uppercase">
               <Cpu size={12} className="text-[#E8FFF2] animate-pulse" />
               <span>ONLINE</span>
             </div>
 
-            {/* TOGGLE MOBIL */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-full bg-[#075E46]/40 border border-[#075E46]/60 text-white hover:text-[#E8FFF2] transition-colors"
@@ -333,13 +317,12 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
         </div>
       </header>
 
-      {/* MENIU MOBIL OVERLAY */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.98 }}
+            initial={{ opacity: 0, y: 20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.98 }}
+            exit={{ opacity: 0, y: 20, scale: 0.98 }}
             className="fixed inset-0 z-30 bg-[#070A09]/95 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-[#075E46]/50"
           >
             <div className="space-y-6">
@@ -349,7 +332,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
                 </span>
                 <span className="text-[10px] font-mono text-white/40">v2.6</span>
               </div>
-
               <div className="space-y-3">
                 {navLinks.map((link, idx) => (
                   <a
@@ -367,7 +349,6 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
                 ))}
               </div>
             </div>
-
             <div className="space-y-4 pt-6 border-t border-white/10">
               <div className="flex items-center justify-between text-xs text-white/50 font-mono">
                 <span>STATUS: ONLINE</span>
@@ -381,11 +362,109 @@ function FuturisticNavbar({ lang, setLang }: { lang: "ro" | "en"; setLang: (l: "
   );
 }
 
-{/* MODAL TERMENI SI CONDITII */}
+{/* NOUA PAGINĂ DEDICATĂ PENTRU TERMENI ȘI CONDIȚII */}
+function TermsPage({ onBack, lang, setLang }: { onBack: () => void; lang: "ro" | "en"; setLang: (l: "ro" | "en") => void }) {
+  const t = translations[lang];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#070A09] text-white font-sans antialiased py-12 px-4 sm:px-8 relative z-20">
+      <div className="max-w-4xl mx-auto space-y-8">
+        
+        {/* Buton Înapoi */}
+        <button 
+          onClick={onBack} 
+          className="inline-flex items-center gap-2 text-xs font-mono text-[#E8FFF2] bg-[#075E46]/30 border border-[#075E46]/60 px-4 py-2 rounded-full hover:bg-[#075E46]/60 transition-all"
+        >
+          <ArrowLeft size={14} />
+          <span>Înapoi la pagina principală</span>
+        </button>
+
+        {/* Selector Limbă */}
+        <div className="flex justify-end gap-2">
+          <button 
+            onClick={() => setLang("ro")}
+            className={`px-3 py-1 text-xs font-mono rounded-full border ${lang === "ro" ? "bg-[#E8FFF2] text-[#075E46] border-[#E8FFF2]" : "border-white/20 text-white/60"}`}
+          >
+            RO
+          </button>
+          <button 
+            onClick={() => setLang("en")}
+            className={`px-3 py-1 text-xs font-mono rounded-full border ${lang === "en" ? "bg-[#E8FFF2] text-[#075E46] border-[#E8FFF2]" : "border-white/20 text-white/60"}`}
+          >
+            EN
+          </button>
+        </div>
+
+        {/* Conținutul Termenilor și Condițiilor */}
+        <div className="bg-[#0B0F0D] border border-[#075E46] rounded-3xl p-6 sm:p-10 shadow-[0_0_50px_rgba(7,94,70,0.3)] space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#075E46]/40 pb-6">
+            <Scale className="text-[#E8FFF2]" size={32} />
+            <div>
+              <h1 className="text-2xl font-extrabold text-white">
+                {t.termsTitle}
+              </h1>
+              <p className="text-xs font-mono text-[#E8FFF2]/70">SWING Studio / Daniel Moisă</p>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between bg-[#075E46]/20 p-4 rounded-2xl border border-[#075E46]/40 text-xs font-mono">
+            <span className="text-[#E8FFF2] font-semibold flex items-center gap-2">
+              <ShieldCheck size={16} /> Conformitate Legislație RO & UE / GDPR Compliance
+            </span>
+            <span className="text-white/40">2026</span>
+          </div>
+
+          <div className="space-y-6 text-sm text-white/70 leading-relaxed font-normal">
+            <section className="space-y-2">
+              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
+                1. Cadru General și Identificarea Operatorului
+              </h2>
+              <p>
+                Prezentul site este operat de <strong>Daniel Moisă (SWING)</strong>. Utilizarea site-ului, trimiterea de mesaje prin formularul de contact și contractarea serviciilor presupun acceptarea necondiționată a tuturor termenilor descriși în continuare.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
+                2. Serviciile Societății Informaționale (Legea nr. 365/2002)
+              </h2>
+              <p>
+                În conformitate cu <strong>Legea nr. 365/2002 privind comerțul electronic</strong>, conținutul furnizat pe acest site web reprezintă o invitație la negociere B2B și informare comercială generală.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
+                3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679)
+              </h2>
+              <p>
+                Datele trimise prin formular (nume, adresă de email, mesaj) sunt procesate exclusiv în scopul furnizării de răspunsuri solicitărilor dumneavoastră și comunicării comerciale aferente.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
+                4. Dreptul de Autor și Proprietatea Intelectuală
+              </h2>
+              <p>
+                Toate materialele grafice, conceptele vizuale, codul sursă, elementele UI/UX și brand-ul "SWING" sunt protejate de dreptul de autor.
+              </p>
+            </section>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () => void; lang: "ro" | "en" }) {
   if (!isOpen) return null;
   const t = translations[lang];
-
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-2xl">
@@ -410,7 +489,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
               <X size={18} />
             </button>
           </div>
-
           <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-sm text-white/70 leading-relaxed font-normal custom-scrollbar">
             <div className="flex items-center justify-between bg-[#075E46]/20 p-4 rounded-2xl border border-[#075E46]/40 text-xs font-mono">
               <span className="text-[#E8FFF2] font-semibold flex items-center gap-2">
@@ -418,7 +496,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
               </span>
               <span className="text-white/40">2026</span>
             </div>
-
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
                 1. Cadru General și Identificarea Operatorului
@@ -427,7 +504,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
                 Prezentul site este operat de <strong>Daniel Moisă (SWING)</strong>. Utilizarea site-ului, trimiterea de mesaje prin formularul de contact și contractarea serviciilor presupun acceptarea necondiționată a tuturor termenilor descriși în continuare.
               </p>
             </section>
-
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
                 2. Serviciile Societății Informaționale (Legea nr. 365/2002)
@@ -436,7 +512,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
                 În conformitate cu <strong>Legea nr. 365/2002 privind comerțul electronic</strong>, conținutul furnizat pe acest site web reprezintă o invitație la negociere B2B și informare comercială generală.
               </p>
             </section>
-
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
                 3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679)
@@ -445,7 +520,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
                 Datele trimise prin formular (nume, adresă de email, mesaj) sunt procesate exclusiv în scopul furnizării de răspunsuri solicitărilor dumneavoastră și comunicării comerciale aferente.
               </p>
             </section>
-
             <section className="space-y-2">
               <h4 className="text-[#E8FFF2] font-bold text-sm uppercase tracking-wider flex items-center gap-2 font-mono">
                 4. Dreptul de Autor și Proprietatea Intelectuală
@@ -455,7 +529,6 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
               </p>
             </section>
           </div>
-
           <div className="px-6 py-4 border-t border-[#075E46]/30 flex items-center justify-between bg-[#075E46]/10">
             <span className="text-[11px] font-mono text-white/50 hidden sm:inline">
               [CONFIRMATION_REQUIRED]
@@ -472,69 +545,13 @@ function TermsModal({ isOpen, onClose, lang }: { isOpen: boolean; onClose: () =>
     </AnimatePresence>
   );
 }
-// --- COMPONENTĂ PENTRU FORME GEOMETRICE ANIMATE (BACKGROUND) ---
-function FloatingGridBackground() {
-  // Generăm un set fix/memoizat de pătrățele/cuburi cu proprietăți aleatorii
-  const squares = React.useMemo(() => {
-    const items = [];
-    const count = 24; // Numărul de cuburi/forme de pe fundal
 
-    for (let i = 0; i < count; i++) {
-      items.push({
-        id: i,
-        size: Math.floor(Math.random() * 32) + 16, // Dimensiuni între 16px și 48px
-        left: Math.floor(Math.random() * 95),      // Poziție orizontală (%)
-        top: Math.floor(Math.random() * 95),       // Poziție verticală (%)
-        duration: Math.random() * 6 + 5,           // Durată animație (secunde)
-        delay: Math.random() * 4,                  // Delay start
-        distance: Math.random() * 30 + 15,         // Distanța de mișcare (px)
-        opacity: Math.random() * 0.2 + 0.05,       // Transparență fină
-        isFilled: Math.random() > 0.6,             // Unele sunt pline, altele doar contur
-      });
-    }
-    return items;
-  }, []);
-
-  return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-      {/* Pătrățelele/cuburile geometrice ce plutesc subtil */}
-      {squares.map((sq) => (
-        <motion.div
-          key={sq.id}
-          className={`absolute rounded-lg border border-[#075E46]/60 backdrop-blur-[1px] ${
-            sq.isFilled
-              ? "bg-[#075E46]/15 shadow-[0_0_15px_rgba(7,94,70,0.2)]"
-              : "bg-transparent"
-          }`}
-          style={{
-            width: sq.size,
-            height: sq.size,
-            left: `${sq.left}%`,
-            top: `${sq.top}%`,
-          }}
-          initial={{ y: 0, opacity: sq.opacity }}
-          animate={{
-            y: [-sq.distance, sq.distance, -sq.distance],
-            rotate: [0, sq.id % 2 === 0 ? 45 : -45, 0],
-            opacity: [sq.opacity, sq.opacity * 1.8, sq.opacity],
-          }}
-          transition={{
-            duration: sq.duration,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut",
-            delay: sq.delay,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 export default function Home() {
   const [lang, setLang] = useState<"ro" | "en">("ro");
   const [formData, setFormData] = useState({ name: "", email: "", message: "", acceptedTerms: false });
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [termsOpen, setTermsOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState<"home" | "terms">("home");
 
   const t = translations[lang];
 
@@ -544,16 +561,13 @@ export default function Home() {
       alert(t.alertTerms);
       return;
     }
-
     setFormStatus("submitting");
-
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (res.ok) {
         setFormStatus("success");
         setFormData({ name: "", email: "", message: "", acceptedTerms: false });
@@ -600,6 +614,10 @@ export default function Home() {
     "Social Media Branding",
   ];
 
+  if (currentPage === "terms") {
+    return <TermsPage onBack={() => setCurrentPage("home")} lang={lang} setLang={setLang} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#070A09] text-white selection:bg-[#E8FFF2] selection:text-[#075E46] font-sans antialiased overflow-x-hidden relative">
       <CustomCursor />
@@ -608,19 +626,18 @@ export default function Home() {
 
       {/* BACKGROUND SCI-FI MESH & AMBIENT GLOW */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div 
-          className="absolute inset-0 opacity-10" 
+        <div
+          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: `linear-gradient(#075E46 1px, transparent 1px), linear-gradient(to right, #075E46 1px, transparent 1px)`,
             backgroundSize: '60px 60px'
-          }} 
+          }}
         />
         <div className="absolute top-[-15%] left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-[#075E46]/20 blur-[180px] rounded-full" />
         <div className="absolute top-[50%] left-[-10%] w-[500px] h-[500px] bg-[#075E46]/15 blur-[170px] rounded-full" />
       </div>
 
       <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-36 md:space-y-44">
-        <FloatingGridBackground />
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-40 space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
@@ -634,7 +651,6 @@ export default function Home() {
                 {t.systemActive}
               </span>
             </motion.div>
-
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -646,7 +662,6 @@ export default function Home() {
                 {t.heroTitlePart2}
               </span>
             </motion.h1>
-
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -659,7 +674,6 @@ export default function Home() {
 
           {/* BENTO GRID HERO */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
-            
             {/* Card Profile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -675,7 +689,6 @@ export default function Home() {
                   </div>
                   <span className="text-[10px] font-mono text-[#E8FFF2]/60">[PROFILE]</span>
                 </div>
-
                 <div className="space-y-1">
                   <h3 className="text-3xl font-black text-white">{t.profileName}</h3>
                   <p className="text-xs font-mono font-bold text-[#E8FFF2] tracking-widest uppercase">{t.profileRole}</p>
@@ -684,7 +697,6 @@ export default function Home() {
                   {t.profileBio}
                 </p>
               </div>
-
               <div className="pt-8">
                 <a
                   href="#contact"
@@ -717,7 +729,6 @@ export default function Home() {
                   <Target size={26} />
                 </div>
               </div>
-
               <div className="grid grid-cols-3 gap-4 pt-10">
                 <div className="p-4 rounded-2xl bg-[#070A09]/90 border border-[#075E46]/40 text-center space-y-1">
                   <p className="text-xl font-black text-[#E8FFF2]">100%</p>
@@ -748,7 +759,6 @@ export default function Home() {
               </h2>
             </div>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {servicesList.map((service, index) => (
               <motion.div
@@ -769,7 +779,6 @@ export default function Home() {
                       [{service.num}] {service.tag}
                     </span>
                   </div>
-
                   <h3 className="text-xl font-bold text-white group-hover:text-[#E8FFF2] transition-colors">
                     {service.title}
                   </h3>
@@ -792,7 +801,6 @@ export default function Home() {
               {t.skillsHeader}
             </h2>
           </div>
-
           <div className="flex flex-wrap gap-3.5">
             {skillsList.map((skill, index) => (
               <motion.div
@@ -844,7 +852,6 @@ export default function Home() {
                       <User size={18} className="absolute left-4 top-3.5 text-[#E8FFF2]/60" />
                     </div>
                   </div>
-
                   <div className="space-y-2">
                     <label className="text-[10px] font-mono font-bold text-white/70 uppercase tracking-wider">
                       {t.fieldEmail}
@@ -890,14 +897,15 @@ export default function Home() {
                     className="mt-1 w-4 h-4 rounded border-[#075E46] bg-[#070A09] text-[#075E46] focus:ring-0 focus:ring-offset-0 cursor-pointer"
                   />
                   <label htmlFor="terms" className="text-xs text-white/60 leading-normal cursor-pointer select-none">
-                    {t.termsCheckbox}
+                    {t.termsCheckbox}{" "}
                     <button
                       type="button"
-                      onClick={() => setTermsOpen(true)}
+                      onClick={() => setCurrentPage("terms")}
                       className="text-[#E8FFF2] underline hover:text-white font-semibold transition-colors"
                     >
                       {t.termsLink}
-                    </button>.
+                    </button>
+                    .
                   </label>
                 </div>
 
@@ -933,17 +941,16 @@ export default function Home() {
             </div>
           </div>
         </section>
-
       </main>
 
       {/* FOOTER */}
       <footer className="border-t border-[#075E46]/30 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/40 font-mono">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
         <div className="flex flex-wrap items-center justify-center gap-6">
-          <button onClick={() => setTermsOpen(true)} className="hover:text-[#E8FFF2] transition-colors">
+          <button onClick={() => setCurrentPage("terms")} className="hover:text-[#E8FFF2] transition-colors">
             Termeni & Condiții Legal
           </button>
-          <button onClick={() => setTermsOpen(true)} className="hover:text-[#E8FFF2] transition-colors">
+          <button onClick={() => setCurrentPage("terms")} className="hover:text-[#E8FFF2] transition-colors">
             Confidențialitate GDPR
           </button>
           <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="hover:text-[#E8FFF2] transition-colors">
