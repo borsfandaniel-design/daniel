@@ -82,7 +82,7 @@ const translations = {
       subtitle: "SWING Studio / Daniel Moisă — Ultima actualizare: Octombrie 2026",
       compliance: "Conformitate Legislație RO & UE / GDPR Compliance",
       s1Title: "1. Prestatorul",
-      s1Text: "Acest site este operat de SWING (Daniel Moisă, \"Prestatorul\"), email: borsfandanie@gmail.com.",
+      s1Text: "Acest site este operat de SWING (Daniel Moisă, \"Prestatorul\"), email: borsfandaniel@gmail.com.",
       s2Title: "2. Obiectul",
       s2Text:
         "Site-ul prezintă serviciile Prestatorului: design grafic (Canva Pro, pitch deck-uri, bannere, social media), cold emailing și outreach, appointment setting. Conținutul are caracter informativ și nu reprezintă o ofertă fermă. Colaborarea se stabilește printr-o ofertă sau un contract acceptat în scris de ambele părți (inclusiv prin email).",
@@ -182,7 +182,7 @@ const translations = {
       subtitle: "SWING Studio / Daniel Moisă — Last updated: October 2026",
       compliance: "RO & EU Law Compliance / GDPR Compliance",
       s1Title: "1. Service Provider",
-      s1Text: "This website is operated by SWING (Daniel Moisă, \"Provider\"), email: borsfandanie@gmail.com.",
+      s1Text: "This website is operated by SWING (Daniel Moisă, \"Provider\"), email: borsfandaniel@gmail.com.",
       s2Title: "2. Subject Matter",
       s2Text:
         "The website showcases the Provider's services: graphic design (Canva Pro, pitch decks, banners, social media), cold emailing and outreach, appointment setting. Content is informational and does not represent a binding offer. Collaboration is established through an offer or written contract accepted by both parties (including via email).",
