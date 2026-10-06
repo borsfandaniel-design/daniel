@@ -35,7 +35,7 @@ export default function NotFound() {
           {/* FLOATING BADGE 1 */}
           <div className="absolute -top-6 -right-2 sm:-right-8 z-20 bg-[#D62828] text-[#FFF3E0] px-4 py-2 rounded-2xl shadow-xl flex items-center gap-2 text-[11px] font-mono font-bold rotate-3">
             <Radio size={14} className="animate-pulse" />
-            <span>RADAR // NO_SIGNAL</span>
+            <span>RADAR - NO_SIGNAL</span>
           </div>
 
           {/* FLOATING BADGE 2 */}
