@@ -57,7 +57,7 @@ export default function NotFound() {
                 404
               </div>
               <p className="text-[10px] font-mono font-bold text-[#D62828] uppercase tracking-widest pt-2">
-                // LINK BROKEN OR MOVED
+                 LINK BROKEN OR MOVED
               </p>
             </div>
 
