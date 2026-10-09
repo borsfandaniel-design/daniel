@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { authenticateUser } from "./actions";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -14,24 +14,13 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg("");
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const result = await authenticateUser(email, password);
 
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setErrorMsg(error.message);
+    // Dacă credențialele sunt incorecte și nu s-a executat redirect-ul din server
+    if (result && !result.success) {
+      setErrorMsg(result.error || "Autentificare eșuată.");
       setLoading(false);
-      return;
     }
-
-    // Redirecționare forțată după login
-    window.location.href = "/dashboard";
   };
 
   return (
