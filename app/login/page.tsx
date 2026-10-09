@@ -1,41 +1,37 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { createClient } from "@supabase/supabase-js";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
 
-    try {
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-      const data = await res.json();
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-      if (!res.ok) {
-        setErrorMsg(data.error || "Autentificare eșuată.");
-        setLoading(false);
-        return;
-      }
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-      router.push("/dashboard");
-      router.refresh();
-    } catch (err: any) {
-      setErrorMsg(err?.message || "A apărut o problemă de conexiune.");
+    if (error) {
+      setErrorMsg(error.message);
       setLoading(false);
+      return;
     }
+
+    // Redirecționare forțată după login
+    window.location.href = "/dashboard";
   };
 
   return (
