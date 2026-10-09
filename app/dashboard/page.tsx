@@ -1,160 +1,261 @@
 "use client";
 
-import React from "react";
-import {
-  TrendingUp,
-  Users,
-  Send,
-  CalendarCheck,
-  ArrowUpRight,
-  Zap,
-  Activity,
-  Layers,
+import React, { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
+import { 
+  Inbox, 
+  CheckCircle2, 
+  Clock, 
+  Send, 
+  Mail, 
+  Loader2,
+  RefreshCw
 } from "lucide-react";
 
+interface Message {
+  id: string;
+  name: string;
+  email: string;
+  message: string;
+  created_at: string;
+  status: "pending" | "replied";
+  reply_text?: string;
+}
+
 export default function DashboardPage() {
-  const stats = [
-    {
-      title: "Email-uri Trimise",
-      value: "14,280",
-      change: "+12.5%",
-      icon: Send,
-    },
-    {
-      title: "Meeting-uri Programate",
-      value: "48",
-      change: "+18.2%",
-      icon: CalendarCheck,
-    },
-    {
-      title: "Rată de Răspuns",
-      value: "8.4%",
-      change: "+2.1%",
-      icon: TrendingUp,
-    },
-    {
-      title: "Lead-uri Active",
-      value: "312",
-      change: "+5.4%",
-      icon: Users,
-    },
-  ];
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [selectedMsg, setSelectedMsg] = useState<Message | null>(null);
+  const [replyText, setReplyText] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [sending, setSending] = useState(false);
+
+  // Încărcare mesaje din Supabase
+  const loadMessages = async () => {
+    setLoading(true);
+    const { data } = await supabase
+      .from("contact_messages")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (data && data.length > 0) {
+      setMessages(data);
+      if (!selectedMsg) setSelectedMsg(data[0]);
+    } else {
+      // Date demonstrative dacă nu ai mesaje încă
+      const demoData: Message[] = [
+        {
+          id: "1",
+          name: "Alexandru Popa",
+          email: "alex@client.ro",
+          message: "Salut Daniel, aș dori o ofertă pentru un pachet de outreach și appointment setting.",
+          created_at: new Date().toISOString(),
+          status: "pending",
+        },
+      ];
+      setMessages(demoData);
+      setSelectedMsg(demoData[0]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadMessages();
+  }, []);
+
+  // Calculare statistici simple
+  const total = messages.length;
+  const replied = messages.filter((m) => m.status === "replied").length;
+  const pending = total - replied;
+
+  // Trimite răspuns e-mail
+  const handleSendReply = async () => {
+    if (!selectedMsg || !replyText.trim()) return;
+    setSending(true);
+
+    try {
+      // 1. Trimitere e-mail prin Resend API
+      await fetch("/api/send-reply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: selectedMsg.email,
+          subject: `Re: Mesaj SWING - ${selectedMsg.name}`,
+          message: replyText,
+        }),
+      });
+
+      // 2. Salvare status în Supabase
+      await supabase
+        .from("contact_messages")
+        .update({ status: "replied", reply_text: replyText })
+        .eq("id", selectedMsg.id);
+
+      // 3. Update starea interfeței
+      const updated = messages.map((m) =>
+        m.id === selectedMsg.id
+          ? { ...m, status: "replied" as const, reply_text: replyText }
+          : m
+      );
+
+      setMessages(updated);
+      setSelectedMsg({ ...selectedMsg, status: "replied", reply_text: replyText });
+      setReplyText("");
+    } catch (err) {
+      console.error("Eroare la trimiterea răspunsului:", err);
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      {/* Banner Bun Venit */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-[#2B0808] to-[#421010] text-[#FFF3E0] p-6 sm:p-8 overflow-hidden shadow-xl border border-[#D62828]/30">
-        <div className="absolute -right-10 -bottom-10 w-60 h-60 rounded-full bg-[#D62828]/20 blur-3xl pointer-events-none" />
-        <div className="relative z-10 space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D62828]/30 border border-[#D62828]/40 text-[10px] font-mono font-bold tracking-wider uppercase text-[#FFF3E0]">
-            <Zap size={12} className="text-[#D62828]" /> SYSTEM LIVE OVERVIEW
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">
-            Salut, Daniel! SWING OS funcționează la capacitate maximă.
-          </h1>
-          <p className="text-xs sm:text-sm text-[#FFF3E0]/70 max-w-xl">
-            Ai 4 meeting-uri noi confirmate astăzi și o rată de deschidere a email-urilor de peste 62%.
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 space-y-6 text-[#2B0808]">
+      
+      {/* Header Minimalist */}
+      <div className="flex items-center justify-between bg-[#FCE8D5]/80 p-5 rounded-2xl border border-[#D62828]/20">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black">SWING Admin</h1>
+          <p className="text-xs text-[#2B0808]/70">
+            Gestionare mesaje de la clienți și răspunsuri rapide
           </p>
         </div>
+        <button
+          onClick={loadMessages}
+          className="p-2 rounded-xl bg-[#D62828]/10 text-[#D62828] hover:bg-[#D62828]/20 transition-all"
+          title="Reîmprospătează"
+        >
+          <RefreshCw size={18} className={loading ? "animate-spin" : ""} />
+        </button>
       </div>
 
-      {/* Grid Carduri KPI */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, idx) => {
-          const Icon = stat.icon;
-          return (
-            <div
-              key={idx}
-              className="bg-[#FCE8D5]/90 border border-[#D62828]/25 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all backdrop-blur-md relative overflow-hidden group"
-            >
-              <div className="flex items-center justify-between pb-3">
-                <span className="text-xs font-mono font-bold text-[#2B0808]/70 uppercase">
-                  {stat.title}
-                </span>
-                <div className="w-8 h-8 rounded-xl bg-[#FFF3E0] border border-[#D62828]/20 flex items-center justify-center text-[#D62828]">
-                  <Icon size={16} />
-                </div>
-              </div>
-              <div className="flex items-baseline justify-between pt-1">
-                <span className="text-3xl font-black text-[#2B0808]">
-                  {stat.value}
-                </span>
-                <span className="text-xs font-bold text-[#D62828] flex items-center gap-0.5 bg-[#D62828]/10 px-2 py-0.5 rounded-lg">
-                  {stat.change}
-                  <ArrowUpRight size={12} />
-                </span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Secțiunea Centrală: Grafic / Activitate Recentă */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Card Monitorizare Campanii (2 coloane) */}
-        <div className="lg:col-span-2 bg-[#FCE8D5]/90 border border-[#D62828]/25 rounded-3xl p-6 shadow-sm backdrop-blur-md space-y-6">
-          <div className="flex items-center justify-between border-b border-[#D62828]/15 pb-4">
-            <div className="flex items-center gap-2">
-              <Activity size={18} className="text-[#D62828]" />
-              <h2 className="font-bold text-sm text-[#2B0808] uppercase tracking-wider">
-                Performanță Cold Outreach
-              </h2>
-            </div>
-            <span className="text-[10px] font-mono bg-[#FFF3E0] px-3 py-1 rounded-full border border-[#D62828]/20 font-bold text-[#D62828]">
-              LIVE METRICS
-            </span>
+      {/* Doar 3 Numere Importante */}
+      <div className="grid grid-cols-3 gap-3">
+        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/20 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <div className="text-[10px] font-mono font-bold text-[#2B0808]/60 uppercase">Primite</div>
+            <div className="text-2xl font-black">{total}</div>
           </div>
-
-          {/* Vizualizare Simulat-Futuristică de Grafic */}
-          <div className="h-48 w-full bg-[#FFF3E0]/80 rounded-2xl border border-[#D62828]/20 p-4 flex flex-col justify-between relative overflow-hidden">
-            <div className="flex justify-between items-center text-[10px] font-mono text-[#2B0808]/50">
-              <span>OUTREACH VOLUME</span>
-              <span>OCTOBER 2026</span>
-            </div>
-            {/* Linii decorative de rețea */}
-            <div className="flex items-end justify-between h-28 gap-2 pt-4">
-              {[40, 65, 45, 80, 95, 70, 85, 100, 75, 90].map((height, i) => (
-                <div key={i} className="flex-1 bg-[#D62828]/15 rounded-t-lg h-full flex items-end">
-                  <div
-                    className="w-full bg-[#D62828] rounded-t-lg transition-all hover:opacity-80"
-                    style={{ height: `${height}%` }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
+          <Inbox size={20} className="text-[#D62828]" />
         </div>
 
-        {/* Card Feed Activitate Live (1 coloană) */}
-        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/25 rounded-3xl p-6 shadow-sm backdrop-blur-md space-y-4">
-          <div className="flex items-center justify-between border-b border-[#D62828]/15 pb-4">
-            <div className="flex items-center gap-2">
-              <Layers size={18} className="text-[#D62828]" />
-              <h2 className="font-bold text-sm text-[#2B0808] uppercase tracking-wider">
-                Live Feed
-              </h2>
-            </div>
+        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/20 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <div className="text-[10px] font-mono font-bold text-[#2B0808]/60 uppercase">Răspunse</div>
+            <div className="text-2xl font-black text-green-700">{replied}</div>
           </div>
+          <CheckCircle2 size={20} className="text-green-700" />
+        </div>
 
-          <div className="space-y-3">
-            {[
-              { text: "Meeting nou rezervat cu TechCorp", time: "2m ago" },
-              { text: "Campania 'Design Q4' a trimis 500 emailuri", time: "14m ago" },
-              { text: "Lead nou adăugat din LinkedIn", time: "1h ago" },
-              { text: "Răspuns pozitiv primit de la Client X", time: "2h ago" },
-            ].map((item, index) => (
+        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/20 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <div className="text-[10px] font-mono font-bold text-[#2B0808]/60 uppercase">În Așteptare</div>
+            <div className="text-2xl font-black text-[#D62828]">{pending}</div>
+          </div>
+          <Clock size={20} className="text-[#D62828]" />
+        </div>
+      </div>
+
+      {/* Zona Principală: Lista Mesaje + Răspuns */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        {/* Coloana Stânga: Lista de Mesaje */}
+        <div className="lg:col-span-5 space-y-2 max-h-[550px] overflow-y-auto pr-1">
+          {messages.map((msg) => {
+            const isSelected = selectedMsg?.id === msg.id;
+            return (
               <div
-                key={index}
-                className="p-3 rounded-xl bg-[#FFF3E0] border border-[#D62828]/15 flex items-center justify-between text-xs"
+                key={msg.id}
+                onClick={() => setSelectedMsg(msg)}
+                className={`p-4 rounded-2xl cursor-pointer border transition-all ${
+                  isSelected
+                    ? "bg-[#D62828] text-[#FFF3E0] border-[#D62828] shadow-md"
+                    : "bg-[#FCE8D5]/60 hover:bg-[#FCE8D5] border-[#D62828]/15"
+                }`}
               >
-                <span className="font-medium text-[#2B0808]">{item.text}</span>
-                <span className="text-[10px] font-mono text-[#D62828] font-bold">
-                  {item.time}
-                </span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-sm truncate">{msg.name}</span>
+                  <span
+                    className={`text-[9px] px-2 py-0.5 rounded-full font-mono font-bold uppercase ${
+                      msg.status === "replied"
+                        ? isSelected ? "bg-green-300/30 text-green-200" : "bg-green-100 text-green-800"
+                        : isSelected ? "bg-amber-300/30 text-amber-200" : "bg-amber-100 text-amber-800"
+                    }`}
+                  >
+                    {msg.status === "replied" ? "Răspuns" : "Așteaptă"}
+                  </span>
+                </div>
+                <p className={`text-xs line-clamp-2 ${isSelected ? "opacity-90" : "opacity-70"}`}>
+                  {msg.message}
+                </p>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
+
+        {/* Coloana Dreapta: Citire & Răspuns Direct */}
+        <div className="lg:col-span-7 bg-[#FCE8D5]/60 border border-[#D62828]/20 rounded-2xl p-5 flex flex-col justify-between">
+          {selectedMsg ? (
+            <div className="space-y-4">
+              {/* Info Expeditor */}
+              <div className="border-b border-[#D62828]/15 pb-3 flex justify-between items-start">
+                <div>
+                  <h3 className="font-bold text-base">{selectedMsg.name}</h3>
+                  <div className="text-xs opacity-70 flex items-center gap-1 mt-0.5">
+                    <Mail size={12} /> {selectedMsg.email}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mesaj Client */}
+              <div className="bg-[#FFF3E0] p-4 rounded-xl border border-[#D62828]/10 text-xs sm:text-sm leading-relaxed">
+                <div className="text-[10px] font-mono font-bold uppercase opacity-50 mb-1">Mesaj primit:</div>
+                {selectedMsg.message}
+              </div>
+
+              {/* Istoric Răspuns Trimis */}
+              {selectedMsg.reply_text && (
+                <div className="bg-green-600/10 border border-green-600/20 p-3 rounded-xl text-xs space-y-1">
+                  <div className="font-bold text-green-800 flex items-center gap-1">
+                    <CheckCircle2 size={13} /> Răspuns trimis:
+                  </div>
+                  <p className="text-green-900 opacity-90">{selectedMsg.reply_text}</p>
+                </div>
+              )}
+
+              {/* Câmp de Scris Răspuns */}
+              <div className="space-y-2 pt-2">
+                <textarea
+                  rows={3}
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  placeholder={`Scrie un răspuns pentru ${selectedMsg.name}...`}
+                  className="w-full bg-[#FFF3E0] border border-[#D62828]/30 rounded-xl p-3 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#D62828]/50 resize-none"
+                />
+                <button
+                  onClick={handleSendReply}
+                  disabled={sending || !replyText.trim()}
+                  className="px-5 py-2.5 rounded-xl bg-[#D62828] hover:bg-[#2B0808] text-[#FFF3E0] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-40 cursor-pointer"
+                >
+                  {sending ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      <span>Se trimite...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={14} />
+                      <span>Trimite E-mail</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-10 opacity-50 text-xs">
+              Selectează un mesaj din stânga.
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

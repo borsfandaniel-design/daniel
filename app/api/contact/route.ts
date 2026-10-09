@@ -1,45 +1,48 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { createClient } from "@supabase/supabase-js";
+
+// Inițializare Supabase & Resend
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
-    const { name, email, service, message } = await req.json();
+    const { name, email, message } = await req.json();
 
     if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Lipsesc câmpuri obligatorii.' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Toate câmpurile sunt obligatorii." },
+        { status: 400 }
+      );
     }
 
-    // Call to Resend API
-    // Ensure process.env.RESEND_API_KEY is defined in your .env.local file
-    const resendResponse = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: 'Portfolio Contact <onboarding@resend.dev>', // Adjust with your verified domain
-        to: ['borsfandaniel@gmail.com'], // Put your target email here
-        subject: `[Contact Nou] - ${name} (${service})`,
-        html: `
-          <h2>Mesaj nou de pe portofoliu</h2>
-          <p><strong>Nume:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Serviciu:</strong> ${service}</p>
-          <p><strong>Mesaj:</strong></p>
-          <blockquote style="background: #f4f4f4; padding: 10px; border-left: 4px solid #FF5722;">
-            ${message}
-          </blockquote>
-        `,
-      }),
+    // 1. Salvează automat mesajul în baza de date Supabase pentru Dashboard
+    const { error: dbError } = await supabase
+      .from("contact_messages")
+      .insert([{ name, email, message, status: "pending" }]);
+
+    if (dbError) {
+      console.error("Eroare Supabase:", dbError);
+    }
+
+    // 2. Trimite e-mail de notificare prin Resend
+    const resendResponse = await resend.emails.send({
+      from: "SWING <onboarding@resend.dev>",
+      to: [email], // Sau e-mailul tău dacă vrei să primești tu notificarea
+      subject: `Mesaj nou de la ${name}`,
+      text: message,
     });
 
-    if (!resendResponse.ok) {
-      const errorData = await resendResponse.json();
-      return NextResponse.json({ error: errorData }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, message: 'Email trimis cu succes!' });
-  } catch (err) {
-    return NextResponse.json({ error: 'Eroare internă de server.' }, { status: 500 });
+    return NextResponse.json({ success: true, resendResponse });
+  } catch (error) {
+    console.error("Eroare API contact:", error);
+    return NextResponse.json(
+      { error: "A apărut o eroare la trimitere." },
+      { status: 500 }
+    );
   }
 }

@@ -23,9 +23,7 @@ export default function DashboardLayout({
 
   const navItems = [
     { id: "overview", label: "Overview", icon: LayoutDashboard, href: "/dashboard" },
-    { id: "analytics", label: "Analytics", icon: BarChart3, href: "/dashboard/analytics" },
-    { id: "outreach", label: "Outreach & Emails", icon: Send, href: "/dashboard/outreach" },
-    { id: "appointments", label: "Appointments", icon: Users, href: "/dashboard/appointments" },
+
     { id: "settings", label: "Settings", icon: Settings, href: "/dashboard/settings" },
   ];
 

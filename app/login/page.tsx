@@ -1,80 +1,98 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "../lib/supabase";
-import { Lock, ArrowRight, ShieldAlert } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setLoading(true);
+    setErrorMsg("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (error) {
-      setError(error.message);
-    } else {
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(data.error || "Autentificare eșuată.");
+        setLoading(false);
+        return;
+      }
+
+      // Autentificare reuşită -> mergem în dashboard
       router.push("/dashboard");
       router.refresh();
+    } catch (err: any) {
+      setErrorMsg("A apărut o problemă de conexiune.");
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-[#FCE8D5]/90 border border-[#D62828]/30 rounded-3xl p-8 backdrop-blur-xl shadow-xl space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-[#FFF3E0] p-4">
+      <div className="w-full max-w-md bg-[#FFF3E0] border border-[#D62828]/20 shadow-xl rounded-2xl p-8 space-y-6">
         <div className="text-center space-y-2">
-          <div className="w-12 h-12 rounded-2xl bg-[#D62828] text-[#FFF3E0] flex items-center justify-center mx-auto shadow-md">
-            <Lock size={22} />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#D62828] text-white shadow-md mb-2">
+            🔒
           </div>
-          <h1 className="text-2xl font-black">Acces Restricționat</h1>
-          <p className="text-xs text-[#2B0808]/70">Autentifică-te pentru a accesa SWING OS.</p>
+          <h1 className="text-3xl font-bold text-[#2B2D42]">Acces Restricționat</h1>
+          <p className="text-sm text-gray-600">
+            Autentifică-te pentru a accesa SWING OS.
+          </p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold mb-1">Email</label>
+            <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+              Email
+            </label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full bg-[#FFF3E0] border border-[#D62828]/20 rounded-2xl px-4 py-3 text-sm text-[#2B0808] focus:outline-none focus:border-[#D62828]"
+              className="w-full px-4 py-3 bg-blue-50/50 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
+              placeholder="nume@domain.com"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold mb-1">Parolă</label>
+            <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+              Parolă
+            </label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full bg-[#FFF3E0] border border-[#D62828]/20 rounded-2xl px-4 py-3 text-sm text-[#2B0808] focus:outline-none focus:border-[#D62828]"
+              className="w-full px-4 py-3 bg-[#FFF3E0] border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
+              placeholder="••••••••••••"
             />
           </div>
 
-          {error && (
-            <div className="flex items-center gap-2 text-xs text-[#D62828] font-bold">
-              <ShieldAlert size={14} />
-              <span>{error}</span>
+          {errorMsg && (
+            <div className="p-3 bg-red-100 border border-red-300 text-red-700 text-sm rounded-xl text-center">
+              ⚠️ {errorMsg}
             </div>
           )}
 
           <button
             type="submit"
-            className="w-full py-3.5 rounded-2xl bg-[#D62828] text-[#FFF3E0] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#2B0808] transition-all cursor-pointer shadow-md"
+            disabled={loading}
+            className="w-full py-3.5 px-4 bg-[#D62828] hover:bg-[#b52020] text-white font-bold rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2 disabled:opacity-50"
           >
-            <span>Autentificare</span>
-            <ArrowRight size={16} />
+            <span>{loading ? "SE VERIFICĂ..." : "AUTENTIFICARE →"}</span>
           </button>
         </form>
       </div>
