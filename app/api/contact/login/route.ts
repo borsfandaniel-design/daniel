@@ -5,8 +5,15 @@ export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return NextResponse.json(
+        { error: "Lipsesc variabilele de mediu Supabase pe server." },
+        { status: 500 }
+      );
+    }
 
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -22,7 +29,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ user: data.user, session: data.session });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err.message || "A apărut o eroare la autentificare." },
+      { error: err?.message || "Eroare internă de server la autentificare." },
       { status: 500 }
     );
   }

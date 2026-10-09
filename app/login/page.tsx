@@ -30,11 +30,10 @@ export default function LoginPage() {
         return;
       }
 
-      // Autentificare reuşită -> mergem în dashboard
       router.push("/dashboard");
       router.refresh();
     } catch (err: any) {
-      setErrorMsg("A apărut o problemă de conexiune.");
+      setErrorMsg(err?.message || "A apărut o problemă de conexiune.");
       setLoading(false);
     }
   };
