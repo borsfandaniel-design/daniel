@@ -4,20 +4,21 @@ import { useState } from "react";
 import { authenticateUser } from "./actions";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
 
-    const result = await authenticateUser(email, password);
+    const formData = new FormData(e.currentTarget);
+    const result = await authenticateUser(formData);
 
-    // Dacă credențialele sunt incorecte și nu s-a executat redirect-ul din server
-    if (result && !result.success) {
+    if (result.success) {
+      // FORȚEAZĂ REDIRECȚIONAREA BROWSERULUI CĂTRE /dashboard
+      window.location.href = "/dashboard";
+    } else {
       setErrorMsg(result.error || "Autentificare eșuată.");
       setLoading(false);
     }
@@ -36,15 +37,14 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
               Email
             </label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
               required
               className="w-full px-4 py-3 bg-blue-50/50 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
               placeholder="nume@domain.com"
@@ -57,8 +57,7 @@ export default function LoginPage() {
             </label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               required
               className="w-full px-4 py-3 bg-[#FFF3E0] border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
               placeholder="••••••••••••"
