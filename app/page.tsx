@@ -22,6 +22,9 @@ import {
   Globe,
   Cpu,
   ArrowLeft,
+  Ghost,
+  Flame,
+  Moon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -33,6 +36,8 @@ const translations = {
     navSkills: "Abilități",
     navContact: "Contact",
     systemActive: "Disponibil pentru proiecte noi",
+    seasonalTag: "Ediție de Sezon // Octombrie Halloween 🎃",
+    seasonalBadge: "Activ",
     heroTitlePart1: "Design Vizual & ",
     heroTitlePart2: "Cold Outreach B2B",
     heroSubtitle:
@@ -43,9 +48,12 @@ const translations = {
       "Lucrez direct cu fondatori și echipe B2B pentru a le crea pitch deck-uri convingătoare, infrastructură de outreach și pagini web de impact — fără intermediari sau birocrație inutilă.",
     talkBtn: "Hai să discutăm",
     missionTitle: "De la primul contact rece până la discuții calificate de vânzări.",
-    statAttention: "Livrabile Rapide",
-    statFast: "Design Clar",
-    statFocus: "Focus B2B",
+    statAttention: "Zero Ghosting",
+    statAttentionSub: "Comunicare Directă",
+    statFast: "Claritate Totală",
+    statFastSub: "Fără Ambiguitate",
+    statFocus: "Fără Trucuri",
+    statFocusSub: "Rezultate B2B",
     servicesTagline: "Servicii Principale",
     servicesHeader: "Cum te pot ajuta să crești",
     serv1Title: "Graphic Design & Canva Pro",
@@ -62,6 +70,7 @@ const translations = {
     contactTagline: "Contact Direct",
     contactHeader: "Hai să colaborăm",
     contactSubtitle: "Trimite-mi câteva detalii despre proiectul tău și revin în maxim 24 de ore cu o propunere clară.",
+    seasonalPromo: "Promoție Halloween: Audit gratuit de conversie inclus pentru proiectele contractate în Octombrie.",
     fieldName: "Nume Complet",
     fieldEmail: "Adresă Email",
     fieldMessage: "Detalii Proiect / Solicitare",
@@ -133,6 +142,8 @@ const translations = {
     navSkills: "Skills",
     navContact: "Contact",
     systemActive: "Available for new projects",
+    seasonalTag: "Disponibil pentru proiecte noi 🎃",
+    seasonalBadge: "Active",
     heroTitlePart1: "Visual Design & ",
     heroTitlePart2: "B2B Cold Outreach",
     heroSubtitle:
@@ -143,9 +154,12 @@ const translations = {
       "I work directly with founders and B2B teams to build persuasive pitch decks, cold outreach infrastructure, and high-converting web pages — without unnecessary agency overhead.",
     talkBtn: "Let's talk",
     missionTitle: "From the first cold impression to booked sales conversations.",
-    statAttention: "Fast Delivery",
-    statFast: "Clean Design",
-    statFocus: "B2B Focused",
+    statAttention: "Zero Ghosting",
+    statAttentionSub: "Direct Sync",
+    statFast: "Crystal Clear",
+    statFastSub: "No Ambiguity",
+    statFocus: "All Treats, No Tricks",
+    statFocusSub: "Real B2B Results",
     servicesTagline: "Core Services",
     servicesHeader: "How I can help you grow",
     serv1Title: "Graphic Design & Pitch Decks",
@@ -162,6 +176,7 @@ const translations = {
     contactTagline: "Direct Contact",
     contactHeader: "Let's collaborate",
     contactSubtitle: "Send me a few details about your project and I will get back within 24 hours with a clear plan.",
+    seasonalPromo: "Seasonal Promo: Free visual & conversion audit included for all projects started this October.",
     fieldName: "Full Name",
     fieldEmail: "Email Address",
     fieldMessage: "Project Details / Request",
@@ -273,12 +288,12 @@ function FuturisticNavbar({
         <div
           className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
             isScrolled
-              ? "bg-[#FFF3E0]/90 border border-[#D62828]/40 backdrop-blur-2xl shadow-[0_10px_30px_rgba(214,40,40,0.15)]"
-              : "bg-[#FFF3E0]/60 border border-[#D62828]/20 backdrop-blur-md shadow-sm"
+              ? "bg-white/95 border border-orange-500/30 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,107,0,0.08)]"
+              : "bg-white/85 border border-zinc-200/80 backdrop-blur-md shadow-xs"
           }`}
         >
           <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-[#FFF3E0] border border-[#D62828]/30 shadow-md group-hover:scale-105 transition-transform">
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 shadow-xs group-hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
                 alt="Swing Logo"
@@ -292,15 +307,18 @@ function FuturisticNavbar({
                 }}
               />
               <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFF3E0] opacity-90"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FFF3E0] border border-[#D62828]/50 shadow-sm"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-90"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500 border border-white shadow-xs"></span>
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="font-black tracking-[0.2em] text-xs text-[#2B0808] group-hover:text-[#D62828] transition-colors">
-                SWING
-              </span>
-              <span className="text-[8px] text-[#2B0808]/70 tracking-widest uppercase font-mono">
+              <div className="flex items-center gap-1.5">
+                <span className="font-black tracking-[0.2em] text-xs text-zinc-900 group-hover:text-[#FF5400] transition-colors">
+                  SWING
+                </span>
+                <span className="text-[11px]" title="Halloween Edition">🎃</span>
+              </div>
+              <span className="text-[8px] text-zinc-500 tracking-widest uppercase font-mono">
                 DANIEL MOISĂ
               </span>
             </div>
@@ -314,13 +332,13 @@ function FuturisticNavbar({
                   key={link.id}
                   href={link.href}
                   className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
-                    isActive ? "text-[#FFF3E0]" : "text-[#2B0808]/80 hover:text-[#D62828]"
+                    isActive ? "text-white" : "text-zinc-600 hover:text-zinc-900"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="futuristicTab"
-                      className="absolute inset-0 bg-[#D62828] rounded-full shadow-[0_2px_10px_rgba(214,40,40,0.4)]"
+                      className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-[0_2px_12px_rgba(255,84,0,0.35)]"
                       transition={{ type: "spring", stiffness: 450, damping: 35 }}
                     />
                   )}
@@ -331,19 +349,19 @@ function FuturisticNavbar({
           </nav>
 
           <div className="flex items-center gap-2 relative z-10">
-            <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 relative shadow-inner">
-              <Globe size={13} className="text-[#D62828] ml-1.5 mr-1 hidden sm:block" />
+            <div className="flex items-center bg-zinc-100/90 border border-zinc-200 rounded-full p-1 relative shadow-inner">
+              <Globe size={13} className="text-[#FF5400] ml-1.5 mr-1 hidden sm:block" />
               <button
                 type="button"
                 onClick={() => setLang("ro")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "ro" ? "text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                  lang === "ro" ? "text-white" : "text-zinc-600 hover:text-zinc-900"
                 }`}
               >
                 {lang === "ro" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-[#D62828] rounded-full"
+                    className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-xs"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -353,13 +371,13 @@ function FuturisticNavbar({
                 type="button"
                 onClick={() => setLang("en")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "en" ? "text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                  lang === "en" ? "text-white" : "text-zinc-600 hover:text-zinc-900"
                 }`}
               >
                 {lang === "en" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-[#D62828] rounded-full"
+                    className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-xs"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -369,7 +387,7 @@ function FuturisticNavbar({
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full bg-[#D62828] text-[#FFF3E0] transition-colors"
+              className="md:hidden p-2 rounded-full bg-zinc-900 text-white transition-colors"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -384,14 +402,14 @@ function FuturisticNavbar({
             initial={{ opacity: 0, y: 20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            className="fixed inset-0 z-30 bg-[#FFF3E0]/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-[#D62828]/30"
+            className="fixed inset-0 z-30 bg-white/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-zinc-200"
           >
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-[#D62828]/20 pb-4">
-                <span className="text-xs font-bold text-[#2B0808] uppercase tracking-wider">
-                  Meniu Navigare
+              <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
+                <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
+                  Meniu Navigare <span>🎃</span>
                 </span>
-                <span className="text-[10px] font-mono text-[#2B0808]/50">SWING</span>
+                <span className="text-[10px] font-mono text-zinc-500">SWING</span>
               </div>
               <div className="space-y-3">
                 {navLinks.map((link, idx) => (
@@ -399,19 +417,19 @@ function FuturisticNavbar({
                     key={link.id}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-[#FCE8D5] border border-[#D62828]/25 text-base font-bold text-[#2B0808] hover:text-[#D62828] transition-all active:scale-[0.98]"
+                    className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 border border-zinc-200 text-base font-bold text-zinc-900 hover:text-[#FF5400] transition-all active:scale-[0.98]"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-[#D62828]">0{idx + 1}</span>
+                      <span className="text-xs font-mono text-[#FF5400]">0{idx + 1}</span>
                       <span>{link.name}</span>
                     </div>
-                    <ChevronRight size={16} className="text-[#D62828]" />
+                    <ChevronRight size={16} className="text-[#FF5400]" />
                   </a>
                 ))}
               </div>
             </div>
-            <div className="space-y-4 pt-6 border-t border-[#D62828]/20">
-              <div className="flex items-center justify-between text-xs text-[#2B0808]/70 font-mono font-medium">
+            <div className="space-y-4 pt-6 border-t border-zinc-200">
+              <div className="flex items-center justify-between text-xs text-zinc-500 font-mono font-medium">
                 <span>Daniel Moisă</span>
                 <span>SWING STUDIO</span>
               </div>
@@ -441,24 +459,24 @@ function TermsPage({
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] font-sans antialiased py-12 px-4 sm:px-8 relative z-20">
+    <div className="min-h-screen bg-white text-zinc-900 font-sans antialiased py-12 px-4 sm:px-8 relative z-20">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-mono text-[#D62828] bg-[#D62828]/10 border border-[#D62828]/30 px-4 py-2 rounded-full hover:bg-[#D62828] hover:text-[#FFF3E0] transition-all cursor-pointer font-bold"
+            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white transition-all cursor-pointer font-bold"
           >
             <ArrowLeft size={14} />
             <span>{t.backBtn}</span>
           </button>
 
-          <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 relative shadow-inner">
+          <div className="flex items-center bg-zinc-100 border border-zinc-200 rounded-full p-1 relative shadow-inner">
             <button
               type="button"
               onClick={() => setLang("ro")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                lang === "ro" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               RO
@@ -467,7 +485,7 @@ function TermsPage({
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                lang === "en" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               EN
@@ -475,24 +493,24 @@ function TermsPage({
           </div>
         </div>
 
-        <div className="bg-[#FCE8D5]/80 border border-[#D62828]/30 rounded-3xl p-6 sm:p-10 shadow-lg space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#D62828]/20 pb-6">
-            <Scale className="text-[#D62828]" size={32} />
+        <div className="bg-zinc-50 border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+          <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
+            <Scale className="text-[#FF5400]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-[#2B0808]">{t.termsTitle}</h1>
-              <p className="text-xs font-mono text-[#2B0808]/70">{terms.subtitle}</p>
+              <h1 className="text-2xl font-extrabold text-zinc-900">{t.termsTitle}</h1>
+              <p className="text-xs font-mono text-zinc-500">{terms.subtitle}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-[#D62828]/10 p-4 rounded-2xl border border-[#D62828]/20 text-xs font-mono">
-            <span className="text-[#2B0808] font-semibold flex items-center gap-2">
-              <ShieldCheck size={16} className="text-[#D62828]" />
+          <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
+            <span className="text-zinc-900 font-semibold flex items-center gap-2">
+              <ShieldCheck size={16} className="text-[#FF5400]" />
               {terms.compliance}
             </span>
-            <span className="text-[#2B0808]/50">2026</span>
+            <span className="text-zinc-400">2026</span>
           </div>
 
-          <div className="space-y-6 text-sm text-[#2B0808]/80 leading-relaxed font-normal">
+          <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
             <section className="space-y-2">
               <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s1Title}
@@ -664,18 +682,13 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] selection:bg-[#D62828] selection:text-[#FFF3E0] font-sans antialiased overflow-x-hidden relative">
+    <div className="min-h-screen bg-white text-zinc-900 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative">
       <FuturisticNavbar lang={lang} setLang={setLang} />
 
-      {/* BACKGROUND MESH */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div
-          className="absolute inset-0 opacity-[0.10]"
-          style={{
-            backgroundImage: `linear-gradient(#D62828 1px, transparent 1px), linear-gradient(to right, #D62828 1px, transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
+      {/* SUBTLE AMBIENT HALLOWEEN GLOW (NO SQUARES) */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-orange-500/[0.05] via-red-500/[0.02] to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-[40%] -right-32 w-[550px] h-[550px] bg-gradient-to-b from-orange-400/[0.03] to-transparent rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-32 md:space-y-40">
@@ -685,14 +698,16 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FCE8D5] border border-[#D62828]/25 shadow-xs"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-50/90 border border-orange-500/25 shadow-xs"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="flex items-center text-[#FF5400]">
+                <Flame size={13} className="animate-pulse" />
               </span>
-              <span className="text-xs font-semibold tracking-wide text-[#2B0808]/85">
-                {t.systemActive}
+              <span className="text-xs font-semibold tracking-wide text-zinc-900">
+                {t.seasonalTag}
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white font-bold uppercase tracking-wider">
+                {t.seasonalBadge}
               </span>
             </motion.div>
 
@@ -700,17 +715,17 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-[#2B0808] leading-[1.08]"
+              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-900 leading-[1.08]"
             >
               {t.heroTitlePart1}
-              <span className="text-[#D62828]">{t.heroTitlePart2}</span>
+              <span className="bg-gradient-to-r from-[#D62828] to-[#FF5400] bg-clip-text text-transparent">{t.heroTitlePart2}</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-[#2B0808]/75 max-w-2xl mx-auto font-normal leading-relaxed"
+              className="text-base sm:text-lg text-zinc-600 max-w-2xl mx-auto font-normal leading-relaxed"
             >
               {t.heroSubtitle}
             </motion.p>
@@ -723,31 +738,31 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="md:col-span-5 bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm"
+              className="md:col-span-5 bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-xs hover:shadow-[0_10px_35px_rgba(255,107,0,0.06)]"
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/25 flex items-center justify-center p-2 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-zinc-200 flex items-center justify-center p-2 shadow-xs">
                     <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
-                  <span className="text-[11px] font-mono text-[#D62828] font-bold tracking-wider uppercase">
-                    Lead Designer & Outreach
+                  <span className="text-[11px] font-mono text-[#FF5400] font-bold tracking-wider uppercase flex items-center gap-1.5">
+                    <Flame size={12} /> Lead Designer & Outreach
                   </span>
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-3xl font-black text-[#2B0808]">{t.profileName}</h3>
-                  <p className="text-xs font-mono font-bold text-[#D62828] tracking-widest uppercase">
+                  <h3 className="text-3xl font-black text-zinc-900">{t.profileName}</h3>
+                  <p className="text-xs font-mono font-bold text-[#FF5400] tracking-widest uppercase">
                     {t.profileRole}
                   </p>
                 </div>
-                <p className="text-sm text-[#2B0808]/75 leading-relaxed font-normal">
+                <p className="text-sm text-zinc-600 leading-relaxed font-normal">
                   {t.profileBio}
                 </p>
               </div>
               <div className="pt-8">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#D62828] hover:bg-[#2B0808] text-[#FFF3E0] text-xs font-extrabold uppercase tracking-wider transition-all duration-300 shadow-md"
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-gradient-to-r from-[#D62828] to-[#FF5400] hover:from-[#B81F1F] hover:to-[#E04800] text-white text-xs font-extrabold uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
                 >
                   <span>{t.talkBtn}</span>
                   <ArrowUpRight size={14} />
@@ -760,38 +775,44 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="md:col-span-7 bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm"
+              className="md:col-span-7 bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-xs hover:shadow-[0_10px_35px_rgba(255,107,0,0.06)]"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-4 max-w-lg">
-                  <span className="text-[11px] font-mono font-bold text-[#D62828] uppercase tracking-wider bg-[#FFF3E0] px-3.5 py-1.5 rounded-full border border-[#D62828]/20 inline-block">
+                  <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider bg-white px-3.5 py-1.5 rounded-full border border-zinc-200 inline-block shadow-2xs">
                     Obiectiv & Rezultate
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-[#2B0808] leading-snug">
+                  <h3 className="text-2xl sm:text-3xl font-black text-zinc-900 leading-snug">
                     {t.missionTitle}
                   </h3>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/20 text-[#D62828] hidden sm:block">
+                <div className="p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-[#FF5400] hidden sm:block">
                   <Target size={26} />
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 pt-10">
-                <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-lg font-black text-[#D62828]">Direct</p>
-                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
-                    {t.statAttention}
+                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
+                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
+                    <Ghost size={16} className="text-[#FF5400]" /> {t.statAttention}
+                  </p>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                    {t.statAttentionSub}
                   </p>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-lg font-black text-[#D62828]">Claritate</p>
-                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
-                    {t.statFast}
+                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
+                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
+                    <Moon size={15} className="text-orange-500" /> {t.statFast}
+                  </p>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                    {t.statFastSub}
                   </p>
                 </div>
-                <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-lg font-black text-[#D62828]">Parteneriat</p>
-                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
-                    {t.statFocus}
+                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
+                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
+                    <Sparkles size={15} className="text-[#D62828]" /> {t.statFocus}
+                  </p>
+                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                    {t.statFocusSub}
                   </p>
                 </div>
               </div>
@@ -801,12 +822,12 @@ export default function Home() {
 
         {/* SERVICII */}
         <section id="services" className="scroll-mt-40 space-y-12">
-          <div className="flex items-end justify-between border-b border-[#D62828]/25 pb-6">
+          <div className="flex items-end justify-between border-b border-zinc-200 pb-6">
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
+              <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
                 {t.servicesTagline}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#2B0808]">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
                 {t.servicesHeader}
               </h2>
             </div>
@@ -819,18 +840,18 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden"
+                className="bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/50 rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-[0_12px_32px_rgba(255,107,0,0.08)] relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center group-hover:scale-105 transition-transform text-[#FF5400]">
                       {service.icon}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-[#2B0808] group-hover:text-[#D62828] transition-colors">
+                  <h3 className="text-xl font-bold text-zinc-900 group-hover:text-[#FF5400] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-[#2B0808]/75 leading-relaxed font-normal">
+                  <p className="text-sm text-zinc-600 leading-relaxed font-normal">
                     {service.desc}
                   </p>
                 </div>
@@ -841,11 +862,11 @@ export default function Home() {
 
         {/* ABILITATI */}
         <section id="skills" className="scroll-mt-40 space-y-10">
-          <div className="space-y-2 border-b border-[#D62828]/25 pb-6">
-            <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
+          <div className="space-y-2 border-b border-zinc-200 pb-6">
+            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
               {t.skillsTagline}
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#2B0808]">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
               {t.skillsHeader}
             </h2>
           </div>
@@ -857,7 +878,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.03 }}
-                className="px-6 py-3.5 rounded-2xl bg-[#FCE8D5] border border-[#D62828]/30 hover:border-[#D62828] hover:bg-[#D62828] hover:text-[#FFF3E0] text-[#2B0808] font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm"
+                className="px-6 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 hover:border-[#FF5400] hover:bg-gradient-to-r hover:from-[#D62828] hover:to-[#FF5400] hover:text-white text-zinc-900 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xs cursor-default"
               >
                 {skill}
               </motion.div>
@@ -867,24 +888,32 @@ export default function Home() {
 
         {/* CONTACT */}
         <section id="contact" className="scroll-mt-40">
-          <div className="bg-[#FCE8D5]/90 border border-[#D62828]/40 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-lg">
+          <div className="bg-zinc-50/90 border border-zinc-200/90 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-xs">
             <div className="max-w-2xl space-y-8 relative z-10">
               <div className="space-y-3">
-                <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-widest">
+                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest">
                   {t.contactTagline}
                 </span>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#2B0808]">
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
                   {t.contactHeader}
                 </h2>
-                <p className="text-sm text-[#2B0808]/70 leading-relaxed">
+                <p className="text-sm text-zinc-600 leading-relaxed">
                   {t.contactSubtitle}
                 </p>
+
+                {/* PROMOȚIE HALLOWEEN NON-SLOP */}
+                <div className="pt-2">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-orange-50 border border-orange-500/25 text-xs text-orange-950 font-medium">
+                    <span>🎃</span>
+                    <span>{t.seasonalPromo}</span>
+                  </div>
+                </div>
               </div>
 
               <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-[#2B0808]/70 uppercase tracking-wider">
+                    <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
                       {t.fieldName}
                     </label>
                     <div className="relative">
@@ -894,14 +923,14 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.placeholderName}
-                        className="w-full bg-[#FFF3E0] border border-[#D62828]/30 rounded-2xl px-5 py-3.5 text-sm text-[#2B0808] placeholder:text-[#2B0808]/40 focus:outline-none focus:border-[#D62828] transition-colors pl-12"
+                        className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 shadow-2xs"
                       />
-                      <User size={18} className="absolute left-4 top-3.5 text-[#D62828]" />
+                      <User size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-[#2B0808]/70 uppercase tracking-wider">
+                    <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
                       {t.fieldEmail}
                     </label>
                     <div className="relative">
@@ -911,15 +940,15 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.placeholderEmail}
-                        className="w-full bg-[#FFF3E0] border border-[#D62828]/30 rounded-2xl px-5 py-3.5 text-sm text-[#2B0808] placeholder:text-[#2B0808]/40 focus:outline-none focus:border-[#D62828] transition-colors pl-12"
+                        className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 shadow-2xs"
                       />
-                      <Mail size={18} className="absolute left-4 top-3.5 text-[#D62828]" />
+                      <Mail size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-mono font-bold text-[#2B0808]/70 uppercase tracking-wider">
+                  <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
                     {t.fieldMessage}
                   </label>
                   <div className="relative">
@@ -929,9 +958,9 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.placeholderMessage}
-                      className="w-full bg-[#FFF3E0] border border-[#D62828]/30 rounded-2xl px-5 py-3.5 text-sm text-[#2B0808] placeholder:text-[#2B0808]/40 focus:outline-none focus:border-[#D62828] transition-colors pl-12 pt-3.5 resize-none"
+                      className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-2xs"
                     />
-                    <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#D62828]" />
+                    <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                   </div>
                 </div>
 
@@ -945,17 +974,17 @@ export default function Home() {
                     onChange={(e) =>
                       setFormData({ ...formData, acceptedTerms: e.target.checked })
                     }
-                    className="mt-1 w-4 h-4 rounded border-[#D62828] bg-[#FFF3E0] text-[#D62828] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded border-zinc-300 bg-white text-[#FF5400] focus:ring-0 focus:ring-offset-0 cursor-pointer"
                   />
                   <label
                     htmlFor="terms"
-                    className="text-xs text-[#2B0808]/70 leading-normal cursor-pointer select-none"
+                    className="text-xs text-zinc-600 leading-normal cursor-pointer select-none"
                   >
                     {t.termsCheckbox}{" "}
                     <button
                       type="button"
                       onClick={() => setCurrentPage("terms")}
-                      className="text-[#D62828] underline hover:text-[#2B0808] font-bold transition-colors cursor-pointer"
+                      className="text-[#FF5400] underline hover:text-zinc-900 font-bold transition-colors cursor-pointer"
                     >
                       {t.termsLink}
                     </button>
@@ -965,7 +994,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#D62828] hover:bg-[#2B0808] text-[#FFF3E0] font-extrabold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5 cursor-pointer"
+                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-gradient-to-r from-[#D62828] to-[#FF5400] hover:from-[#B81F1F] hover:to-[#E04800] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_4px_18px_rgba(255,84,0,0.25)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5 cursor-pointer"
                 >
                   {formStatus === "submitting" ? (
                     <span>{t.sendingBtn}</span>
@@ -978,8 +1007,8 @@ export default function Home() {
                 </button>
 
                 {formStatus === "success" && (
-                  <div className="flex items-center gap-2.5 text-[#D62828] text-sm font-bold pt-2">
-                    <CheckCircle2 size={18} className="text-[#D62828]" />
+                  <div className="flex items-center gap-2.5 text-emerald-600 text-sm font-bold pt-2">
+                    <CheckCircle2 size={18} className="text-emerald-600" />
                     <span>{t.successMsg}</span>
                   </div>
                 )}
@@ -997,18 +1026,18 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#D62828]/30 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-[#2B0808]/60 font-mono">
+      <footer className="border-t border-zinc-200 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 font-mono">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
         <div className="flex flex-wrap items-center justify-center gap-6 font-bold">
           <button
             onClick={() => setCurrentPage("terms")}
-            className="hover:text-[#D62828] transition-colors cursor-pointer"
+            className="hover:text-[#FF5400] transition-colors cursor-pointer"
           >
             Termeni & Condiții Legal
           </button>
           <button
             onClick={() => setCurrentPage("terms")}
-            className="hover:text-[#D62828] transition-colors cursor-pointer"
+            className="hover:text-[#FF5400] transition-colors cursor-pointer"
           >
             Confidențialitate GDPR
           </button>
@@ -1016,7 +1045,7 @@ export default function Home() {
             href="https://anpc.ro/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#D62828] transition-colors"
+            className="hover:text-[#FF5400] transition-colors"
           >
             ANPC
           </a>
@@ -1024,7 +1053,7 @@ export default function Home() {
             href="https://ec.europa.eu/consumers/odr"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#D62828] transition-colors"
+            className="hover:text-[#FF5400] transition-colors"
           >
             Platforma SOL (UE)
           </a>

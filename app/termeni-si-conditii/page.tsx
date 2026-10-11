@@ -152,25 +152,25 @@ export default function TermsPage() {
   const t = termsContent[lang];
 
   return (
-    <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] font-sans antialiased py-12 px-4 sm:px-8">
+    <div className="min-h-screen bg-white text-zinc-900 font-sans antialiased py-12 px-4 sm:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         
         {/* Buton de întoarcere la pagina principală & Schimbare limbă */}
         <div className="flex items-center justify-between">
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 text-xs font-mono text-[#D62828] bg-[#D62828]/10 border border-[#D62828]/30 px-4 py-2 rounded-full hover:bg-[#D62828] hover:text-[#FFF3E0] transition-all font-bold cursor-pointer"
+            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white transition-all font-bold cursor-pointer"
           >
             <ArrowLeft size={14} />
             <span>{t.backBtn}</span>
           </Link>
 
-          <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 shadow-inner">
+          <div className="flex items-center bg-zinc-100 border border-zinc-200 rounded-full p-1 shadow-inner">
             <button 
               type="button"
               onClick={() => setLang("ro")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                lang === "ro" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               RO
@@ -179,7 +179,7 @@ export default function TermsPage() {
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+                lang === "en" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
               }`}
             >
               EN
@@ -188,25 +188,25 @@ export default function TermsPage() {
         </div>
 
         {/* Conținutul Termenilor și Condițiilor */}
-        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/30 rounded-3xl p-6 sm:p-10 shadow-lg space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#D62828]/20 pb-6">
-            <Scale className="text-[#D62828]" size={32} />
+        <div className="bg-zinc-50 border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+          <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
+            <Scale className="text-[#FF5400]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-[#2B0808]">
+              <h1 className="text-2xl font-extrabold text-zinc-900">
                 {t.termsTitle}
               </h1>
-              <p className="text-xs font-mono text-[#2B0808]/70">{t.subtitle}</p>
+              <p className="text-xs font-mono text-zinc-500">{t.subtitle}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-[#D62828]/10 p-4 rounded-2xl border border-[#D62828]/20 text-xs font-mono">
-            <span className="text-[#2B0808] font-semibold flex items-center gap-2">
-              <ShieldCheck size={16} className="text-[#D62828]" /> {t.compliance}
+          <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
+            <span className="text-zinc-900 font-semibold flex items-center gap-2">
+              <ShieldCheck size={16} className="text-[#FF5400]" /> {t.compliance}
             </span>
-            <span className="text-[#2B0808]/50">2026</span>
+            <span className="text-zinc-400">2026</span>
           </div>
 
-          <div className="space-y-6 text-sm text-[#2B0808]/80 leading-relaxed font-normal">
+          <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
             {t.sections.map((sec) => (
               <section key={sec.title} className="space-y-2">
                 <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
