@@ -367,14 +367,6 @@ function FuturisticNavbar({
               </button>
             </div>
 
-            <a
-              href="#contact"
-              className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D62828] text-[#FFF3E0] hover:bg-[#2B0808] text-[11px] font-bold tracking-wider uppercase transition-all shadow-xs"
-            >
-              <span>{lang === "ro" ? "Hai să vorbim" : "Start Project"}</span>
-              <ArrowUpRight size={13} />
-            </a>
-
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 rounded-full bg-[#D62828] text-[#FFF3E0] transition-colors"
