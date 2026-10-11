@@ -655,6 +655,7 @@ export default function Home() {
   const skillsList = [
     "Canva Pro",
     "Graphic Design",
+    "Web Developing",
     "Cold Outreach",
     "Appointment Setting",
     "Copywriting Persuasiv",
