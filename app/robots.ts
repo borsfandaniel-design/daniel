@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard', '/login'], // Protejăm rutele private de indexarea motoarelor de căutare
+      disallow: ['/dashboard', '/login'],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
   };
