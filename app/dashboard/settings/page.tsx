@@ -39,7 +39,7 @@ export default function SettingsPage() {
               <label className="block font-bold text-[#2B0808] mb-1">Email Notificări</label>
               <input
                 type="email"
-                defaultValue="contact@swing.ro"
+                defaultValue="borsfandaniel@gmail.com"
                 className="w-full bg-[#FFF3E0] border border-[#D62828]/20 rounded-xl px-3.5 py-2.5 font-medium text-[#2B0808] focus:outline-none focus:border-[#D62828]"
               />
             </div>

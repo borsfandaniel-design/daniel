@@ -71,7 +71,35 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Salvare opțională în Supabase pentru istoricul din Dashboard
+    // 2. Salvare imediată în messages.json pentru Dashboard Realtime
+    try {
+      const fs = await import("fs");
+      const path = await import("path");
+      const dataFilePath = path.join(process.cwd(), "data", "messages.json");
+      const newMessage = {
+        id: resendData?.id || (typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
+        name,
+        email,
+        message,
+        created_at: new Date().toISOString(),
+        status: "pending",
+      };
+
+      let currentList: any[] = [];
+      if (fs.existsSync(dataFilePath)) {
+        try {
+          currentList = JSON.parse(fs.readFileSync(dataFilePath, "utf8")) || [];
+        } catch {
+          currentList = [];
+        }
+      }
+      currentList.unshift(newMessage);
+      fs.writeFileSync(dataFilePath, JSON.stringify(currentList, null, 2), "utf8");
+    } catch (saveErr) {
+      console.warn("Eroare salvare messages.json:", saveErr);
+    }
+
+    // 3. Salvare opțională în Supabase dacă este disponibil
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     if (supabaseUrl && supabaseKey) {

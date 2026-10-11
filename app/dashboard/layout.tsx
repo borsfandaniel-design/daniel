@@ -46,16 +46,23 @@ export default function DashboardLayout({
       <aside className="w-64 bg-[#FCE8D5]/80 border-r border-[#D62828]/20 backdrop-blur-xl flex flex-col justify-between p-5 relative z-20 hidden md:flex shrink-0">
         <div className="space-y-8">
           {/* Logo Dashboard */}
-          <Link href="/dashboard" className="flex items-center gap-3 px-2 cursor-pointer">
-            <div className="w-9 h-9 rounded-xl bg-[#D62828] flex items-center justify-center text-[#FFF3E0] shadow-md font-black">
-              S
+          <Link href="/dashboard" className="flex items-center gap-3 px-2 cursor-pointer group">
+            <div className="relative w-10 h-10 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/25 shadow-sm flex items-center justify-center overflow-hidden p-1.5 group-hover:border-[#D62828] group-hover:scale-105 transition-all">
+              <img
+                src="/logo.png"
+                alt="SWING Logo"
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = "none";
+                }}
+              />
             </div>
             <div>
               <h2 className="font-black text-sm tracking-wider text-[#2B0808]">
                 SWING OS
               </h2>
-              <p className="text-[9px] font-mono font-bold text-[#D62828] uppercase">
-                v2.4 // CONTROL CENTER
+              <p className="text-[9px] font-mono font-bold text-[#D62828] uppercase tracking-wider">
+                v2.4  CONTROL CENTER
               </p>
             </div>
           </Link>
@@ -128,32 +135,34 @@ export default function DashboardLayout({
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="w-9 h-9 rounded-xl bg-[#FFF3E0] border border-[#D62828]/20 flex items-center justify-center text-[#2B0808] hover:border-[#D62828] transition-all relative cursor-pointer">
+            {/* Live Telemetry Indicator */}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FFF3E0] border border-[#D62828]/20 shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[10px] font-mono font-bold tracking-wider text-[#2B0808]/80 uppercase hidden sm:inline">
+                LIVE MONITOR
+              </span>
+            </div>
+
+            <button className="w-9 h-9 rounded-xl bg-[#FFF3E0] border border-[#D62828]/20 flex items-center justify-center text-[#2B0808] hover:border-[#D62828] transition-all relative cursor-pointer" title="Notificări">
               <Bell size={16} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-[#D62828] rounded-full" />
             </button>
 
             <div className="h-6 w-[1px] bg-[#D62828]/20" />
 
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-[#2B0808] text-[#FFF3E0] flex items-center justify-center font-bold text-xs">
-                DM
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold leading-none">Daniel Moisă</p>
-                <p className="text-[9px] font-mono text-[#D62828]">ADMINISTRATOR</p>
-              </div>
-            </div>
-
             <button
               onClick={async () => {
                 await logoutUser();
                 window.location.href = "/login";
               }}
-              title="Deconectare"
-              className="p-2 rounded-xl text-[#2B0808]/60 hover:text-[#D62828] hover:bg-[#D62828]/10 transition-all cursor-pointer ml-1"
+              title="Deconectare Admin"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold font-mono uppercase text-[#D62828] hover:bg-[#D62828]/10 border border-transparent hover:border-[#D62828]/20 transition-all cursor-pointer flex items-center gap-1.5"
             >
-              <LogOut size={16} />
+              <LogOut size={14} />
+              <span className="hidden sm:inline">Ieșire</span>
             </button>
           </div>
         </header>

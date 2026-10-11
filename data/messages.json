@@ -1,0 +1,22 @@
+[
+  {
+    "id": "01a12c4b-e258-7ddf-a596-3b10b9bdaf8e",
+    "name": "dsa",
+    "email": "salam@gmail.com",
+    "message": "sak",
+    "created_at": "2026-10-11 18:48:53.237000+00",
+    "status": "replied",
+    "reply_text": "Marcat manual ca rezolvat.",
+    "replied_at": "2026-10-11T19:02:00.665Z"
+  },
+  {
+    "id": "01a12c49-0983-7638-996a-7a82aa27ee67",
+    "name": "Test Client",
+    "email": "client.test@example.com",
+    "message": "Salut Daniel! Acesta este un test pentru noul sistem functional Resend.",
+    "created_at": "2026-10-11 18:45:46.659000+00",
+    "status": "replied",
+    "reply_text": "Marcat manual ca rezolvat.",
+    "replied_at": "2026-10-11T19:02:03.449Z"
+  }
+]
