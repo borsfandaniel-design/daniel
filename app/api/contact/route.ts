@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #FFF3E0; border: 1px solid #D62828; border-radius: 16px; overflow: hidden; padding: 24px; color: #2B0808;">
           <div style="border-bottom: 2px solid #D62828; padding-bottom: 12px; margin-bottom: 20px;">
-            <h2 style="color: #D62828; margin: 0; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">SWING // Mesaj Nou Primit</h2>
+            <h2 style="color: #D62828; margin: 0; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">SWING  Mesaj Nou Primit</h2>
             <p style="margin: 4px 0 0; font-size: 13px; color: #2B0808; opacity: 0.8;">Un client a trimis o solicitare prin formularul de pe site.</p>
           </div>
 
