@@ -39,27 +39,30 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+            <label className="block text-xs font-semibold text-[#2B0808]/80 uppercase mb-1">
               Email
             </label>
             <input
               type="email"
               name="email"
+              defaultValue="borsfandaniel@gmail.com"
+              autoComplete="email"
               required
-              className="w-full px-4 py-3 bg-blue-50/50 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
-              placeholder="nume@domain.com"
+              className="w-full px-4 py-3 bg-[#FFF3E0] border border-[#D62828]/25 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-[#2B0808] font-medium"
+              placeholder="borsfandaniel@gmail.com"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+            <label className="block text-xs font-semibold text-[#2B0808]/80 uppercase mb-1">
               Parolă
             </label>
             <input
               type="password"
               name="password"
+              autoComplete="current-password"
               required
-              className="w-full px-4 py-3 bg-[#FFF3E0] border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-gray-900"
+              className="w-full px-4 py-3 bg-[#FFF3E0] border border-[#D62828]/25 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-[#2B0808] font-medium"
               placeholder="••••••••••••"
             />
           </div>

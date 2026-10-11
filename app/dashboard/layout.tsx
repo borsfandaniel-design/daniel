@@ -12,7 +12,9 @@ import {
   Bell,
   Search,
   ChevronRight,
+  LogOut,
 } from "lucide-react";
+import { logoutUser } from "../login/actions";
 
 export default function DashboardLayout({
   children,
@@ -84,15 +86,28 @@ export default function DashboardLayout({
           </nav>
         </div>
 
-        {/* Status Sistem */}
-        <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 space-y-2">
-          <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#D62828]">
-            <span className="w-2 h-2 rounded-full bg-[#D62828] animate-ping" />
-            <span>SYSTEM ONLINE</span>
+        {/* Status Sistem & Deconectare */}
+        <div className="space-y-3">
+          <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 space-y-2">
+            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-[#D62828]">
+              <span className="w-2 h-2 rounded-full bg-[#D62828] animate-ping" />
+              <span>SYSTEM ONLINE</span>
+            </div>
+            <p className="text-[11px] text-[#2B0808]/70 font-medium">
+              Toate motoarele funcționează optim.
+            </p>
           </div>
-          <p className="text-[11px] text-[#2B0808]/70 font-medium">
-            Toate motoarele funcționează optim.
-          </p>
+
+          <button
+            onClick={async () => {
+              await logoutUser();
+              window.location.href = "/login";
+            }}
+            className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-xs font-bold text-[#D62828] hover:bg-[#D62828]/10 transition-all cursor-pointer"
+          >
+            <LogOut size={15} />
+            <span>Deconectare</span>
+          </button>
         </div>
       </aside>
 
@@ -129,6 +144,17 @@ export default function DashboardLayout({
                 <p className="text-[9px] font-mono text-[#D62828]">ADMINISTRATOR</p>
               </div>
             </div>
+
+            <button
+              onClick={async () => {
+                await logoutUser();
+                window.location.href = "/login";
+              }}
+              title="Deconectare"
+              className="p-2 rounded-xl text-[#2B0808]/60 hover:text-[#D62828] hover:bg-[#D62828]/10 transition-all cursor-pointer ml-1"
+            >
+              <LogOut size={16} />
+            </button>
           </div>
         </header>
 
