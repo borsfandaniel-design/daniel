@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Termeni și Condiții | SWING OS",
-  description: "Citește termenii și condițiile de utilizare a platformei SWING OS.",
+  title: "Termeni și Condiții | SWING",
+  description: "Termenii, condițiile și cadrul legal de colaborare cu SWING (Daniel Moisă).",
 };
 
 export default function TermeniLayout({

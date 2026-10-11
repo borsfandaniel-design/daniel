@@ -4,93 +4,224 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Scale, ShieldCheck, ArrowLeft } from "lucide-react";
 
+const termsContent = {
+  ro: {
+    backBtn: "Înapoi la pagina principală",
+    termsTitle: "TERMENI ȘI CONDIȚII",
+    subtitle: "SWING Studio / Daniel Moisă — Ultima actualizare: Octombrie 2026",
+    compliance: "Conformitate Legislație RO & UE / GDPR Compliance",
+    sections: [
+      {
+        title: "1. Prestatorul",
+        text: "Acest site este operat de SWING (Daniel Moisă, \"Prestatorul\"), email: borsfandaniel@gmail.com.",
+      },
+      {
+        title: "2. Obiectul",
+        text: "Site-ul prezintă serviciile Prestatorului: design grafic (Canva Pro, pitch deck-uri, bannere, social media), cold emailing și outreach, appointment setting. Conținutul are caracter informativ și nu reprezintă o ofertă fermă. Colaborarea se stabilește printr-o ofertă sau un contract acceptat în scris de ambele părți (inclusiv prin email).",
+      },
+      {
+        title: "3. Clienți",
+        text: "Serviciile se adresează în principal persoanelor juridice și profesioniștilor (B2B). Dacă ești consumator, se aplică și dispozițiile legale de protecție a consumatorilor.",
+      },
+      {
+        title: "4. Plată",
+        text: "Tarifele și termenele de plată sunt cele din ofertă. Prestatorul poate cere avans. Întârzierea plății permite suspendarea livrării și aplicarea penalităților prevăzute de lege.",
+      },
+      {
+        title: "5. Livrare și revizii",
+        text: "Termenele sunt cele din ofertă. Reviziile incluse sunt cele menționate în ofertă; cele suplimentare se taxează separat. Întârzierile clientului în furnizarea materialelor sau a feedback-ului prelungesc termenele corespunzător.",
+      },
+      {
+        title: "6. Drepturi de autor",
+        text: "Materialele create rămân proprietatea Prestatorului până la plata integrală. După plata integrală, clientul primește dreptul de a folosi livrabilele finale în scopul convenit. Prestatorul poate prezenta lucrările în portofoliu, dacă nu s-a convenit altfel în scris. Clientul garantează că deține drepturile asupra materialelor furnizate de el. Elementele terțe (fonturi, imagini stock, șabloane) sunt supuse licențelor proprii.",
+      },
+      {
+        title: "7. Cold emailing și outreach",
+        bullets: [
+          "a) Clientul răspunde de legalitatea listelor de contacte furnizate sau aprobate de el și de activitatea sa comercială.",
+          "b) Campaniile respectă legislația aplicabilă (GDPR, Legea 506/2004): mesajele indică expeditorul, motivul contactării și o modalitate simplă de dezabonare, iar cererile de dezabonare se respectă prompt.",
+          "c) Prestatorul poate refuza sau opri o campanie despre care are motive rezonabile să credă că încalcă legea, politicile furnizorilor de email sau drepturile terților.",
+          "d) Când prelucrează date în numele clientului, părțile încheie un acord de prelucrare a datelor (DPA) conform art. 28 GDPR.",
+          "e) Prestatorul nu garantează rate de deschidere, de răspuns sau un anumit număr de întâlniri; rezultatele depind de ofertă, piață, listă și mesaj.",
+        ],
+      },
+      {
+        title: "8. Appointment setting",
+        text: "O întâlnire este \"calificată\" conform criteriilor agreate în ofertă. Prestatorul nu răspunde pentru închiderea vânzării.",
+      },
+      {
+        title: "9. Confidențialitate",
+        text: "Informațiile non-publice primite de la client sunt tratate confidențial și folosite doar pentru executarea colaborării.",
+      },
+      {
+        title: "10. Limitarea răspunderii",
+        text: "În limitele permise de lege, răspunderea Prestatorului este limitată la suma plătită pentru serviciul în cauză și nu include pierderi indirecte (profit nerealizat, oportunități pierdute). Nu se limitează răspunderea pentru fraudă sau culpă gravă.",
+      },
+      {
+        title: "11. Conținutul site-ului",
+        text: "Textele, elementele grafice și designul site-ului sunt protejate de drepturi de autor și nu pot fi copiate fără acord scris.",
+      },
+      {
+        title: "12. Forță majoră",
+        text: "Nicio parte nu răspunde pentru neexecutarea cauzată de forță majoră, cu notificarea celeilalte părți.",
+      },
+      {
+        title: "13. Reclamații și litigii",
+        text: "Reclamațiile se trimit la adresa de email și primesc răspuns în maximum 30 de zile. Consumatorii se pot adresa ANPC (anpc.ro). Litigiile se rezolvă amiabil, iar în caz contrar de instanțele române competente. Se aplică legea română.",
+      },
+      {
+        title: "14. Modificări",
+        text: "Prestatorul poate actualiza acești termeni. Versiunea în vigoare este cea publicată pe site.",
+      },
+    ],
+  },
+  en: {
+    backBtn: "Back to main page",
+    termsTitle: "TERMS AND CONDITIONS",
+    subtitle: "SWING Studio / Daniel Moisă — Last updated: October 2026",
+    compliance: "RO & EU Law Compliance / GDPR Compliance",
+    sections: [
+      {
+        title: "1. Service Provider",
+        text: "This website is operated by SWING (Daniel Moisă, \"Provider\"), email: borsfandaniel@gmail.com.",
+      },
+      {
+        title: "2. Subject Matter",
+        text: "The website showcases the Provider's services: graphic design (Canva Pro, pitch decks, banners, social media), cold emailing and outreach, appointment setting. Content is informational and does not represent a binding offer. Collaboration is established through an offer or written contract accepted by both parties (including via email).",
+      },
+      {
+        title: "3. Clients",
+        text: "Services are primarily aimed at legal entities and professionals (B2B). Consumer protection laws apply if you are an individual consumer.",
+      },
+      {
+        title: "4. Payment",
+        text: "Rates and payment terms are specified in the offer. The Provider may request an advance payment. Delay in payment permits suspension of delivery and application of statutory penalties.",
+      },
+      {
+        title: "5. Delivery & Revisions",
+        text: "Deadlines are as agreed in the offer. Revisions included are specified in the offer; additional ones are charged separately. Client delays in providing materials or feedback extend deadlines accordingly.",
+      },
+      {
+        title: "6. Copyright",
+        text: "Created materials remain Provider property until paid in full. Upon full payment, the client receives rights to use final deliverables for agreed purposes. Provider may showcase work in portfolios unless agreed otherwise in writing. Client guarantees ownership of provided materials. Third-party elements follow their own licenses.",
+      },
+      {
+        title: "7. Cold Emailing & Outreach",
+        bullets: [
+          "a) The client is responsible for the legality of contact lists provided or approved and their commercial activity.",
+          "b) Campaigns comply with applicable laws (GDPR, Law 506/2004): messages identify sender, contact reason, and easy opt-out mechanism.",
+          "c) Provider reserves the right to suspend campaigns that reasonably appear to violate laws or third-party rights.",
+          "d) A Data Processing Agreement (DPA) under Art. 28 GDPR is executed when processing data on behalf of client.",
+          "e) Provider does not guarantee open, response rates, or exact booking numbers; results depend on market factors.",
+        ],
+      },
+      {
+        title: "8. Appointment Setting",
+        text: "A meeting is considered 'qualified' based on criteria defined in the offer. Provider is not responsible for closing sales.",
+      },
+      {
+        title: "9. Confidentiality",
+        text: "Non-public information received from clients is kept strictly confidential and used solely for contract execution.",
+      },
+      {
+        title: "10. Limitation of Liability",
+        text: "To the maximum extent permitted by law, Provider's liability is limited to the amount paid for the specific service.",
+      },
+      {
+        title: "11. Website Content",
+        text: "All text, graphics, and design are protected by copyright and cannot be copied without written consent.",
+      },
+      {
+        title: "12. Force Majeure",
+        text: "Neither party is liable for failure caused by force majeure events upon written notification.",
+      },
+      {
+        title: "13. Disputes & Governing Law",
+        text: "Complaints should be sent via email with response given within 30 days. Romanian law applies.",
+      },
+      {
+        title: "14. Amendments",
+        text: "Provider may update these terms. The active version is always published on this page.",
+      },
+    ],
+  },
+};
+
 export default function TermsPage() {
   const [lang, setLang] = useState<"ro" | "en">("ro");
+  const t = termsContent[lang];
 
   return (
-    <div className="min-h-screen bg-[#070A09] text-white font-sans antialiased py-12 px-4 sm:px-8">
+    <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] font-sans antialiased py-12 px-4 sm:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         
-        {/* Buton de întoarcere la prima pagină */}
-        <Link 
-          href="/" 
-          className="inline-flex items-center gap-2 text-xs font-mono text-[#E8FFF2] bg-[#075E46]/30 border border-[#075E46]/60 px-4 py-2 rounded-full hover:bg-[#075E46]/60 transition-all"
-        >
-          <ArrowLeft size={14} />
-          <span>Înapoi la pagina principală</span>
-        </Link>
+        {/* Buton de întoarcere la pagina principală & Schimbare limbă */}
+        <div className="flex items-center justify-between">
+          <Link 
+            href="/" 
+            className="inline-flex items-center gap-2 text-xs font-mono text-[#D62828] bg-[#D62828]/10 border border-[#D62828]/30 px-4 py-2 rounded-full hover:bg-[#D62828] hover:text-[#FFF3E0] transition-all font-bold cursor-pointer"
+          >
+            <ArrowLeft size={14} />
+            <span>{t.backBtn}</span>
+          </Link>
 
-        {/* Schimbare limbă */}
-        <div className="flex justify-end gap-2">
-          <button 
-            onClick={() => setLang("ro")}
-            className={`px-3 py-1 text-xs font-mono rounded-full border ${lang === "ro" ? "bg-[#E8FFF2] text-[#075E46] border-[#E8FFF2]" : "border-white/20 text-white/60"}`}
-          >
-            RO
-          </button>
-          <button 
-            onClick={() => setLang("en")}
-            className={`px-3 py-1 text-xs font-mono rounded-full border ${lang === "en" ? "bg-[#E8FFF2] text-[#075E46] border-[#E8FFF2]" : "border-white/20 text-white/60"}`}
-          >
-            EN
-          </button>
+          <div className="flex items-center bg-[#FCE8D5] border border-[#D62828]/30 rounded-full p-1 shadow-inner">
+            <button 
+              type="button"
+              onClick={() => setLang("ro")}
+              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                lang === "ro" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+              }`}
+            >
+              RO
+            </button>
+            <button 
+              type="button"
+              onClick={() => setLang("en")}
+              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                lang === "en" ? "bg-[#D62828] text-[#FFF3E0]" : "text-[#2B0808]/70 hover:text-[#2B0808]"
+              }`}
+            >
+              EN
+            </button>
+          </div>
         </div>
 
         {/* Conținutul Termenilor și Condițiilor */}
-        <div className="bg-[#0B0F0D] border border-[#075E46] rounded-3xl p-6 sm:p-10 shadow-[0_0_50px_rgba(7,94,70,0.3)] space-y-6">
-          <div className="flex items-center gap-3 border-b border-[#075E46]/40 pb-6">
-            <Scale className="text-[#E8FFF2]" size={32} />
+        <div className="bg-[#FCE8D5]/90 border border-[#D62828]/30 rounded-3xl p-6 sm:p-10 shadow-lg space-y-6">
+          <div className="flex items-center gap-3 border-b border-[#D62828]/20 pb-6">
+            <Scale className="text-[#D62828]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-white">
-                {lang === "ro" ? "Termeni, Condiții și Cadrul Legal" : "Terms, Conditions & Legal Framework"}
+              <h1 className="text-2xl font-extrabold text-[#2B0808]">
+                {t.termsTitle}
               </h1>
-              <p className="text-xs font-mono text-[#E8FFF2]/70">SWING Studio / Daniel Moisă</p>
+              <p className="text-xs font-mono text-[#2B0808]/70">{t.subtitle}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-[#075E46]/20 p-4 rounded-2xl border border-[#075E46]/40 text-xs font-mono">
-            <span className="text-[#E8FFF2] font-semibold flex items-center gap-2">
-              <ShieldCheck size={16} /> Conformitate Legislație RO & UE / GDPR Compliance
+          <div className="flex items-center justify-between bg-[#D62828]/10 p-4 rounded-2xl border border-[#D62828]/20 text-xs font-mono">
+            <span className="text-[#2B0808] font-semibold flex items-center gap-2">
+              <ShieldCheck size={16} className="text-[#D62828]" /> {t.compliance}
             </span>
-            <span className="text-white/40">2026</span>
+            <span className="text-[#2B0808]/50">2026</span>
           </div>
 
-          <div className="space-y-6 text-sm text-white/70 leading-relaxed font-normal">
-            <section className="space-y-2">
-              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
-                1. Cadru General și Identificarea Operatorului
-              </h2>
-              <p>
-                Prezentul site este operat de <strong>Daniel Moisă (SWING)</strong>. Utilizarea site-ului, trimiterea de mesaje prin formularul de contact și contractarea serviciilor presupun acceptarea necondiționată a tuturor termenilor descriși în continuare.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
-                2. Serviciile Societății Informaționale (Legea nr. 365/2002)
-              </h2>
-              <p>
-                În conformitate cu <strong>Legea nr. 365/2002 privind comerțul electronic</strong>, conținutul furnizat pe acest site web reprezintă o invitație la negociere B2B și informare comercială generală.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
-                3. Protecția Datelor cu Caracter Personal (GDPR UE 2016/679)
-              </h2>
-              <p>
-                Datele trimise prin formular (nume, adresă de email, mesaj) sunt procesate exclusiv în scopul furnizării de răspunsuri solicitărilor dumneavoastră și comunicării comerciale aferente.
-              </p>
-            </section>
-
-            <section className="space-y-2">
-              <h2 className="text-[#E8FFF2] font-bold text-base uppercase tracking-wider font-mono">
-                4. Dreptul de Autor și Proprietatea Intelectuală
-              </h2>
-              <p>
-                Toate materialele grafice, conceptele vizuale, codul sursă, elementele UI/UX și brand-ul "SWING" sunt protejate de dreptul de autor.
-              </p>
-            </section>
+          <div className="space-y-6 text-sm text-[#2B0808]/80 leading-relaxed font-normal">
+            {t.sections.map((sec) => (
+              <section key={sec.title} className="space-y-2">
+                <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+                  {sec.title}
+                </h2>
+                {sec.text && <p>{sec.text}</p>}
+                {sec.bullets && (
+                  <ul className="list-disc pl-5 space-y-1">
+                    {sec.bullets.map((b, idx) => (
+                      <li key={idx}>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
           </div>
         </div>
 
