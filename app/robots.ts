@@ -4,11 +4,17 @@ export default function robots(): MetadataRoute.Robots {
   const baseUrl = 'https://www.swing7.me';
 
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/dashboard', '/login'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/dashboard', '/login'],
+      },
+      {
+        userAgent: ['SlopDetect', 'slop-detect', 'slopdetect', 'AISlopBot', 'SlopDetector'],
+        disallow: '/',
+      },
+    ],
     sitemap: `${baseUrl}/sitemap.xml`,
   };
 }

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Daniel Moisa | Portofoliu Web",
-  description: "Bine ai venit pe site-ul meu! Aici găsești o selecție a celor mai recente proiecte și idei la care am lucrat. Acest spațiu este dedicat prezentării viziunii mele, atenției la detalii și standardelor de calitate pe care le aplic în tot ceea ce creez.",
+  title: "SWING | Daniel Moisă — Graphic Design, Cold Outreach & Web",
+  description: "Servicii de Graphic Design, campanii de Cold Outreach și Dezvoltare Web pentru afaceri B2B.",
 };
 
 export default function RootLayout({

@@ -32,42 +32,42 @@ const translations = {
     navServices: "Servicii",
     navSkills: "Abilități",
     navContact: "Contact",
-    systemActive: "SISTEM ACTIV, DISPONIBIL PENTRU PROIECTE",
-    heroTitlePart1: "Design Vizual High-End & ",
-    heroTitlePart2: "Cold Outreach",
+    systemActive: "Disponibil pentru proiecte noi",
+    heroTitlePart1: "Design Vizual & ",
+    heroTitlePart2: "Cold Outreach B2B",
     heroSubtitle:
-      "Ajut brandurile și companiile să se remarce prin estetică impecabilă și să își crească vânzările prin campanii de outreach bine calibrate.",
+      "Construiesc materiale vizuale clare, campanii directe de email și site-uri rapide care transformă contactele în discuții reale de vânzări.",
     profileName: "Daniel Moisă",
     profileRole: "SWING STUDIO",
     profileBio:
-      "Pasionat de minimalism, estetică curată și strategie digitală orientată spre rezultate clare.",
-    talkBtn: "Hai să vorbim",
-    missionTitle: "Transformă atenţia privitorilor în oportunități reale de afaceri.",
-    statAttention: "Atenție Detalii",
-    statFast: "Livrabile Rapide",
-    statFocus: "Focus Rezultate",
-    servicesTagline: " 01. SERVICII",
-    servicesHeader: "Cu ce te pot ajuta",
+      "Lucrez direct cu fondatori și echipe B2B pentru a le crea pitch deck-uri convingătoare, infrastructură de outreach și pagini web de impact — fără intermediari sau birocrație inutilă.",
+    talkBtn: "Hai să discutăm",
+    missionTitle: "De la primul contact rece până la discuții calificate de vânzări.",
+    statAttention: "Livrabile Rapide",
+    statFast: "Design Clar",
+    statFocus: "Focus B2B",
+    servicesTagline: "Servicii Principale",
+    servicesHeader: "Cum te pot ajuta să crești",
     serv1Title: "Graphic Design & Canva Pro",
     serv1Desc:
-      "Materiale vizuale moderne, pitch deck-uri, bannere promoționale și vizualuri social media concepute pentru a converti.",
-    serv2Title: "Cold Emailing & Outreach",
+      "Pitch deck-uri pentru investitori, prezentări comerciale, materiale promoționale și vizualuri gândite să inspire încredere imediată.",
+    serv2Title: "Cold Outreach & Emailing",
     serv2Desc:
-      "Campanii strategice de cold email, redactare de script-uri persuasive și infrastructură optimizată pentru rata de livrare.",
-    serv3Title: "Appointment Setting",
+      "Configurare tehnică a inbox-urilor, încălzire de domenii, scripturi personalizate și livrabilitate maximă către decidenți.",
+    serv3Title: "Web Development & Calificări",
     serv3Desc:
-      "Transformarea lead-urilor reci în întâlniri de afaceri calificate direct în calendarul tău.",
-    skillsTagline: " 02. CAPABILITATI",
-    skillsHeader: "Abilități & Stack",
-    contactTagline: " 03. TRANSMITE UN MESAJ",
-    contactHeader: "Începe o colaborare",
-    contactSubtitle: "Scrie-mi un mesaj și îți voi răspunde în cel mai scurt timp posibil.",
+      "Site-uri moderne de prezentare, pagini de vânzare optimizate pentru conversie și lead-uri calificate aduse direct în calendar.",
+    skillsTagline: "Capabilități & Stack",
+    skillsHeader: "Abilități & Tehnologii",
+    contactTagline: "Contact Direct",
+    contactHeader: "Hai să colaborăm",
+    contactSubtitle: "Trimite-mi câteva detalii despre proiectul tău și revin în maxim 24 de ore cu o propunere clară.",
     fieldName: "Nume Complet",
     fieldEmail: "Adresă Email",
     fieldMessage: "Detalii Proiect / Solicitare",
     placeholderName: "Numele tău",
     placeholderEmail: "adresa@email.com",
-    placeholderMessage: "Detalii despre proiectul tău...",
+    placeholderMessage: "Descrie pe scurt ce ai dori să realizăm împreună...",
     termsCheckbox: "Sunt de acord cu prelucrarea datelor personale conform GDPR şi am citit",
     termsLink: "Termenii, Condițiile și Cadrul Legal",
     sendBtn: "Trimite Mesajul",
@@ -132,42 +132,42 @@ const translations = {
     navServices: "Services",
     navSkills: "Skills",
     navContact: "Contact",
-    systemActive: "SYSTEM ACTIVE // AVAILABLE FOR PROJECTS",
-    heroTitlePart1: "High-End Visual Design & ",
-    heroTitlePart2: "Cold Outreach",
+    systemActive: "Available for new projects",
+    heroTitlePart1: "Visual Design & ",
+    heroTitlePart2: "B2B Cold Outreach",
     heroSubtitle:
-      "I help brands and companies stand out with clean aesthetics and boost their sales with well-calibrated outreach campaigns.",
+      "Crafting high-impact visuals, targeted outbound email campaigns, and fast landing pages that turn prospects into sales conversations.",
     profileName: "Daniel Moisă",
     profileRole: "SWING STUDIO",
     profileBio:
-      "Passionate about minimalism, clean aesthetics, and digital strategy focused on clear results.",
+      "I work directly with founders and B2B teams to build persuasive pitch decks, cold outreach infrastructure, and high-converting web pages — without unnecessary agency overhead.",
     talkBtn: "Let's talk",
-    missionTitle: "Turn viewer attention into real business opportunities.",
-    statAttention: "Detail Focus",
-    statFast: "Fast Delivery",
-    statFocus: "Results Driven",
-    servicesTagline: "// 01. SERVICES",
-    servicesHeader: "How I can help you",
-    serv1Title: "Graphic Design & Canva Pro",
+    missionTitle: "From the first cold impression to booked sales conversations.",
+    statAttention: "Fast Delivery",
+    statFast: "Clean Design",
+    statFocus: "B2B Focused",
+    servicesTagline: "Core Services",
+    servicesHeader: "How I can help you grow",
+    serv1Title: "Graphic Design & Pitch Decks",
     serv1Desc:
-      "Modern visual materials, pitch decks, promotional banners, and social media visuals crafted to convert.",
-    serv2Title: "Cold Emailing & Outreach",
+      "Sales presentations, investor pitch decks, brand collaterals, and visuals designed to build immediate trust.",
+    serv2Title: "Cold Outreach & Email Campaigns",
     serv2Desc:
-      "Strategic cold email campaigns, persuasive scriptwriting, and deliverability-optimized infrastructure.",
-    serv3Title: "Appointment Setting",
+      "Technical setup, inbox warmups, tailored copywriting, and maximum deliverability targeting decision-makers.",
+    serv3Title: "Web Development & Qualification",
     serv3Desc:
-      "Converting cold leads into qualified business meetings booked directly into your calendar.",
-    skillsTagline: "// 02. CAPABILITIES",
+      "High-speed modern websites, conversion-optimized landing pages, and qualified leads booked straight to your calendar.",
+    skillsTagline: "Capabilities",
     skillsHeader: "Skills & Tech Stack",
-    contactTagline: "// 03. SEND A MESSAGE",
-    contactHeader: "Start a project",
-    contactSubtitle: "Drop me a message and I will get back to you as soon as possible.",
+    contactTagline: "Direct Contact",
+    contactHeader: "Let's collaborate",
+    contactSubtitle: "Send me a few details about your project and I will get back within 24 hours with a clear plan.",
     fieldName: "Full Name",
     fieldEmail: "Email Address",
     fieldMessage: "Project Details / Request",
     placeholderName: "Your name",
     placeholderEmail: "address@email.com",
-    placeholderMessage: "Details about your project...",
+    placeholderMessage: "Tell me briefly about what you want to build...",
     termsCheckbox: "I agree to personal data processing under GDPR and I have read the ",
     termsLink: "Terms, Conditions & Legal Framework",
     sendBtn: "Send Message",
@@ -367,10 +367,13 @@ function FuturisticNavbar({
               </button>
             </div>
 
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D62828]/10 border border-[#D62828]/30 text-[10px] font-mono text-[#D62828] tracking-wider uppercase font-bold">
-              <Cpu size={12} className="text-[#D62828] animate-pulse" />
-              <span>ONLINE</span>
-            </div>
+            <a
+              href="#contact"
+              className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D62828] text-[#FFF3E0] hover:bg-[#2B0808] text-[11px] font-bold tracking-wider uppercase transition-all shadow-xs"
+            >
+              <span>{lang === "ro" ? "Hai să vorbim" : "Start Project"}</span>
+              <ArrowUpRight size={13} />
+            </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -393,10 +396,10 @@ function FuturisticNavbar({
           >
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-[#D62828]/20 pb-4">
-                <span className="text-[10px] font-mono text-[#D62828] font-bold tracking-widest uppercase bg-[#D62828]/10 px-3 py-1 rounded-full border border-[#D62828]/30">
-                  SYSTEM // NAVIGATION
+                <span className="text-xs font-bold text-[#2B0808] uppercase tracking-wider">
+                  Meniu Navigare
                 </span>
-                <span className="text-[10px] font-mono text-[#2B0808]/50">v2.6</span>
+                <span className="text-[10px] font-mono text-[#2B0808]/50">SWING</span>
               </div>
               <div className="space-y-3">
                 {navLinks.map((link, idx) => (
@@ -404,7 +407,7 @@ function FuturisticNavbar({
                     key={link.id}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-[#FCE8D5] border border-[#D62828]/30 text-base font-bold text-[#2B0808] hover:text-[#D62828] transition-all active:scale-[0.98]"
+                    className="flex items-center justify-between p-4 rounded-2xl bg-[#FCE8D5] border border-[#D62828]/25 text-base font-bold text-[#2B0808] hover:text-[#D62828] transition-all active:scale-[0.98]"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xs font-mono text-[#D62828]">0{idx + 1}</span>
@@ -416,8 +419,8 @@ function FuturisticNavbar({
               </div>
             </div>
             <div className="space-y-4 pt-6 border-t border-[#D62828]/20">
-              <div className="flex items-center justify-between text-xs text-[#2B0808]/60 font-mono">
-                <span>STATUS: ONLINE</span>
+              <div className="flex items-center justify-between text-xs text-[#2B0808]/70 font-mono font-medium">
+                <span>Daniel Moisă</span>
                 <span>SWING STUDIO</span>
               </div>
             </div>
@@ -672,30 +675,31 @@ export default function Home() {
     <div className="min-h-screen bg-[#FFF3E0] text-[#2B0808] selection:bg-[#D62828] selection:text-[#FFF3E0] font-sans antialiased overflow-x-hidden relative">
       <FuturisticNavbar lang={lang} setLang={setLang} />
 
-      {/* BACKGROUND MESH & AMBIENT GLOW */}
+      {/* BACKGROUND MESH */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
-          className="absolute inset-0 opacity-[0.15]"
+          className="absolute inset-0 opacity-[0.10]"
           style={{
             backgroundImage: `linear-gradient(#D62828 1px, transparent 1px), linear-gradient(to right, #D62828 1px, transparent 1px)`,
             backgroundSize: "60px 60px",
           }}
         />
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-[#D62828]/10 blur-[150px] rounded-full" />
-        <div className="absolute top-[40%] left-[-10%] w-[450px] h-[450px] bg-[#D62828]/10 blur-[150px] rounded-full" />
       </div>
 
-      <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-36 md:space-y-44">
+      <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-32 md:space-y-40">
         {/* HERO SECTION */}
         <section id="about" className="scroll-mt-40 space-y-12">
           <div className="text-center space-y-6 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#D62828]/10 border border-[#D62828]/30 backdrop-blur-xl shadow-sm"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#FCE8D5] border border-[#D62828]/25 shadow-xs"
             >
-              <Zap size={13} className="text-[#D62828]" />
-              <span className="text-[11px] font-mono font-bold tracking-widest text-[#D62828] uppercase">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-semibold tracking-wide text-[#2B0808]/85">
                 {t.systemActive}
               </span>
             </motion.div>
@@ -714,28 +718,28 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-[#2B0808]/70 max-w-2xl mx-auto font-normal leading-relaxed"
+              className="text-base sm:text-lg text-[#2B0808]/75 max-w-2xl mx-auto font-normal leading-relaxed"
             >
               {t.heroSubtitle}
             </motion.p>
           </div>
 
-          {/* BENTO GRID HERO */}
+          {/* CARDS OVERVIEW */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
             {/* Card Profile */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="md:col-span-5 bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-sm"
+              className="md:col-span-5 bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm"
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/30 flex items-center justify-center text-[#D62828]">
-                    <Sparkles size={22} className="text-[#D62828]" />
+                  <div className="w-12 h-12 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/25 flex items-center justify-center p-2 shadow-xs">
+                    <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
-                  <span className="text-[10px] font-mono text-[#2B0808]/50 font-bold">
-                    [PROFILE]
+                  <span className="text-[11px] font-mono text-[#D62828] font-bold tracking-wider uppercase">
+                    Lead Designer & Outreach
                   </span>
                 </div>
                 <div className="space-y-1">
@@ -744,7 +748,7 @@ export default function Home() {
                     {t.profileRole}
                   </p>
                 </div>
-                <p className="text-sm text-[#2B0808]/70 leading-relaxed font-normal">
+                <p className="text-sm text-[#2B0808]/75 leading-relaxed font-normal">
                   {t.profileBio}
                 </p>
               </div>
@@ -764,12 +768,12 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="md:col-span-7 bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-500 shadow-sm"
+              className="md:col-span-7 bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-4 max-w-lg">
-                  <span className="text-[10px] font-mono font-bold text-[#D62828] uppercase tracking-widest bg-[#D62828]/10 px-3.5 py-1.5 rounded-full border border-[#D62828]/30 inline-block">
-                    [TARGET_MISSION]
+                  <span className="text-[11px] font-mono font-bold text-[#D62828] uppercase tracking-wider bg-[#FFF3E0] px-3.5 py-1.5 rounded-full border border-[#D62828]/20 inline-block">
+                    Obiectiv & Rezultate
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-black text-[#2B0808] leading-snug">
                     {t.missionTitle}
@@ -781,20 +785,20 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-3 gap-4 pt-10">
                 <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-xl font-black text-[#D62828]">100%</p>
-                  <p className="text-[9px] font-mono text-[#2B0808]/60 uppercase tracking-wider font-bold">
+                  <p className="text-lg font-black text-[#D62828]">Direct</p>
+                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
                     {t.statAttention}
                   </p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-xl font-black text-[#D62828]">Fast</p>
-                  <p className="text-[9px] font-mono text-[#2B0808]/60 uppercase tracking-wider font-bold">
+                  <p className="text-lg font-black text-[#D62828]">Claritate</p>
+                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
                     {t.statFast}
                   </p>
                 </div>
                 <div className="p-4 rounded-2xl bg-[#FFF3E0] border border-[#D62828]/20 text-center space-y-1">
-                  <p className="text-xl font-black text-[#D62828]">B2B</p>
-                  <p className="text-[9px] font-mono text-[#2B0808]/60 uppercase tracking-wider font-bold">
+                  <p className="text-lg font-black text-[#D62828]">Parteneriat</p>
+                  <p className="text-[10px] text-[#2B0808]/70 uppercase tracking-wider font-bold">
                     {t.statFocus}
                   </p>
                 </div>
@@ -805,9 +809,9 @@ export default function Home() {
 
         {/* SERVICII */}
         <section id="services" className="scroll-mt-40 space-y-12">
-          <div className="flex items-end justify-between border-b border-[#D62828]/30 pb-6">
+          <div className="flex items-end justify-between border-b border-[#D62828]/25 pb-6">
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-widest">
+              <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
                 {t.servicesTagline}
               </span>
               <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#2B0808]">
@@ -823,18 +827,18 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-[#FCE8D5]/90 border border-[#D62828]/30 hover:border-[#D62828] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-500 hover:-translate-y-2 hover:shadow-md relative overflow-hidden"
+                className="bg-[#FCE8D5]/90 border border-[#D62828]/25 hover:border-[#D62828] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 rounded-2xl bg-[#D62828]/10 border border-[#D62828]/20 flex items-center justify-center group-hover:scale-105 transition-transform">
                       {service.icon}
                     </div>
                   </div>
                   <h3 className="text-xl font-bold text-[#2B0808] group-hover:text-[#D62828] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-[#2B0808]/70 leading-relaxed font-normal">
+                  <p className="text-sm text-[#2B0808]/75 leading-relaxed font-normal">
                     {service.desc}
                   </p>
                 </div>
@@ -845,8 +849,8 @@ export default function Home() {
 
         {/* ABILITATI */}
         <section id="skills" className="scroll-mt-40 space-y-10">
-          <div className="space-y-2 border-b border-[#D62828]/30 pb-6">
-            <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-widest">
+          <div className="space-y-2 border-b border-[#D62828]/25 pb-6">
+            <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
               {t.skillsTagline}
             </span>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-[#2B0808]">
