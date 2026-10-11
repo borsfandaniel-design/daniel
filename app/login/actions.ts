@@ -7,7 +7,7 @@ export async function authenticateUser(formData: FormData) {
   const password = (formData.get("password") as string)?.trim();
 
   const validEmail = (process.env.ADMIN_EMAIL || "borsfandaniel@gmail.com").trim().toLowerCase();
-  const validPassword = process.env.ADMIN_PASSWORD;
+  const validPassword = process.env.ADMIN_PASSWORD || "anto123nonplay";
 
   if (!email) {
     return { success: false, error: "Te rugăm să introduci adresa de email." };
@@ -17,9 +17,9 @@ export async function authenticateUser(formData: FormData) {
     return { success: false, error: "Email-ul introdus nu este autorizat." };
   }
 
-  // Dacă este configurat ADMIN_PASSWORD în .env.local, îl verificăm
-  if (validPassword && password !== validPassword) {
-    return { success: false, error: "Parola introdusă este incorectă." };
+  // Verificare strictă parolă
+  if (!password || password !== validPassword) {
+    return { success: false, error: "Parolă incorectă." };
   }
 
   // Setează cookie-ul de sesiune

@@ -45,11 +45,10 @@ export default function LoginPage() {
             <input
               type="email"
               name="email"
-              defaultValue="borsfandaniel@gmail.com"
               autoComplete="email"
               required
               className="w-full px-4 py-3 bg-[#FFF3E0] border border-[#D62828]/25 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#D62828] text-[#2B0808] font-medium"
-              placeholder="borsfandaniel@gmail.com"
+              placeholder="nume@domain.com"
             />
           </div>
 
