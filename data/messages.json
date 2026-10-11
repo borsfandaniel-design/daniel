@@ -1,5 +1,93 @@
 [
   {
+    "id": "01a0cace-9633-72f9-9ac4-d2091fde7257",
+    "name": "salam",
+    "email": "",
+    "message": "> buna",
+    "created_at": "2026-09-22 20:28:51.817000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0cae7-1e93-7658-b08c-661485b40dc8",
+    "name": "petru",
+    "email": "",
+    "message": "> salut. test automatizare mail",
+    "created_at": "2026-09-22 20:55:39.566000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0cc50-9af8-75ac-8757-819ec5980741",
+    "name": "AntonioSatyr",
+    "email": "",
+    "message": "> Ba lasa prostiile si chat gpt Apucate serios de invatat daca vrei sa faci asta.",
+    "created_at": "2026-09-23 03:30:29.927000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0cc6a-79e8-77d0-b99b-96ab6deaf875",
+    "name": "Sugi pl dani",
+    "email": "",
+    "message": "> Dani care suge",
+    "created_at": "2026-09-23 03:58:45.395000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0d2e1-ff12-7ae0-8298-999805289558",
+    "name": "Silviu",
+    "email": "",
+    "message": "> Când mai băgăm un tenis?",
+    "created_at": "2026-09-24 10:07:01.573000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0e950-5fa3-7db6-bd6f-708c0106903f",
+    "name": "salam",
+    "email": "",
+    "message": "> salam",
+    "created_at": "2026-09-28 18:39:14.004000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0e992-d0b0-7157-a955-18ddb51eb5c7",
+    "name": "test mesaj",
+    "email": "",
+    "message": "> vezi daca primesti....",
+    "created_at": "2026-09-28 19:51:48.312000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a0e99a-a745-74e4-8e17-2a11fa1853af",
+    "name": "salam",
+    "email": "",
+    "message": "> sa",
+    "created_at": "2026-09-28 20:00:22.306000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a115bb-ba2b-7dcb-8c14-edb1f3655e7a",
+    "name": "Dani",
+    "email": "",
+    "message": "> Te iubesc",
+    "created_at": "2026-10-07 09:39:47.032000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a11d0d-419c-7332-95b7-d928be94b59d",
+    "name": "Andrei",
+    "email": "",
+    "message": "> Sugi pl",
+    "created_at": "2026-10-08 19:46:10.609000+00",
+    "status": "pending"
+  },
+  {
+    "id": "01a12c5c-bcd6-7606-9c34-4c9db5934a5b",
+    "name": "daniel",
+    "email": "danielcoxic1234@gmail.com",
+    "message": "sal",
+    "created_at": "2026-10-11 19:07:17.769000+00",
+    "status": "pending"
+  },
+  {
     "id": "01a12c4b-e258-7ddf-a596-3b10b9bdaf8e",
     "name": "dsa",
     "email": "salam@gmail.com",

@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 import fs from "fs";
 import path from "path";
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 const dataFilePath = path.join(process.cwd(), "data", "messages.json");
 
 interface Message {
@@ -40,10 +42,78 @@ function saveStoredMessages(messages: Message[]): void {
   }
 }
 
-// GET: Returnează toate mesajele în timp real (cele mai noi primele)
+// Sincronizează automat direct din Resend API pentru a garanta că toate email-urile apar în dashboard
+async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
+  try {
+    const listRes = await resend.emails.list();
+    const emails = listRes.data?.data || [];
+
+    // Căutăm email-urile de contact trimise către Daniel
+    const contactEmails = emails.filter(
+      (e) => e.subject && (e.subject.includes("[SWING]") || e.subject.includes("[Contact Nou]"))
+    );
+
+    let hasNew = false;
+    for (const item of contactEmails) {
+      const exists = localMessages.some((m) => m.id === item.id);
+      if (!exists) {
+        let name = "Client Nou";
+        if (item.subject) {
+          const matchSwing = item.subject.match(/\[SWING\] Mesaj nou de la (.+)/i);
+          const matchContact = item.subject.match(/\[Contact Nou\] - ([^(]+)/i);
+          if (matchSwing && matchSwing[1]) {
+            name = matchSwing[1].trim();
+          } else if (matchContact && matchContact[1]) {
+            name = matchContact[1].trim();
+          }
+        }
+
+        const email = (item.reply_to && item.reply_to[0]) || "";
+
+        let messageText = "Mesaj recepționat prin formularul de contact.";
+        try {
+          const detail = await resend.emails.get(item.id);
+          if (detail.data?.text) {
+            const textParts = detail.data.text.split("Mesaj:\n");
+            if (textParts.length > 1) {
+              messageText = textParts[1].split("\n\n---")[0].trim();
+            } else {
+              messageText = detail.data.text.trim();
+            }
+          }
+        } catch {
+          // păstrează textul fallback
+        }
+
+        localMessages.unshift({
+          id: item.id,
+          name,
+          email,
+          message: messageText,
+          created_at: item.created_at,
+          status: "pending",
+        });
+        hasNew = true;
+      }
+    }
+
+    if (hasNew) {
+      saveStoredMessages(localMessages);
+    }
+  } catch (syncErr) {
+    console.error("Eroare la sincronizarea automată din Resend:", syncErr);
+  }
+
+  return localMessages;
+}
+
+// GET: Sincronizează din Resend și returnează toate mesajele în timp real (cele mai noi primele)
 export async function GET() {
   try {
-    const messages = getStoredMessages();
+    let messages = getStoredMessages();
+    messages = await syncFromResend(messages);
+
+    // Ordonăm descrescător după dată
     messages.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     return NextResponse.json({ success: true, messages });
   } catch (err: any) {
@@ -108,4 +178,3 @@ export async function DELETE(req: Request) {
     );
   }
 }
-
