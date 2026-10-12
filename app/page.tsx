@@ -36,7 +36,7 @@ const translations = {
     navSkills: "Abilități",
     navContact: "Contact",
     systemActive: "Disponibil pentru proiecte noi",
-    seasonalTag: "Ediție de Sezon // Octombrie Halloween 🎃",
+    seasonalTag: "Disponibil pentru proiecte noi.",
     seasonalBadge: "Activ",
     heroTitlePart1: "Design Vizual & ",
     heroTitlePart2: "Cold Outreach B2B",
@@ -45,18 +45,24 @@ const translations = {
     profileName: "Daniel Moisă",
     profileRole: "SWING STUDIO",
     profileBio:
-      "Lucrez direct cu fondatori și echipe B2B pentru a le crea pitch deck-uri convingătoare, infrastructură de outreach și pagini web de impact — fără intermediari sau birocrație inutilă.",
+      "Lucrez direct cu fondatori și echipe B2B pentru a le crea pitch deck-uri convingătoare, infrastructură de outreach și pagini web de impact - fără intermediari sau birocrație inutilă.",
     talkBtn: "Hai să discutăm",
     missionTitle: "De la primul contact rece până la discuții calificate de vânzări.",
     statAttention: "Zero Ghosting",
     statAttentionSub: "Comunicare Directă",
+    statAttentionDesc:
+      "Comunicare garantată și transparentă: răspund rapid la mesaje, ofer update-uri la fiecare etapă și nu las niciun proiect sau discuție în aer. Fără mesaje ignorate, fără timp pierdut.",
     statFast: "Claritate Totală",
     statFastSub: "Fără Ambiguitate",
-    statFocus: "Fără Trucuri",
-    statFocusSub: "Rezultate B2B",
-    servicesTagline: "Servicii Principale",
+    statFastDesc:
+      "Proces deschis și predictibil: știi din prima clipă exact ce livrabile primești, calendarul ferm de lucru și costul agreat. Fără costuri ascunse, fără termeni tehnici complicați.",
+    statFocus: "Rezultate B2B",
+    statFocusSub: "Fără Trucuri",
+    statFocusDesc:
+      "Impact comercial măsurabil: materiale vizuale și pitch deck-uri care inspiră autoritate, mesaje directe către factori de decizie și discuții calificate de vânzări, nu vanity metrics.",
+    servicesTagline: "Servicii",
     servicesHeader: "Cum te pot ajuta să crești",
-    serv1Title: "Graphic Design & Canva Pro",
+    serv1Title: "Graphic Design & Pitch Decks",
     serv1Desc:
       "Pitch deck-uri pentru investitori, prezentări comerciale, materiale promoționale și vizualuri gândite să inspire încredere imediată.",
     serv2Title: "Cold Outreach & Emailing",
@@ -65,12 +71,12 @@ const translations = {
     serv3Title: "Web Development & Calificări",
     serv3Desc:
       "Site-uri moderne de prezentare, pagini de vânzare optimizate pentru conversie și lead-uri calificate aduse direct în calendar.",
-    skillsTagline: "Capabilități & Stack",
-    skillsHeader: "Abilități & Tehnologii",
+    skillsTagline: "Competențe",
+    skillsHeader: "Abilități & Unelte",
     contactTagline: "Contact Direct",
     contactHeader: "Hai să colaborăm",
     contactSubtitle: "Trimite-mi câteva detalii despre proiectul tău și revin în maxim 24 de ore cu o propunere clară.",
-    seasonalPromo: "Promoție Halloween: Audit gratuit de conversie inclus pentru proiectele contractate în Octombrie.",
+    contactNote: "Răspuns garantat în 24 de ore. Vorbești direct cu Daniel Moisă, fără intermediari.",
     fieldName: "Nume Complet",
     fieldEmail: "Adresă Email",
     fieldMessage: "Detalii Proiect / Solicitare",
@@ -142,7 +148,7 @@ const translations = {
     navSkills: "Skills",
     navContact: "Contact",
     systemActive: "Available for new projects",
-    seasonalTag: "Disponibil pentru proiecte noi 🎃",
+    seasonalTag: "SWING STUDIO  DANIEL MOISĂ",
     seasonalBadge: "Active",
     heroTitlePart1: "Visual Design & ",
     heroTitlePart2: "B2B Cold Outreach",
@@ -156,11 +162,17 @@ const translations = {
     missionTitle: "From the first cold impression to booked sales conversations.",
     statAttention: "Zero Ghosting",
     statAttentionSub: "Direct Sync",
+    statAttentionDesc:
+      "Guaranteed transparent communication: fast responses, proactive progress reports, and zero radio silence. You never have to chase for updates or wonder where things stand.",
     statFast: "Crystal Clear",
     statFastSub: "No Ambiguity",
-    statFocus: "All Treats, No Tricks",
-    statFocusSub: "Real B2B Results",
-    servicesTagline: "Core Services",
+    statFastDesc:
+      "Predictable and honest workflow: you know upfront the exact deliverables, agreed milestones, firm deadlines, and fixed pricing. No hidden fees or confusing jargon.",
+    statFocus: "Real B2B Results",
+    statFocusSub: "All Treats, No Tricks",
+    statFocusDesc:
+      "Measurable commercial impact: persuasive sales decks, high-deliverability outreach, and booked meetings with qualified decision-makers, not empty vanity metrics.",
+    servicesTagline: "Services",
     servicesHeader: "How I can help you grow",
     serv1Title: "Graphic Design & Pitch Decks",
     serv1Desc:
@@ -171,12 +183,12 @@ const translations = {
     serv3Title: "Web Development & Qualification",
     serv3Desc:
       "High-speed modern websites, conversion-optimized landing pages, and qualified leads booked straight to your calendar.",
-    skillsTagline: "Capabilities",
-    skillsHeader: "Skills & Tech Stack",
+    skillsTagline: "Competencies",
+    skillsHeader: "Skills & Stack",
     contactTagline: "Direct Contact",
     contactHeader: "Let's collaborate",
     contactSubtitle: "Send me a few details about your project and I will get back within 24 hours with a clear plan.",
-    seasonalPromo: "Seasonal Promo: Free visual & conversion audit included for all projects started this October.",
+    contactNote: "Guaranteed reply within 24 hours. You talk directly with Daniel Moisă, without middlemen.",
     fieldName: "Full Name",
     fieldEmail: "Email Address",
     fieldMessage: "Project Details / Request",
@@ -288,12 +300,12 @@ function FuturisticNavbar({
         <div
           className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
             isScrolled
-              ? "bg-white/95 border border-orange-500/30 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,107,0,0.08)]"
-              : "bg-white/85 border border-zinc-200/80 backdrop-blur-md shadow-xs"
+              ? "bg-white/95 border border-[#FF5400]/40 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,84,0,0.12)]"
+              : "bg-white/90 border border-zinc-200 backdrop-blur-md shadow-xs"
           }`}
         >
           <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white border border-zinc-200 shadow-xs group-hover:scale-105 transition-transform">
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#FF5400]/30 shadow-xs group-hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
                 alt="Swing Logo"
@@ -302,23 +314,20 @@ function FuturisticNavbar({
                   e.currentTarget.style.display = "none";
                   if (e.currentTarget.parentElement) {
                     e.currentTarget.parentElement.innerHTML =
-                      '<span class="text-[#D62828] font-black text-sm tracking-tighter">S</span>';
+                      '<span class="text-[#FF5400] font-black text-sm tracking-tighter">S</span>';
                   }
                 }}
               />
               <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-90"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-orange-500 border border-white shadow-xs"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF5400] border border-white shadow-xs"></span>
               </span>
             </div>
             <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-black tracking-[0.2em] text-xs text-zinc-900 group-hover:text-[#FF5400] transition-colors">
-                  SWING
-                </span>
-                <span className="text-[11px]" title="Halloween Edition">🎃</span>
-              </div>
-              <span className="text-[8px] text-zinc-500 tracking-widest uppercase font-mono">
+              <span className="font-black tracking-[0.2em] text-xs text-zinc-950 group-hover:text-[#FF5400] transition-colors">
+                SWING
+              </span>
+              <span className="text-[8px] text-[#FF5400] font-bold tracking-widest uppercase font-mono">
                 DANIEL MOISĂ
               </span>
             </div>
@@ -332,13 +341,13 @@ function FuturisticNavbar({
                   key={link.id}
                   href={link.href}
                   className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
-                    isActive ? "text-white" : "text-zinc-600 hover:text-zinc-900"
+                    isActive ? "text-white" : "text-zinc-600 hover:text-[#FF5400]"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="futuristicTab"
-                      className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-[0_2px_12px_rgba(255,84,0,0.35)]"
+                      className="absolute inset-0 bg-[#FF5400] rounded-full shadow-[0_2px_12px_rgba(255,84,0,0.35)]"
                       transition={{ type: "spring", stiffness: 450, damping: 35 }}
                     />
                   )}
@@ -349,19 +358,19 @@ function FuturisticNavbar({
           </nav>
 
           <div className="flex items-center gap-2 relative z-10">
-            <div className="flex items-center bg-zinc-100/90 border border-zinc-200 rounded-full p-1 relative shadow-inner">
+            <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 relative shadow-xs">
               <Globe size={13} className="text-[#FF5400] ml-1.5 mr-1 hidden sm:block" />
               <button
                 type="button"
                 onClick={() => setLang("ro")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "ro" ? "text-white" : "text-zinc-600 hover:text-zinc-900"
+                  lang === "ro" ? "text-white" : "text-zinc-600 hover:text-zinc-950"
                 }`}
               >
                 {lang === "ro" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-xs"
+                    className="absolute inset-0 bg-[#FF5400] rounded-full shadow-xs"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -371,13 +380,13 @@ function FuturisticNavbar({
                 type="button"
                 onClick={() => setLang("en")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "en" ? "text-white" : "text-zinc-600 hover:text-zinc-900"
+                  lang === "en" ? "text-white" : "text-zinc-600 hover:text-zinc-950"
                 }`}
               >
                 {lang === "en" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#D62828] to-[#FF5400] rounded-full shadow-xs"
+                    className="absolute inset-0 bg-[#FF5400] rounded-full shadow-xs"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -387,7 +396,7 @@ function FuturisticNavbar({
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full bg-zinc-900 text-white transition-colors"
+              className="md:hidden p-2 rounded-full bg-[#FF5400] text-white transition-colors"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -402,14 +411,14 @@ function FuturisticNavbar({
             initial={{ opacity: 0, y: 20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            className="fixed inset-0 z-30 bg-white/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-zinc-200"
+            className="fixed inset-0 z-30 bg-white/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-orange-500/20"
           >
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
-                <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider flex items-center gap-1.5">
-                  Meniu Navigare <span>🎃</span>
+                <span className="text-xs font-bold text-zinc-950 uppercase tracking-wider">
+                  Meniu Navigare
                 </span>
-                <span className="text-[10px] font-mono text-zinc-500">SWING</span>
+                <span className="text-[10px] font-mono text-[#FF5400] font-bold">SWING STUDIO</span>
               </div>
               <div className="space-y-3">
                 {navLinks.map((link, idx) => (
@@ -417,7 +426,7 @@ function FuturisticNavbar({
                     key={link.id}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-zinc-50 border border-zinc-200 text-base font-bold text-zinc-900 hover:text-[#FF5400] transition-all active:scale-[0.98]"
+                    className="flex items-center justify-between p-4 rounded-2xl bg-white border border-zinc-200 text-base font-bold text-zinc-950 hover:border-[#FF5400] hover:text-[#FF5400] transition-all active:scale-[0.98] shadow-xs"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xs font-mono text-[#FF5400]">0{idx + 1}</span>
@@ -430,7 +439,7 @@ function FuturisticNavbar({
             </div>
             <div className="space-y-4 pt-6 border-t border-zinc-200">
               <div className="flex items-center justify-between text-xs text-zinc-500 font-mono font-medium">
-                <span>Daniel Moisă</span>
+                <span className="text-[#FF5400] font-bold">Daniel Moisă</span>
                 <span>SWING STUDIO</span>
               </div>
             </div>
@@ -471,12 +480,12 @@ function TermsPage({
             <span>{t.backBtn}</span>
           </button>
 
-          <div className="flex items-center bg-zinc-100 border border-zinc-200 rounded-full p-1 relative shadow-inner">
+          <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 relative shadow-xs">
             <button
               type="button"
               onClick={() => setLang("ro")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
+                lang === "ro" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
               }`}
             >
               RO
@@ -485,7 +494,7 @@ function TermsPage({
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
+                lang === "en" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
               }`}
             >
               EN
@@ -493,17 +502,17 @@ function TermsPage({
           </div>
         </div>
 
-        <div className="bg-zinc-50 border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+        <div className="bg-white border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
           <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
             <Scale className="text-[#FF5400]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-zinc-900">{t.termsTitle}</h1>
+              <h1 className="text-2xl font-extrabold text-zinc-950">{t.termsTitle}</h1>
               <p className="text-xs font-mono text-zinc-500">{terms.subtitle}</p>
             </div>
           </div>
 
           <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
-            <span className="text-zinc-900 font-semibold flex items-center gap-2">
+            <span className="text-zinc-950 font-semibold flex items-center gap-2">
               <ShieldCheck size={16} className="text-[#FF5400]" />
               {terms.compliance}
             </span>
@@ -512,43 +521,43 @@ function TermsPage({
 
           <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s1Title}
               </h2>
               <p>{terms.s1Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s2Title}
               </h2>
               <p>{terms.s2Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s3Title}
               </h2>
               <p>{terms.s3Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s4Title}
               </h2>
               <p>{terms.s4Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s5Title}
               </h2>
               <p>{terms.s5Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s6Title}
               </h2>
               <p>{terms.s6Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s7Title}
               </h2>
               <ul className="list-disc pl-5 space-y-1">
@@ -560,43 +569,43 @@ function TermsPage({
               </ul>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s8Title}
               </h2>
               <p>{terms.s8Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s9Title}
               </h2>
               <p>{terms.s9Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s10Title}
               </h2>
               <p>{terms.s10Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s11Title}
               </h2>
               <p>{terms.s11Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s12Title}
               </h2>
               <p>{terms.s12Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s13Title}
               </h2>
               <p>{terms.s13Text}</p>
             </section>
             <section className="space-y-2">
-              <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+              <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s14Title}
               </h2>
               <p>{terms.s14Text}</p>
@@ -651,44 +660,98 @@ export default function Home() {
     {
       title: t.serv1Title,
       desc: t.serv1Desc,
-      icon: <Palette size={24} className="text-[#D62828]" />,
+      icon: <Palette size={24} className="text-[#FF5400]" />,
     },
     {
       title: t.serv2Title,
       desc: t.serv2Desc,
-      icon: <Send size={24} className="text-[#D62828]" />,
+      icon: <Send size={24} className="text-[#FF5400]" />,
     },
     {
       title: t.serv3Title,
       desc: t.serv3Desc,
-      icon: <CalendarCheck size={24} className="text-[#D62828]" />,
+      icon: <CalendarCheck size={24} className="text-[#FF5400]" />,
     },
   ];
 
-  const skillsList = [
-    "Canva Pro",
-    "Graphic Design",
-    "Web Developing",
-    "Cold Outreach",
-    "Appointment Setting",
-    "Copywriting Persuasiv",
-    "Generare Lead-uri",
-    "UI/UX Visuals",
-    "Social Media Branding",
-  ];
+  const skillsData = {
+    ro: [
+      {
+        name: "Graphic Design",
+        icon: <Palette size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Creez pitch deck-uri pentru investitori, prezentări comerciale, propuneri B2B și materiale vizuale de înaltă ținută care inspiră autoritate imediată.",
+      },
+      {
+        name: "Web Development",
+        icon: <Cpu size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Construiesc landing pages orientate pe conversie și site-uri moderne de prezentare, ultra-rapide, responsive și optimizate pentru claritate și viteză.",
+      },
+      {
+        name: "Appointment Setting",
+        icon: <CalendarCheck size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Calific contactele primite, elimin obiecțiile timpurii și programez întâlniri 1-la-1 cu factori de decizie direct în calendarul tău de vânzări.",
+      },
+      {
+        name: "Copywriting",
+        icon: <MessageSquare size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Redactez mesaje directe de vânzări, emailuri percutante și texte pentru site concepute să capteze atenția și să convingă fără clișee.",
+      },
+      {
+        name: "UI/UX Design",
+        icon: <Target size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Proiectez interfețe ergonomice, wireframe-uri clare și fluxuri de navigare fluide care reduc abandonul și cresc rata de conversie.",
+      },
+      {
+        name: "Email Deliverability",
+        icon: <Mail size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "Configurez de la zero protocoalele SPF, DKIM, DMARC, încălzesc tehnic domeniile și monitorizez reputația pentru a garanta livrarea în Inbox, nu în Spam.",
+      },
+    ],
+    en: [
+      {
+        name: "Graphic Design",
+        icon: <Palette size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I craft compelling investor pitch decks, commercial proposals, and visual identities designed to inspire instant trust and brand authority.",
+      },
+      {
+        name: "Web Development",
+        icon: <Cpu size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I develop fast, responsive landing pages and business websites engineered for conversion, speed, and seamless navigation.",
+      },
+      {
+        name: "Appointment Setting",
+        icon: <CalendarCheck size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I qualify prospective leads, handle early objections, and book high-intent 1-on-1 sales calls with decision-makers directly into your calendar.",
+      },
+      {
+        name: "Copywriting",
+        icon: <MessageSquare size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I write high-converting outreach copy, email follow-ups, and sales messaging designed to command attention and prompt action without clichés.",
+      },
+      {
+        name: "UI/UX Design",
+        icon: <Target size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I design intuitive user interfaces, clean wireframes, and streamlined conversion flows that eliminate friction and boost retention.",
+      },
+      {
+        name: "Email Deliverability",
+        icon: <Mail size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        desc: "I set up SPF, DKIM, and DMARC protocols, conduct automated domain warmups, and protect sender reputation to land in Primary Inbox.",
+      },
+    ],
+  };
 
   if (currentPage === "terms") {
     return <TermsPage onBack={() => setCurrentPage("home")} lang={lang} setLang={setLang} />;
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative">
+    <div className="min-h-screen bg-white text-zinc-950 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative">
       <FuturisticNavbar lang={lang} setLang={setLang} />
 
-      {/* SUBTLE AMBIENT HALLOWEEN GLOW (NO SQUARES) */}
+      {/* MINIMAL AMBIENT GLOW */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-orange-500/[0.05] via-red-500/[0.02] to-transparent rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-[40%] -right-32 w-[550px] h-[550px] bg-gradient-to-b from-orange-400/[0.03] to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-[#FF5400]/[0.05] to-transparent rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-32 md:space-y-40">
@@ -698,15 +761,16 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-orange-50/90 border border-orange-500/25 shadow-xs"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#FF5400]/30 shadow-xs"
             >
-              <span className="flex items-center text-[#FF5400]">
-                <Flame size={13} className="animate-pulse" />
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5400]"></span>
               </span>
-              <span className="text-xs font-semibold tracking-wide text-zinc-900">
+              <span className="text-xs font-bold tracking-wide text-zinc-900">
                 {t.seasonalTag}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white font-bold uppercase tracking-wider">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5400] text-white font-bold uppercase tracking-wider">
                 {t.seasonalBadge}
               </span>
             </motion.div>
@@ -715,10 +779,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-900 leading-[1.08]"
+              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-950 leading-[1.08]"
             >
               {t.heroTitlePart1}
-              <span className="bg-gradient-to-r from-[#D62828] to-[#FF5400] bg-clip-text text-transparent">{t.heroTitlePart2}</span>
+              <span className="text-[#FF5400]">{t.heroTitlePart2}</span>
             </motion.h1>
 
             <motion.p
@@ -738,11 +802,11 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="md:col-span-5 bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-xs hover:shadow-[0_10px_35px_rgba(255,107,0,0.06)]"
+              className="md:col-span-5 bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
             >
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-zinc-200 flex items-center justify-center p-2 shadow-xs">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs">
                     <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
                   <span className="text-[11px] font-mono text-[#FF5400] font-bold tracking-wider uppercase flex items-center gap-1.5">
@@ -750,7 +814,7 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-3xl font-black text-zinc-900">{t.profileName}</h3>
+                  <h3 className="text-3xl font-black text-zinc-950">{t.profileName}</h3>
                   <p className="text-xs font-mono font-bold text-[#FF5400] tracking-widest uppercase">
                     {t.profileRole}
                   </p>
@@ -762,7 +826,7 @@ export default function Home() {
               <div className="pt-8">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-gradient-to-r from-[#D62828] to-[#FF5400] hover:from-[#B81F1F] hover:to-[#E04800] text-white text-xs font-extrabold uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
+                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
                 >
                   <span>{t.talkBtn}</span>
                   <ArrowUpRight size={14} />
@@ -775,14 +839,14 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="md:col-span-7 bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/40 rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-xs hover:shadow-[0_10px_35px_rgba(255,107,0,0.06)]"
+              className="md:col-span-7 bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
             >
               <div className="flex items-start justify-between">
                 <div className="space-y-4 max-w-lg">
-                  <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider bg-white px-3.5 py-1.5 rounded-full border border-zinc-200 inline-block shadow-2xs">
+                  <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider bg-orange-500/10 px-3.5 py-1.5 rounded-full border border-orange-500/20 inline-block shadow-2xs">
                     Obiectiv & Rezultate
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-zinc-900 leading-snug">
+                  <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 leading-snug">
                     {t.missionTitle}
                   </h3>
                 </div>
@@ -790,29 +854,44 @@ export default function Home() {
                   <Target size={26} />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4 pt-10">
-                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
-                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
-                    <Ghost size={16} className="text-[#FF5400]" /> {t.statAttention}
-                  </p>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                    {t.statAttentionSub}
-                  </p>
-                </div>
-                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
-                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
-                    <Moon size={15} className="text-orange-500" /> {t.statFast}
-                  </p>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                    {t.statFastSub}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8">
+                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
+                  <div className="space-y-0.5">
+                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
+                      {t.statAttention}
+                    </p>
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                      {t.statAttentionSub}
+                    </p>
+                  </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
+                    {t.statAttentionDesc}
                   </p>
                 </div>
-                <div className="p-4 rounded-2xl bg-white border border-zinc-200/80 text-center space-y-1 shadow-xs group-hover:border-orange-500/20 transition-colors">
-                  <p className="text-sm sm:text-base font-black text-zinc-900 flex items-center justify-center gap-1.5">
-                    <Sparkles size={15} className="text-[#D62828]" /> {t.statFocus}
+                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
+                  <div className="space-y-0.5">
+                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
+                      {t.statFast}
+                    </p>
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                      {t.statFastSub}
+                    </p>
+                  </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
+                    {t.statFastDesc}
                   </p>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                    {t.statFocusSub}
+                </div>
+                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
+                  <div className="space-y-0.5">
+                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
+                      {t.statFocus}
+                    </p>
+                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
+                      {t.statFocusSub}
+                    </p>
+                  </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
+                    {t.statFocusDesc}
                   </p>
                 </div>
               </div>
@@ -822,12 +901,12 @@ export default function Home() {
 
         {/* SERVICII */}
         <section id="services" className="scroll-mt-40 space-y-12">
-          <div className="flex items-end justify-between border-b border-zinc-200 pb-6">
+          <div className="flex items-end justify-between border-b border-orange-500/20 pb-6">
             <div className="space-y-2">
               <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
                 {t.servicesTagline}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
                 {t.servicesHeader}
               </h2>
             </div>
@@ -840,15 +919,15 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-zinc-50/80 border border-zinc-200/80 hover:border-orange-500/50 rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-xs hover:shadow-[0_12px_32px_rgba(255,107,0,0.08)] relative overflow-hidden"
+                className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center group-hover:scale-105 transition-transform text-[#FF5400]">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center group-hover:bg-[#FF5400] group-hover:text-white transition-all text-[#FF5400]">
                       {service.icon}
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-zinc-900 group-hover:text-[#FF5400] transition-colors">
+                  <h3 className="text-xl font-bold text-zinc-950 group-hover:text-[#FF5400] transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-sm text-zinc-600 leading-relaxed font-normal">
@@ -860,27 +939,68 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ABILITATI */}
-        <section id="skills" className="scroll-mt-40 space-y-10">
-          <div className="space-y-2 border-b border-zinc-200 pb-6">
+        {/* ABILITATI (PASTILE PLUTITOARE CU TEXT LA HOVER) */}
+        <section id="skills" className="scroll-mt-40 space-y-8">
+          <div className="space-y-2 border-b border-orange-500/20 pb-6">
             <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
               {t.skillsTagline}
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
               {t.skillsHeader}
             </h2>
+            <p className="text-xs text-zinc-500 font-medium flex items-center gap-2 pt-1">
+              <span className="w-2 h-2 rounded-full bg-[#FF5400] animate-pulse" />
+              <span>
+                {lang === "ro"
+                  ? "Ține cursorul pe oricare pastilă pentru a vedea ce pot să fac."
+                  : "Hover over any pill to see what I can do."}
+              </span>
+            </p>
           </div>
-          <div className="flex flex-wrap gap-3.5">
-            {skillsList.map((skill, index) => (
+
+          <div className="flex flex-wrap gap-4 pt-4">
+            {skillsData[lang].map((skill, index) => (
               <motion.div
-                key={skill}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                key={skill.name}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.03 }}
-                className="px-6 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 hover:border-[#FF5400] hover:bg-gradient-to-r hover:from-[#D62828] hover:to-[#FF5400] hover:text-white text-zinc-900 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xs cursor-default"
+                animate={{
+                  y: [0, -6, 0],
+                }}
+                transition={{
+                  y: {
+                    repeat: Infinity,
+                    duration: 3 + (index % 3) * 0.8,
+                    ease: "easeInOut",
+                  },
+                  delay: index * 0.05,
+                }}
+                className="relative group"
               >
-                {skill}
+                {/* TOOLTIP PLUTITOR LA HOVER */}
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-72 sm:w-80 max-w-[85vw] p-4 rounded-2xl bg-white text-zinc-950 border-2 border-[#FF5400] shadow-[0_14px_36px_rgba(255,84,0,0.22)] opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 pointer-events-none transition-all duration-200 z-50 text-left">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#FF5400]" />
+                    <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+                      {lang === "ro" ? "Ce pot să fac:" : "What I can do:"}
+                    </span>
+                  </div>
+                  <p className="text-xs text-zinc-700 font-normal leading-relaxed">
+                    {skill.desc}
+                  </p>
+                  {/* Tooltip arrow */}
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#FF5400]" />
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] w-0 h-0 border-x-6 border-x-transparent border-t-6 border-t-white" />
+                </div>
+
+                {/* PASTILĂ PLUTITOARE */}
+                <div className="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white border-2 border-orange-500/25 group-hover:border-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xs group-hover:shadow-[0_8px_24px_rgba(255,84,0,0.25)] cursor-pointer select-none">
+                  <span className="flex items-center justify-center">
+                    {skill.icon}
+                  </span>
+                  <span>{skill.name}</span>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -888,24 +1008,24 @@ export default function Home() {
 
         {/* CONTACT */}
         <section id="contact" className="scroll-mt-40">
-          <div className="bg-zinc-50/90 border border-zinc-200/90 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-xs">
+          <div className="bg-white border-2 border-orange-500/30 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-sm">
             <div className="max-w-2xl space-y-8 relative z-10">
               <div className="space-y-3">
                 <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest">
                   {t.contactTagline}
                 </span>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-900">
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
                   {t.contactHeader}
                 </h2>
                 <p className="text-sm text-zinc-600 leading-relaxed">
                   {t.contactSubtitle}
                 </p>
 
-                {/* PROMOȚIE HALLOWEEN NON-SLOP */}
+                {/* NOTĂ PERSONALĂ DANIEL MOISĂ */}
                 <div className="pt-2">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-orange-50 border border-orange-500/25 text-xs text-orange-950 font-medium">
-                    <span>🎃</span>
-                    <span>{t.seasonalPromo}</span>
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 border border-orange-500/25 text-xs text-zinc-900 font-medium">
+                    <span className="font-mono font-bold text-[#FF5400]">SWING - </span>
+                    <span>{t.contactNote}</span>
                   </div>
                 </div>
               </div>
@@ -923,7 +1043,7 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.placeholderName}
-                        className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 shadow-2xs"
+                        className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
                       />
                       <User size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
@@ -940,7 +1060,7 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.placeholderEmail}
-                        className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 shadow-2xs"
+                        className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
                       />
                       <Mail size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
@@ -958,7 +1078,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.placeholderMessage}
-                      className="w-full bg-white border border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] focus:ring-1 focus:ring-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-2xs"
+                      className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-xs"
                     />
                     <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                   </div>
@@ -974,7 +1094,7 @@ export default function Home() {
                     onChange={(e) =>
                       setFormData({ ...formData, acceptedTerms: e.target.checked })
                     }
-                    className="mt-1 w-4 h-4 rounded border-zinc-300 bg-white text-[#FF5400] focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded border-zinc-300 bg-white text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
                   />
                   <label
                     htmlFor="terms"
@@ -984,7 +1104,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setCurrentPage("terms")}
-                      className="text-[#FF5400] underline hover:text-zinc-900 font-bold transition-colors cursor-pointer"
+                      className="text-[#FF5400] underline hover:text-zinc-950 font-bold transition-colors cursor-pointer"
                     >
                       {t.termsLink}
                     </button>
@@ -994,7 +1114,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-gradient-to-r from-[#D62828] to-[#FF5400] hover:from-[#B81F1F] hover:to-[#E04800] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_4px_18px_rgba(255,84,0,0.25)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5 cursor-pointer"
+                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#FF5400] hover:bg-[#E04800] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_4px_18px_rgba(255,84,0,0.3)] hover:shadow-[0_6px_24px_rgba(255,84,0,0.4)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5 cursor-pointer"
                 >
                   {formStatus === "submitting" ? (
                     <span>{t.sendingBtn}</span>
@@ -1026,7 +1146,7 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-zinc-200 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 font-mono">
+      <footer className="border-t border-orange-500/20 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 font-mono">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
         <div className="flex flex-wrap items-center justify-center gap-6 font-bold">
           <button

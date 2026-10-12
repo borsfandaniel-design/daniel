@@ -165,12 +165,12 @@ export default function TermsPage() {
             <span>{t.backBtn}</span>
           </Link>
 
-          <div className="flex items-center bg-zinc-100 border border-zinc-200 rounded-full p-1 shadow-inner">
+          <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 shadow-xs">
             <button 
               type="button"
               onClick={() => setLang("ro")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
+                lang === "ro" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
               }`}
             >
               RO
@@ -179,7 +179,7 @@ export default function TermsPage() {
               type="button"
               onClick={() => setLang("en")}
               className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-gradient-to-r from-[#D62828] to-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-900"
+                lang === "en" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
               }`}
             >
               EN
@@ -188,11 +188,11 @@ export default function TermsPage() {
         </div>
 
         {/* Conținutul Termenilor și Condițiilor */}
-        <div className="bg-zinc-50 border border-zinc-200 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+        <div className="bg-white border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
           <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
             <Scale className="text-[#FF5400]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-zinc-900">
+              <h1 className="text-2xl font-extrabold text-zinc-950">
                 {t.termsTitle}
               </h1>
               <p className="text-xs font-mono text-zinc-500">{t.subtitle}</p>
@@ -200,7 +200,7 @@ export default function TermsPage() {
           </div>
 
           <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
-            <span className="text-zinc-900 font-semibold flex items-center gap-2">
+            <span className="text-zinc-950 font-semibold flex items-center gap-2">
               <ShieldCheck size={16} className="text-[#FF5400]" /> {t.compliance}
             </span>
             <span className="text-zinc-400">2026</span>
@@ -209,7 +209,7 @@ export default function TermsPage() {
           <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
             {t.sections.map((sec) => (
               <section key={sec.title} className="space-y-2">
-                <h2 className="text-[#D62828] font-bold text-base uppercase tracking-wider font-mono">
+                <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                   {sec.title}
                 </h2>
                 {sec.text && <p>{sec.text}</p>}

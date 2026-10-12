@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SWING | Daniel Moisă — Graphic Design, Cold Outreach & Web",
+  title: "SWING | Daniel Moisă - Graphic Design, Cold Outreach & Web",
   description: "Servicii de Graphic Design, campanii de Cold Outreach și Dezvoltare Web pentru afaceri B2B.",
 };
 
