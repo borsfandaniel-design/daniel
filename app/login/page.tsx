@@ -147,7 +147,7 @@ export default function LoginPage() {
 
           <div className="pt-2 border-t border-orange-500/10 flex items-center justify-center gap-1.5 text-[11px] font-mono text-zinc-500">
             <ShieldCheck size={14} className="text-[#FF5400]" />
-            <span>Sesiune securizată // SWING STUDIO</span>
+            <span>Sesiune securizată  SWING STUDIO</span>
           </div>
         </div>
       </div>
