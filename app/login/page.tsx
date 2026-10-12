@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Lock, ArrowLeft, ArrowRight, ShieldCheck, Mail, KeyRound } from "lucide-react";
+import { Lock, ArrowLeft, ArrowRight, ShieldCheck, Mail, KeyRound, Eye, EyeOff } from "lucide-react";
 import { authenticateUser } from "./actions";
 
 export default function LoginPage() {
+  const [email, setEmail] = useState("borsfandaniel@gmail.com");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,13 +17,23 @@ export default function LoginPage() {
     setLoading(true);
     setErrorMsg("");
 
-    const formData = new FormData(e.currentTarget);
-    const result = await authenticateUser(formData);
+    try {
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
 
-    if (result.success) {
-      window.location.href = "/dashboard";
-    } else {
-      setErrorMsg(result.error || "Autentificare eșuată.");
+      const result = await authenticateUser(formData);
+
+      if (result.success) {
+        // Setează și cookie în browser pentru redundanță garantată
+        document.cookie = "auth_token=authenticated; path=/; max-age=604800; SameSite=Lax";
+        window.location.href = "/dashboard";
+      } else {
+        setErrorMsg(result.error || "Autentificare eșuată.");
+        setLoading(false);
+      }
+    } catch {
+      setErrorMsg("A apărut o problemă de conexiune. Te rugăm să reîncerci.");
       setLoading(false);
     }
   };
@@ -64,7 +77,7 @@ export default function LoginPage() {
               Panou Admin
             </h1>
             <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
-              Autentifică-te pentru a accesa consola de mesaje și lead-uri.
+              Introdu parola de acces pentru a deschide dashboard-ul SWING.
             </p>
           </div>
 
@@ -78,6 +91,8 @@ export default function LoginPage() {
                 <input
                   type="email"
                   name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
                   required
                   className="w-full pl-11 pr-4 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
@@ -88,18 +103,29 @@ export default function LoginPage() {
 
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-zinc-800 uppercase tracking-wider">
-                Parolă
+                Parolă de Acces
               </label>
               <div className="relative">
                 <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   autoComplete="current-password"
                   required
-                  className="w-full pl-11 pr-4 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
-                  placeholder="••••••••••••"
+                  autoFocus
+                  className="w-full pl-11 pr-11 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
+                  placeholder="Introdu parola..."
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors p-1"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
               </div>
             </div>
 
@@ -114,7 +140,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full py-4 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-[0.99]"
             >
-              <span>{loading ? "SE VERIFICĂ..." : "ACCESEAZĂ CONSOLA"}</span>
+              <span>{loading ? "SE VERIFICĂ..." : "ACCESEAZĂ DASHBOARDUL"}</span>
               <ArrowRight size={14} />
             </button>
           </form>
