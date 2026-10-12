@@ -6,7 +6,7 @@ import { Lock, ArrowLeft, ArrowRight, ShieldCheck, Mail, KeyRound, Eye, EyeOff }
 import { authenticateUser } from "./actions";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("borsfandaniel@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
@@ -77,11 +77,11 @@ export default function LoginPage() {
               Panou Admin
             </h1>
             <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
-              Introdu parola de acces pentru a deschide dashboard-ul SWING.
+              Introdu credențialele de acces pentru a deschide dashboard-ul SWING.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-zinc-800 uppercase tracking-wider">
                 Adresă Email
@@ -93,10 +93,11 @@ export default function LoginPage() {
                   name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
+                  autoComplete="off"
                   required
+                  autoFocus
                   className="w-full pl-11 pr-4 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
-                  placeholder="borsfandaniel@gmail.com"
+                  placeholder="nume@domain.com"
                 />
               </div>
             </div>

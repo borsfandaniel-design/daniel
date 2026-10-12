@@ -9,7 +9,11 @@ export async function authenticateUser(formData: FormData) {
   const validEmail = (process.env.ADMIN_EMAIL || "borsfandaniel@gmail.com").trim().toLowerCase();
   const validPassword = (process.env.ADMIN_PASSWORD || "anto123nonplay").trim();
 
-  if (email && email !== validEmail) {
+  if (!email) {
+    return { success: false, error: "Te rugăm să introduci adresa de email." };
+  }
+
+  if (email !== validEmail) {
     return { success: false, error: "Email-ul introdus nu este autorizat." };
   }
 
