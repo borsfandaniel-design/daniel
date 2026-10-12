@@ -37,17 +37,17 @@ const translations = {
     navServices: "Servicii",
     navSkills: "Abilități",
     navContact: "Contact",
-    systemActive: "Disponibil pentru proiecte noi",
+    systemActive: "Available for new projects",
     seasonalTag: "Disponibil pentru proiecte noi.",
-    seasonalBadge: "Activ",
-    heroTitlePart1: "Design Vizual & ",
-    heroTitlePart2: "Cold Outreach B2B",
+    seasonalBadge: "SYSTEM",
+    heroTitlePart1: "SWING CHANGE ",
+    heroTitlePart2: "THE GAME",
     heroSubtitle:
-      "Construiesc materiale vizuale clare, campanii directe de email și site-uri rapide care transformă contactele în discuții reale de vânzări.",
-    profileName: "Daniel Moisă",
+      "Construiesc sisteme web rapide, pagini de vânzare optimizate și procese directe de calificare care transformă contactele în clienți reali.",
+    profileName: "Moisă Ionuț Daniel",
     profileRole: "SWING STUDIO",
     profileBio:
-      "Lucrez direct cu fondatori și echipe B2B pentru a le crea pitch deck-uri convingătoare, infrastructură de outreach și pagini web de impact - fără intermediari sau birocrație inutilă.",
+      "Lucrez direct cu fondatori și echipe B2B pentru a construi platforme web performante, copywriting de impact și lead-uri calificate  fără intermediari sau birocrație inutilă.",
     talkBtn: "Hai să discutăm",
     missionTitle: "De la primul contact rece până la discuții calificate de vânzări.",
     statAttention: "Zero Ghosting",
@@ -64,21 +64,18 @@ const translations = {
       "Impact comercial măsurabil: materiale vizuale și pitch deck-uri care inspiră autoritate, mesaje directe către factori de decizie și discuții calificate de vânzări, nu vanity metrics.",
     servicesTagline: "Servicii",
     servicesHeader: "Cum te pot ajuta să crești",
-    serv1Title: "Graphic Design & Pitch Decks",
+    serv1Title: "Web Development & Landing Pages",
     serv1Desc:
-      "Pitch deck-uri pentru investitori, prezentări comerciale, materiale promoționale și vizualuri gândite să inspire încredere imediată.",
-    serv2Title: "Cold Outreach & Emailing",
+      "Site-uri de prezentare ultra-rapide și pagini de vânzare optimizate pentru conversie, complet responsive și ușor de administrat.",
+    serv2Title: "Appointment Setting & Calificări",
     serv2Desc:
-      "Configurare tehnică a inbox-urilor, încălzire de domenii, scripturi personalizate și livrabilitate maximă către decidenți.",
-    serv3Title: "Web Development & Calificări",
-    serv3Desc:
-      "Site-uri moderne de prezentare, pagini de vânzare optimizate pentru conversie și lead-uri calificate aduse direct în calendar.",
+      "Calificare atentă a lead-urilor, eliminarea obiecțiilor și programarea întâlnirilor 1-la-1 cu decidenți direct în calendar.",
     skillsTagline: "Competențe",
     skillsHeader: "Abilități & Unelte",
     contactTagline: "Contact Direct",
     contactHeader: "Hai să colaborăm",
     contactSubtitle: "Trimite-mi câteva detalii despre proiectul tău și revin în maxim 24 de ore cu o propunere clară.",
-    contactNote: "Răspuns garantat în 24 de ore. Vorbești direct cu Daniel Moisă, fără intermediari.",
+    contactNote: "Răspuns garantat în 24 de ore. Vorbești direct cu Moisă Ionuț Daniel, fără intermediari.",
     fieldName: "Nume Complet",
     fieldEmail: "Adresă Email",
     fieldMessage: "Detalii Proiect / Solicitare",
@@ -150,16 +147,16 @@ const translations = {
     navSkills: "Skills",
     navContact: "Contact",
     systemActive: "Available for new projects",
-    seasonalTag: "SWING STUDIO  DANIEL MOISĂ",
-    seasonalBadge: "Active",
-    heroTitlePart1: "Visual Design & ",
-    heroTitlePart2: "B2B Cold Outreach",
+    seasonalTag: "SWING MOISĂ IONUȚ DANIEL",
+    seasonalBadge: "SYSTEM",
+    heroTitlePart1: "SWING CHANGE ",
+    heroTitlePart2: "THE GAME",
     heroSubtitle:
-      "Crafting high-impact visuals, targeted outbound email campaigns, and fast landing pages that turn prospects into sales conversations.",
-    profileName: "Daniel Moisă",
+      "Building high-speed web systems, direct-response copy, and qualified appointment pipelines engineered for real business growth.",
+    profileName: "Moisă Ionuț Daniel",
     profileRole: "SWING STUDIO",
     profileBio:
-      "I work directly with founders and B2B teams to build persuasive pitch decks, cold outreach infrastructure, and high-converting web pages — without unnecessary agency overhead.",
+      "I work directly with founders and B2B teams to build high-performance web systems, sharp sales copy, and qualified appointment pipelines — without unnecessary agency overhead.",
     talkBtn: "Let's talk",
     missionTitle: "From the first cold impression to booked sales conversations.",
     statAttention: "Zero Ghosting",
@@ -176,21 +173,18 @@ const translations = {
       "Measurable commercial impact: persuasive sales decks, high-deliverability outreach, and booked meetings with qualified decision-makers, not empty vanity metrics.",
     servicesTagline: "Services",
     servicesHeader: "How I can help you grow",
-    serv1Title: "Graphic Design & Pitch Decks",
+    serv1Title: "Web Development & Landing Pages",
     serv1Desc:
-      "Sales presentations, investor pitch decks, brand collaterals, and visuals designed to build immediate trust.",
-    serv2Title: "Cold Outreach & Email Campaigns",
+      "High-speed business websites and conversion-optimized landing pages engineered for speed, clean UX, and results.",
+    serv2Title: "Appointment Setting & Calls",
     serv2Desc:
-      "Technical setup, inbox warmups, tailored copywriting, and maximum deliverability targeting decision-makers.",
-    serv3Title: "Web Development & Qualification",
-    serv3Desc:
-      "High-speed modern websites, conversion-optimized landing pages, and qualified leads booked straight to your calendar.",
+      "Qualifying incoming leads, handling objections, and booking qualified 1-on-1 sales calls directly into your calendar.",
     skillsTagline: "Competencies",
     skillsHeader: "Skills & Stack",
     contactTagline: "Direct Contact",
     contactHeader: "Let's collaborate",
     contactSubtitle: "Send me a few details about your project and I will get back within 24 hours with a clear plan.",
-    contactNote: "Guaranteed reply within 24 hours. You talk directly with Daniel Moisă, without middlemen.",
+    contactNote: "Guaranteed reply within 24 hours. You talk directly with Moisă Ionuț Daniel, without middlemen.",
     fieldName: "Full Name",
     fieldEmail: "Email Address",
     fieldMessage: "Project Details / Request",
@@ -330,7 +324,7 @@ function FuturisticNavbar({
                 SWING
               </span>
               <span className="text-[8px] text-[#FF5400] font-bold tracking-widest uppercase font-mono">
-                DANIEL MOISĂ
+                MOISĂ IONUȚ DANIEL
               </span>
             </div>
           </a>
@@ -472,7 +466,7 @@ function FuturisticNavbar({
             </div>
             <div className="space-y-4 pt-6 border-t border-zinc-200">
               <div className="flex items-center justify-between text-xs text-zinc-500 font-mono font-medium">
-                <span className="text-[#FF5400] font-bold">Daniel Moisă</span>
+                <span className="text-[#FF5400] font-bold">Moisă Ionuț Daniel</span>
                 <span>SWING STUDIO</span>
               </div>
             </div>
@@ -693,83 +687,38 @@ export default function Home() {
     {
       title: t.serv1Title,
       desc: t.serv1Desc,
-      icon: <Palette size={24} className="text-[#FF5400]" />,
+      icon: <Cpu size={24} />,
     },
     {
       title: t.serv2Title,
       desc: t.serv2Desc,
-      icon: <Send size={24} className="text-[#FF5400]" />,
-    },
-    {
-      title: t.serv3Title,
-      desc: t.serv3Desc,
-      icon: <CalendarCheck size={24} className="text-[#FF5400]" />,
+      icon: <CalendarCheck size={24} />,
     },
   ];
 
   const skillsData = {
     ro: [
       {
-        name: "Graphic Design",
-        icon: <Palette size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "Creez pitch deck-uri pentru investitori, prezentări comerciale, propuneri B2B și materiale vizuale de înaltă ținută care inspiră autoritate imediată.",
-      },
-      {
         name: "Web Development",
-        icon: <Cpu size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        icon: <Cpu size={20} />,
         desc: "Construiesc landing pages orientate pe conversie și site-uri moderne de prezentare, ultra-rapide, responsive și optimizate pentru claritate și viteză.",
       },
       {
         name: "Appointment Setting",
-        icon: <CalendarCheck size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        icon: <CalendarCheck size={20} />,
         desc: "Calific contactele primite, elimin obiecțiile timpurii și programez întâlniri 1-la-1 cu factori de decizie direct în calendarul tău de vânzări.",
-      },
-      {
-        name: "Copywriting",
-        icon: <MessageSquare size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "Redactez mesaje directe de vânzări, emailuri percutante și texte pentru site concepute să capteze atenția și să convingă fără clișee.",
-      },
-      {
-        name: "UI/UX Design",
-        icon: <Target size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "Proiectez interfețe ergonomice, wireframe-uri clare și fluxuri de navigare fluide care reduc abandonul și cresc rata de conversie.",
-      },
-      {
-        name: "Email Deliverability",
-        icon: <Mail size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "Configurez de la zero protocoalele SPF, DKIM, DMARC, încălzesc tehnic domeniile și monitorizez reputația pentru a garanta livrarea în Inbox, nu în Spam.",
       },
     ],
     en: [
       {
-        name: "Graphic Design",
-        icon: <Palette size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "I craft compelling investor pitch decks, commercial proposals, and visual identities designed to inspire instant trust and brand authority.",
-      },
-      {
         name: "Web Development",
-        icon: <Cpu size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        icon: <Cpu size={20} />,
         desc: "I develop fast, responsive landing pages and business websites engineered for conversion, speed, and seamless navigation.",
       },
       {
         name: "Appointment Setting",
-        icon: <CalendarCheck size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
+        icon: <CalendarCheck size={20} />,
         desc: "I qualify prospective leads, handle early objections, and book high-intent 1-on-1 sales calls with decision-makers directly into your calendar.",
-      },
-      {
-        name: "Copywriting",
-        icon: <MessageSquare size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "I write high-converting outreach copy, email follow-ups, and sales messaging designed to command attention and prompt action without clichés.",
-      },
-      {
-        name: "UI/UX Design",
-        icon: <Target size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "I design intuitive user interfaces, clean wireframes, and streamlined conversion flows that eliminate friction and boost retention.",
-      },
-      {
-        name: "Email Deliverability",
-        icon: <Mail size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />,
-        desc: "I set up SPF, DKIM, and DMARC protocols, conduct automated domain warmups, and protect sender reputation to land in Primary Inbox.",
       },
     ],
   };
@@ -794,16 +743,16 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#FF5400]/30 shadow-xs"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-orange-500/30 shadow-xs"
             >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5400]"></span>
               </span>
-              <span className="text-xs font-bold tracking-wide text-zinc-900">
+              <span className="text-xs font-mono font-bold tracking-wider text-zinc-900 uppercase">
                 {t.seasonalTag}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#FF5400] text-white font-bold uppercase tracking-wider">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 text-[#FF5400] font-bold uppercase tracking-wider border border-zinc-800">
                 {t.seasonalBadge}
               </span>
             </motion.div>
@@ -828,105 +777,42 @@ export default function Home() {
             </motion.p>
           </div>
 
-          {/* CARDS OVERVIEW */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 pt-4">
-            {/* Card Profile */}
+          {/* CARD PROFILE */}
+          <div className="max-w-3xl mx-auto pt-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="md:col-span-5 bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
+              className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-8 relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
             >
-              <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs">
+              <div className="space-y-5 flex-1">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs shrink-0">
                     <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
-                  <span className="text-[11px] font-mono text-[#FF5400] font-bold tracking-wider uppercase flex items-center gap-1.5">
-                    <Flame size={12} /> Lead Designer & Outreach
-                  </span>
-                </div>
-                <div className="space-y-1">
-                  <h3 className="text-3xl font-black text-zinc-950">{t.profileName}</h3>
-                  <p className="text-xs font-mono font-bold text-[#FF5400] tracking-widest uppercase">
-                    {t.profileRole}
-                  </p>
+                  <div>
+                    <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 leading-tight">
+                      {t.profileName}
+                    </h3>
+                    <p className="text-xs font-mono font-bold tracking-widest uppercase flex items-center gap-1.5 mt-0.5">
+                      <span className="text-[#FF5400]">SWING</span>
+                      <span className="text-zinc-300"></span>
+                      <span className="text-zinc-500">STUDIO</span>
+                    </p>
+                  </div>
                 </div>
                 <p className="text-sm text-zinc-600 leading-relaxed font-normal">
                   {t.profileBio}
                 </p>
               </div>
-              <div className="pt-8">
+              <div className="shrink-0 self-start sm:self-center">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-3 px-6 py-3 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
+                  className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
                 >
                   <span>{t.talkBtn}</span>
                   <ArrowUpRight size={14} />
                 </a>
-              </div>
-            </motion.div>
-
-            {/* Card Objective */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="md:col-span-7 bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col justify-between relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
-            >
-              <div className="flex items-start justify-between">
-                <div className="space-y-4 max-w-lg">
-                  <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider bg-orange-500/10 px-3.5 py-1.5 rounded-full border border-orange-500/20 inline-block shadow-2xs">
-                    Obiectiv & Rezultate
-                  </span>
-                  <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 leading-snug">
-                    {t.missionTitle}
-                  </h3>
-                </div>
-                <div className="p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-[#FF5400] hidden sm:block">
-                  <Target size={26} />
-                </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-8">
-                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
-                  <div className="space-y-0.5">
-                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
-                      {t.statAttention}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                      {t.statAttentionSub}
-                    </p>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
-                    {t.statAttentionDesc}
-                  </p>
-                </div>
-                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
-                  <div className="space-y-0.5">
-                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
-                      {t.statFast}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                      {t.statFastSub}
-                    </p>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
-                    {t.statFastDesc}
-                  </p>
-                </div>
-                <div className="p-5 rounded-2xl bg-white border border-orange-500/20 text-left space-y-2 shadow-xs hover:border-[#FF5400] transition-colors">
-                  <div className="space-y-0.5">
-                    <p className="text-sm sm:text-base font-black text-[#FF5400]">
-                      {t.statFocus}
-                    </p>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold">
-                      {t.statFocusSub}
-                    </p>
-                  </div>
-                  <p className="text-xs text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
-                    {t.statFocusDesc}
-                  </p>
-                </div>
               </div>
             </motion.div>
           </div>
@@ -936,15 +822,20 @@ export default function Home() {
         <section id="services" className="scroll-mt-40 space-y-12">
           <div className="flex items-end justify-between border-b border-orange-500/20 pb-6">
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+              <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider flex items-center gap-2">
+                <span className="w-2 h-0.5 bg-[#FF5400]" />
                 {t.servicesTagline}
               </span>
               <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
-                {t.servicesHeader}
+                {lang === "ro" ? (
+                  <>Cum te pot ajuta <span className="text-[#FF5400]">să crești</span></>
+                ) : (
+                  <>How I can help you <span className="text-[#FF5400]">scale</span></>
+                )}
               </h2>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {servicesList.map((service, index) => (
               <motion.div
                 key={service.title}
@@ -956,9 +847,12 @@ export default function Home() {
               >
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center group-hover:bg-[#FF5400] group-hover:text-white transition-all text-[#FF5400]">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
                       {service.icon}
                     </div>
+                    <span className="text-xs font-mono font-bold text-zinc-400 group-hover:text-[#FF5400] transition-colors">
+                      0{index + 1} 
+                    </span>
                   </div>
                   <h3 className="text-xl font-bold text-zinc-950 group-hover:text-[#FF5400] transition-colors">
                     {service.title}
@@ -972,67 +866,53 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ABILITATI (PASTILE PLUTITOARE CU TEXT LA HOVER) */}
-        <section id="skills" className="scroll-mt-40 space-y-8">
+        {/* ABILITATI & UNELTE */}
+        <section id="skills" className="scroll-mt-40 space-y-10">
           <div className="space-y-2 border-b border-orange-500/20 pb-6">
-            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider flex items-center gap-2">
+              <span className="w-2 h-0.5 bg-[#FF5400]" />
               {t.skillsTagline}
             </span>
             <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
-              {t.skillsHeader}
+              {lang === "ro" ? (
+                <>Abilități & <span className="text-[#FF5400]">Unelte</span></>
+              ) : (
+                <>Skills & <span className="text-[#FF5400]">Tools</span></>
+              )}
             </h2>
-            <p className="text-xs text-zinc-500 font-medium flex items-center gap-2 pt-1">
-              <span className="w-2 h-2 rounded-full bg-[#FF5400] animate-pulse" />
-              <span>
-                {lang === "ro"
-                  ? "Ține cursorul pe oricare pastilă pentru a vedea ce pot să fac."
-                  : "Hover over any pill to see what I can do."}
-              </span>
-            </p>
           </div>
 
-          <div className="flex flex-wrap gap-4 pt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {skillsData[lang].map((skill, index) => (
               <motion.div
                 key={skill.name}
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                animate={{
-                  y: [0, -6, 0],
-                }}
-                transition={{
-                  y: {
-                    repeat: Infinity,
-                    duration: 3 + (index % 3) * 0.8,
-                    ease: "easeInOut",
-                  },
-                  delay: index * 0.05,
-                }}
-                className="relative group"
+                transition={{ delay: index * 0.1 }}
+                className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-7 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative"
               >
-                {/* TOOLTIP PLUTITOR LA HOVER */}
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3.5 w-72 sm:w-80 max-w-[85vw] p-4 rounded-2xl bg-white text-zinc-950 border-2 border-[#FF5400] shadow-[0_14px_36px_rgba(255,84,0,0.22)] opacity-0 group-hover:opacity-100 -translate-y-2 group-hover:translate-y-0 pointer-events-none transition-all duration-200 z-50 text-left">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="w-2 h-2 rounded-full bg-[#FF5400]" />
-                    <span className="text-[11px] font-mono font-bold text-[#FF5400] uppercase tracking-wider">
-                      {lang === "ro" ? "Ce pot să fac:" : "What I can do:"}
-                    </span>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
+                      {skill.icon}
+                    </div>
+                   
                   </div>
-                  <p className="text-xs text-zinc-700 font-normal leading-relaxed">
+
+                  <div>
+                    <h3 className="text-2xl font-black text-zinc-950 group-hover:text-[#FF5400] transition-colors">
+                      {skill.name}
+                    </h3>
+                    <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-bold uppercase tracking-wider">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5400]" />
+                      <span className="text-zinc-500">{lang === "ro" ? "Ce pot să fac:" : "What I can do:"}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
                     {skill.desc}
                   </p>
-                  {/* Tooltip arrow */}
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-[#FF5400]" />
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[2px] w-0 h-0 border-x-6 border-x-transparent border-t-6 border-t-white" />
-                </div>
-
-                {/* PASTILĂ PLUTITOARE */}
-                <div className="flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-white border-2 border-orange-500/25 group-hover:border-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white text-zinc-950 font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-xs group-hover:shadow-[0_8px_24px_rgba(255,84,0,0.25)] cursor-pointer select-none">
-                  <span className="flex items-center justify-center">
-                    {skill.icon}
-                  </span>
-                  <span>{skill.name}</span>
                 </div>
               </motion.div>
             ))}
@@ -1044,11 +924,16 @@ export default function Home() {
           <div className="bg-white border-2 border-orange-500/30 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-sm">
             <div className="max-w-2xl space-y-8 relative z-10">
               <div className="space-y-3">
-                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest">
-                  {t.contactTagline}
+                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-2 h-0.5 bg-[#FF5400]" />
+                {t.contactTagline}
                 </span>
                 <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
-                  {t.contactHeader}
+                  {lang === "ro" ? (
+                    <>Hai să <span className="text-[#FF5400]">colaborăm</span></>
+                  ) : (
+                    <>Let&apos;s <span className="text-[#FF5400]">connect</span></>
+                  )}
                 </h2>
                 <p className="text-sm text-zinc-600 leading-relaxed">
                   {t.contactSubtitle}
@@ -1057,8 +942,8 @@ export default function Home() {
                 {/* NOTĂ PERSONALĂ DANIEL MOISĂ */}
                 <div className="pt-2">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 border border-orange-500/25 text-xs text-zinc-900 font-medium">
-                    <span className="font-mono font-bold text-[#FF5400]">SWING - </span>
-                    <span>{t.contactNote}</span>
+                    <span className="font-mono font-bold text-[#FF5400]">SWING</span>
+                    <span className="text-zinc-700">{t.contactNote}</span>
                   </div>
                 </div>
               </div>

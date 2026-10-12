@@ -63,7 +63,7 @@ export default function LoginPage() {
             <span>Înapoi la site</span>
           </Link>
           <span className="text-[10px] font-mono font-bold text-[#FF5400] uppercase tracking-widest bg-orange-500/10 px-2.5 py-1 rounded-full border border-orange-500/20">
-            SWING  OS
+            SWING // OS
           </span>
         </div>
 
@@ -74,7 +74,7 @@ export default function LoginPage() {
               <Lock size={26} />
             </div>
             <h1 className="text-3xl font-black text-zinc-950 tracking-tight">
-              Panou Admin
+              Panou <span className="text-[#FF5400]">Admin</span>
             </h1>
             <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
               Introdu credențialele de acces pentru a deschide dashboard-ul SWING.

@@ -273,7 +273,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950">
-              Consolă Mesaje & Lead-uri
+              Consolă <span className="text-[#FF5400]">Lead-uri</span> & Mesaje
             </h1>
             <p className="text-xs text-zinc-600 font-normal">
               Mesaje recepționate în timp real prin formularul site-ului SWING.

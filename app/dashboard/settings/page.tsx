@@ -31,7 +31,7 @@ export default function SettingsPage() {
               <label className="block font-bold text-zinc-800">Nume Administrator</label>
               <input
                 type="text"
-                defaultValue="Daniel Moisă"
+                defaultValue="Moisă Ionuț Daniel"
                 className="w-full bg-white border-2 border-orange-500/20 focus:border-[#FF5400] rounded-2xl px-4 py-3 font-medium text-zinc-950 focus:outline-none transition-colors shadow-2xs"
               />
             </div>
