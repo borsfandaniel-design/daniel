@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Palette,
   Send,
@@ -25,6 +26,7 @@ import {
   Ghost,
   Flame,
   Moon,
+  LayoutDashboard,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -394,9 +396,18 @@ function FuturisticNavbar({
               </button>
             </div>
 
+            {/* SHORTCUT DASHBOARD PE MOBIL */}
+            <Link
+              href="/dashboard"
+              className="md:hidden p-2 rounded-full bg-white border border-orange-500/30 text-[#FF5400] hover:bg-[#FF5400] hover:text-white transition-colors shadow-2xs"
+              title="Dashboard Admin"
+            >
+              <LayoutDashboard size={18} />
+            </Link>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full bg-[#FF5400] text-white transition-colors"
+              className="md:hidden p-2 rounded-full bg-[#FF5400] text-white transition-colors shadow-2xs"
               aria-label="Toggle Navigation"
             >
               {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
@@ -435,6 +446,28 @@ function FuturisticNavbar({
                     <ChevronRight size={16} className="text-[#FF5400]" />
                   </a>
                 ))}
+
+                {/* ACCES RAPID DASHBOARD PE TELEFON */}
+                <div className="pt-2">
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-between p-4 rounded-2xl bg-orange-500/10 border-2 border-orange-500/25 text-zinc-950 hover:bg-[#FF5400] hover:text-white transition-all active:scale-[0.98] shadow-xs group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#FF5400] text-white flex items-center justify-center group-hover:bg-white group-hover:text-[#FF5400] transition-colors shadow-2xs">
+                        <LayoutDashboard size={18} />
+                      </div>
+                      <div>
+                        <div className="text-sm font-black">Dashboard & Lead-uri</div>
+                        <div className="text-[10px] font-mono text-[#FF5400] group-hover:text-white/90 font-bold uppercase">
+                          Panou Admin →
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronRight size={16} className="text-[#FF5400] group-hover:text-white transition-colors" />
+                  </Link>
+                </div>
               </div>
             </div>
             <div className="space-y-4 pt-6 border-t border-zinc-200">
