@@ -123,7 +123,7 @@ export default function LoginPage() {
             <span>Înapoi la site</span>
           </Link>
           <span className="text-[10px] font-mono font-bold text-[#FF5400] uppercase tracking-widest bg-orange-500/10 px-2.5 py-1 rounded-full border border-orange-500/20">
-            SWING // 2FA GUARD
+            SWING - 2FA GUARD
           </span>
         </div>
 
