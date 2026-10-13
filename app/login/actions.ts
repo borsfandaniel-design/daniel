@@ -8,7 +8,7 @@ import {
   createAdminSessionToken,
   generate2FACode,
 } from "../lib/auth";
-import { checkRateLimit, getClientIp } from "../lib/rate-limit";
+import { checkRateLimit, resetRateLimit, getClientIp } from "../lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -20,16 +20,16 @@ export async function authenticateUser(formData: FormData) {
   const reqHeaders = await headers();
   const clientIp = getClientIp(reqHeaders);
 
-  // Rate Limiting anti-brute force: Max 5 încercări per 15 minute per IP
+  // Rate Limiting anti-brute force: Max 10 încercări per 60 secunde per IP (cooldown rapid de 1 minut)
   const rateLimit = checkRateLimit(`login_${clientIp}`, {
-    limit: 5,
-    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    windowMs: 60 * 1000,
   });
 
   if (!rateLimit.success) {
     return {
       success: false,
-      error: `Prea multe încercări de autentificare. Te rugăm să aștepți ${rateLimit.retryAfterSeconds} secunde.`,
+      error: `Prea multe încercări. Te rugăm să aștepți ${rateLimit.retryAfterSeconds} secunde înainte de a reîncerca.`,
     };
   }
 
@@ -40,10 +40,10 @@ export async function authenticateUser(formData: FormData) {
   const validPassword = (process.env.ADMIN_PASSWORD || "").trim();
 
   if (!validEmail || !validPassword) {
-    console.error("Configurare critică lipsă: ADMIN_EMAIL sau ADMIN_PASSWORD nu sunt setate în variabilele de mediu.");
+    console.error("Configurare critică: ADMIN_EMAIL sau ADMIN_PASSWORD nu sunt setate în variabilele de mediu.");
     return {
       success: false,
-      error: "Eroare de configurare server. Contactează administratorul.",
+      error: "Eroare: ADMIN_PASSWORD sau ADMIN_EMAIL nu sunt configurate în panoul de hosting (Vercel -> Settings -> Environment Variables).",
     };
   }
 
@@ -54,20 +54,15 @@ export async function authenticateUser(formData: FormData) {
     };
   }
 
-  if (email !== validEmail) {
+  if (email !== validEmail || password !== validPassword) {
     return {
       success: false,
-      error: "Credențiale incorecte. Verifică datele introduse.",
+      error: "Credențiale incorecte. Verifică email-ul și parola configurate pe server.",
     };
   }
 
-  // Verificare strictă parolă fără date hardcodate în cod
-  if (password !== validPassword) {
-    return {
-      success: false,
-      error: "Credențiale incorecte. Verifică datele introduse.",
-    };
-  }
+  // Resetează contorul de rate limit pentru acest IP la parolă corectă
+  resetRateLimit(`login_${clientIp}`);
 
   // Generare cod 2FA de 6 cifre
   const code2FA = generate2FACode();
@@ -138,10 +133,10 @@ export async function verifyTwoFactor(formData: FormData) {
   const reqHeaders = await headers();
   const clientIp = getClientIp(reqHeaders);
 
-  // Rate Limiting anti-brute force 2FA: Max 5 încercări per 10 minute
+  // Rate Limiting anti-brute force 2FA: Max 10 încercări per 60 secunde (cooldown 1 minut)
   const rateLimit = checkRateLimit(`2fa_${clientIp}`, {
-    limit: 5,
-    windowMs: 10 * 60 * 1000,
+    limit: 10,
+    windowMs: 60 * 1000,
   });
 
   if (!rateLimit.success) {
@@ -174,7 +169,8 @@ export async function verifyTwoFactor(formData: FormData) {
     };
   }
 
-  // Șterge tokenul temporar 2FA
+  // Resetează contorul 2FA și șterge tokenul temporar
+  resetRateLimit(`2fa_${clientIp}`);
   cookieStore.delete("pending_2fa_token");
 
   // Generează tokenul criptat de sesiune (HMAC-SHA256, valid 7 zile)

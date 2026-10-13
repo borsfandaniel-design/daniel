@@ -74,6 +74,10 @@ export function checkRateLimit(
   };
 }
 
+export function resetRateLimit(identifier: string): void {
+  store.delete(identifier);
+}
+
 export function getClientIp(headersOrRequest: Headers | Request): string {
   try {
     let headers: Headers;

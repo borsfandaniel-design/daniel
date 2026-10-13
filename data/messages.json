@@ -1,5 +1,13 @@
 [
   {
+    "id": "01a136cc-eb25-7dcf-9ce0-1c3a5b09ee70",
+    "name": "Client Nou",
+    "email": "",
+    "message": "Codul tău de verificare în 2 pași pentru panoul SWING este: 480593\n\nAcest cod este valabil 10 minute.\nDacă nu ai încercat să te autentifici, schimbă imediat parola din .env.local!",
+    "created_at": "2026-10-13 19:46:01.890000+00",
+    "status": "pending"
+  },
+  {
     "id": "01a13108-5c37-7261-9c34-ef5a49db4d09",
     "name": "Alin",
     "email": "alin.ciuris8021@gmail.com",
