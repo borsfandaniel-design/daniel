@@ -618,6 +618,7 @@ export default function Home() {
     email: "",
     message: "",
     acceptedTerms: false,
+    website_hp: "",
   });
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle"
@@ -641,7 +642,7 @@ export default function Home() {
 
       if (res.ok) {
         setFormStatus("success");
-        setFormData({ name: "", email: "", message: "", acceptedTerms: false });
+        setFormData({ name: "", email: "", message: "", acceptedTerms: false, website_hp: "" });
       } else {
         setFormStatus("error");
       }
@@ -967,6 +968,18 @@ export default function Home() {
                     />
                     <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                   </div>
+                </div>
+
+                {/* Honeypot invizibil pentru blocarea automată a roboților de spam */}
+                <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                  <input
+                    type="text"
+                    name="website_hp"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.website_hp}
+                    onChange={(e) => setFormData({ ...formData, website_hp: e.target.value })}
+                  />
                 </div>
 
                 {/* LINK TERMENI SI CONDITII */}

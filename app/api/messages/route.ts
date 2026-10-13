@@ -107,9 +107,28 @@ async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
   return localMessages;
 }
 
+import { cookies } from "next/headers";
+import { verifyAdminSessionToken } from "../../lib/auth";
+
+async function requireAdminAuth() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
+  if (!token) return false;
+  const session = await verifyAdminSessionToken(token);
+  return session.valid;
+}
+
 // GET: Sincronizează din Resend și returnează toate mesajele în timp real (cele mai noi primele)
 export async function GET() {
   try {
+    const isAuthed = await requireAdminAuth();
+    if (!isAuthed) {
+      return NextResponse.json(
+        { error: "Neautorizat: Accesul la mesaje necesită sesiune de administrator validă." },
+        { status: 401 }
+      );
+    }
+
     let messages = getStoredMessages();
     messages = await syncFromResend(messages);
 
@@ -127,6 +146,14 @@ export async function GET() {
 // PATCH: Actualizează statusul unui mesaj (ex: replied, reply_text)
 export async function PATCH(req: Request) {
   try {
+    const isAuthed = await requireAdminAuth();
+    if (!isAuthed) {
+      return NextResponse.json(
+        { error: "Neautorizat: Modificarea mesajelor necesită sesiune de administrator." },
+        { status: 401 }
+      );
+    }
+
     const { id, status, reply_text } = await req.json();
     if (!id) {
       return NextResponse.json({ error: "ID-ul este obligatoriu." }, { status: 400 });
@@ -159,6 +186,14 @@ export async function PATCH(req: Request) {
 // DELETE: Șterge un mesaj din istoric
 export async function DELETE(req: Request) {
   try {
+    const isAuthed = await requireAdminAuth();
+    if (!isAuthed) {
+      return NextResponse.json(
+        { error: "Neautorizat: Ștergerea mesajelor necesită sesiune de administrator." },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
