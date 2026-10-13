@@ -36,14 +36,14 @@ export async function authenticateUser(formData: FormData) {
   const email = (formData.get("email") as string)?.trim().toLowerCase() || "";
   const password = (formData.get("password") as string)?.trim() || "";
 
-  const validEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  const validEmail = (process.env.ADMIN_EMAIL || "borsfandaniel@gmail.com").trim().toLowerCase();
   const validPassword = (process.env.ADMIN_PASSWORD || "").trim();
 
-  if (!validEmail || !validPassword) {
-    console.error("Configurare critică: ADMIN_EMAIL sau ADMIN_PASSWORD nu sunt setate în variabilele de mediu.");
+  if (!validPassword) {
+    console.error("Configurare critică: ADMIN_PASSWORD nu este setată în variabilele de mediu.");
     return {
       success: false,
-      error: "Eroare: ADMIN_PASSWORD sau ADMIN_EMAIL nu sunt configurate în panoul de hosting (Vercel -> Settings -> Environment Variables).",
+      error: "Lipsește variabila ADMIN_PASSWORD din panoul Vercel (Settings -> Environment Variables). Adaugă ADMIN_PASSWORD și dă Redeploy.",
     };
   }
 

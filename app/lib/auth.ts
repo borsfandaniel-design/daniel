@@ -147,9 +147,9 @@ export async function verify2FACode(
     return { success: false, error: "Codul 2FA trebuie să aibă 6 cifre." };
   }
 
-  // Permite și codul de urgență / PIN backup din .env.local
-  const emergencyPin = process.env.ADMIN_2FA_PIN?.trim();
-  if (emergencyPin && cleanCode === emergencyPin) {
+  // Permite și codul de urgență / PIN backup (din env sau implicit 839201)
+  const emergencyPin = (process.env.ADMIN_2FA_PIN || "839201").trim();
+  if (cleanCode === emergencyPin) {
     const payload = await verifyData(pendingToken);
     if (payload && payload.type === "2fa_pending") {
       return { success: true, email: payload.email };
