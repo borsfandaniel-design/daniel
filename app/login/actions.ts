@@ -7,8 +7,10 @@ import {
   verify2FACode,
   createAdminSessionToken,
   generate2FACode,
+  revokeCurrentSession,
+  getAuthSecret,
 } from "../lib/auth";
-import { checkRateLimit, resetRateLimit, getClientIp } from "../lib/rate-limit";
+import { checkRateLimitAsync, resetRateLimitAsync, getClientIp } from "../lib/rate-limit";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -20,16 +22,27 @@ export async function authenticateUser(formData: FormData) {
   const reqHeaders = await headers();
   const clientIp = getClientIp(reqHeaders);
 
-  // Rate Limiting anti-brute force: Max 10 încercări per 60 secunde per IP (cooldown rapid de 1 minut)
-  const rateLimit = checkRateLimit(`login_${clientIp}`, {
-    limit: 10,
-    windowMs: 60 * 1000,
+  // RZN-04: Rate Limiting distribuit anti-brute force: Max 5 încercări per 5 minute per IP
+  const rateLimit = await checkRateLimitAsync(`login_${clientIp}`, {
+    limit: 5,
+    windowMs: 5 * 60 * 1000,
   });
 
   if (!rateLimit.success) {
     return {
       success: false,
-      error: `Prea multe încercări. Te rugăm să aștepți ${rateLimit.retryAfterSeconds} secunde înainte de a reîncerca.`,
+      error: `Prea multe încercări de autentificare. Te rugăm să aștepți ${rateLimit.retryAfterSeconds} secunde înainte de a reîncerca.`,
+    };
+  }
+
+  // RZN-03: Validare timpurie că AUTH_SECRET este configurat corect
+  try {
+    getAuthSecret();
+  } catch (secErr: any) {
+    console.error("Eroare critică de configurare:", secErr.message);
+    return {
+      success: false,
+      error: "Eroare de configurare server: cheia de securitate nu este configurată corespunzător.",
     };
   }
 
@@ -43,7 +56,7 @@ export async function authenticateUser(formData: FormData) {
     console.error("Configurare critică: ADMIN_PASSWORD nu este setată în variabilele de mediu.");
     return {
       success: false,
-      error: "Lipsește variabila ADMIN_PASSWORD din panoul Vercel (Settings -> Environment Variables). Adaugă ADMIN_PASSWORD și dă Redeploy.",
+      error: "Eroare: ADMIN_PASSWORD nu este configurată în panoul de hosting (Settings -> Environment Variables).",
     };
   }
 
@@ -62,9 +75,9 @@ export async function authenticateUser(formData: FormData) {
   }
 
   // Resetează contorul de rate limit pentru acest IP la parolă corectă
-  resetRateLimit(`login_${clientIp}`);
+  await resetRateLimitAsync(`login_${clientIp}`);
 
-  // Generare cod 2FA de 6 cifre
+  // Generare cod 2FA de 6 cifre criptografic aleatoriu
   const code2FA = generate2FACode();
   const pendingToken = await createPending2FAToken(email, code2FA);
 
@@ -78,15 +91,15 @@ export async function authenticateUser(formData: FormData) {
     path: "/",
   });
 
-  // Trimitere email cu codul 2FA către adresa de admin
+  // RZN-01: Trimitere email 2FA FĂRĂ codul de verificare în subiect și FĂRĂ tag [SWING] care se suprapune cu contactul
   let emailSent = false;
   try {
     if (process.env.RESEND_API_KEY) {
       await resend.emails.send({
         from: "SWING Security <onboarding@resend.dev>",
         to: [validEmail],
-        subject: `[SWING] Codul tău de verificare 2FA: ${code2FA}`,
-        text: `Codul tău de verificare în 2 pași pentru panoul SWING este: ${code2FA}\n\nAcest cod este valabil 10 minute.\nDacă nu ai încercat să te autentifici, schimbă imediat parola din .env.local!`,
+        subject: "SWING Security - Cod de verificare autentificare",
+        text: `Codul tău de verificare în 2 pași pentru panoul SWING este: ${code2FA}\n\nAcest cod este valabil 10 minute.\nDacă nu ai inițiat tu această acțiune, schimbă imediat parola în mediul de hosting!`,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; background-color: #ffffff; border: 2px solid #FF5400; border-radius: 20px; padding: 32px; color: #09090b;">
             <div style="border-bottom: 1px solid #f4f4f5; padding-bottom: 16px; margin-bottom: 24px;">
@@ -105,15 +118,15 @@ export async function authenticateUser(formData: FormData) {
             </div>
 
             <p style="font-size: 12px; color: #71717a; line-height: 1.5; margin: 0;">
-              Dacă nu ai solicitat tu acest cod, ignoră acest email și verifică securitatea serverului.
+              Dacă nu ai solicitat tu acest cod, ignoră acest email și verifică securitatea contului.
             </p>
           </div>
         `,
       });
       emailSent = true;
     }
-  } catch (emailErr) {
-    console.error("Eroare la expedierea email-ului 2FA prin Resend:", emailErr);
+  } catch (emailErr: any) {
+    console.error("Eroare la expedierea email-ului 2FA prin Resend:", emailErr?.message);
   }
 
   return {
@@ -122,27 +135,27 @@ export async function authenticateUser(formData: FormData) {
     emailSent,
     message: emailSent
       ? `Codul 2FA a fost expediat la ${validEmail}.`
-      : "Introdu codul 2FA primit sau PIN-ul de backup din setări.",
+      : "Introdu codul 2FA primit pe email sau codul tău de urgență.",
   };
 }
 
 /**
- * Pasul 2: Validare cod 2FA și emitere sesiune criptată admin
+ * Pasul 2: Validare cod 2FA și emitere sesiune criptată admin revocabilă
  */
 export async function verifyTwoFactor(formData: FormData) {
   const reqHeaders = await headers();
   const clientIp = getClientIp(reqHeaders);
 
-  // Rate Limiting anti-brute force 2FA: Max 10 încercări per 60 secunde (cooldown 1 minut)
-  const rateLimit = checkRateLimit(`2fa_${clientIp}`, {
-    limit: 10,
-    windowMs: 60 * 1000,
+  // RZN-04: Rate Limiting distribuit anti-brute force 2FA: Max 5 încercări per 5 minute
+  const rateLimit = await checkRateLimitAsync(`2fa_${clientIp}`, {
+    limit: 5,
+    windowMs: 5 * 60 * 1000,
   });
 
   if (!rateLimit.success) {
     return {
       success: false,
-      error: `Prea multe încercări incorecte. Așteaptă ${rateLimit.retryAfterSeconds} secunde.`,
+      error: `Prea multe încercări incorecte. Așteaptă ${rateLimit.retryAfterSeconds} secunde înainte de a reîncerca.`,
     };
   }
 
@@ -165,23 +178,22 @@ export async function verifyTwoFactor(formData: FormData) {
   if (!verification.success || !verification.email) {
     return {
       success: false,
-      error: verification.error || "Codul 2FA este incorect.",
+      error: verification.error || "Codul de verificare este incorect.",
     };
   }
 
   // Resetează contorul 2FA și șterge tokenul temporar
-  resetRateLimit(`2fa_${clientIp}`);
+  await resetRateLimitAsync(`2fa_${clientIp}`);
   cookieStore.delete("pending_2fa_token");
 
-  // Generează tokenul criptat de sesiune (HMAC-SHA256, valid 7 zile)
+  // RZN-06: Generează tokenul criptat de sesiune cu jti unic și durată de 12 ore
   const sessionToken = await createAdminSessionToken(verification.email);
 
-  // Setează cookie-ul de sesiune strict securizat (HttpOnly, SameSite Strict)
   cookieStore.set("auth_token", sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
-    maxAge: 60 * 60 * 24 * 7, // 7 zile
+    maxAge: 12 * 60 * 60, // 12 ore (RZN-06)
     path: "/",
   });
 
@@ -195,8 +207,7 @@ export async function resendTwoFactorCode() {
   const reqHeaders = await headers();
   const clientIp = getClientIp(reqHeaders);
 
-  // Limitează retrimiterea la 1 dată pe minut
-  const rateLimit = checkRateLimit(`resend_2fa_${clientIp}`, {
+  const rateLimit = await checkRateLimitAsync(`resend_2fa_${clientIp}`, {
     limit: 2,
     windowMs: 60 * 1000,
   });
@@ -218,7 +229,7 @@ export async function resendTwoFactorCode() {
     };
   }
 
-  const validEmail = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  const validEmail = (process.env.ADMIN_EMAIL || "borsfandaniel@gmail.com").trim().toLowerCase();
   const code2FA = generate2FACode();
   const newPendingToken = await createPending2FAToken(validEmail, code2FA);
 
@@ -235,21 +246,29 @@ export async function resendTwoFactorCode() {
       await resend.emails.send({
         from: "SWING Security <onboarding@resend.dev>",
         to: [validEmail],
-        subject: `[SWING] Cod nou de verificare 2FA: ${code2FA}`,
+        subject: "SWING Security - Cod de verificare autentificare",
         text: `Codul tău de verificare 2FA este: ${code2FA}`,
       });
     }
     return { success: true, message: "Un cod nou a fost trimis pe email." };
-  } catch {
-    return { success: false, error: "Eroare la trimiterea noului cod. Încearcă din nou." };
+  } catch (err: any) {
+    console.error("Eroare la retrimiterea codului 2FA:", err?.message);
+    return { success: false, error: "Nu s-a putut retrimite codul în acest moment." };
   }
 }
 
 /**
- * Deconectare administrator
+ * RZN-06: Deconectare administrator cu revocare server-side a sesiunii
  */
 export async function logoutUser() {
   const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
+
+  if (token) {
+    // Revocare server-side în store-ul persistent
+    await revokeCurrentSession(token);
+  }
+
   cookieStore.delete("auth_token");
   cookieStore.delete("pending_2fa_token");
   return { success: true };

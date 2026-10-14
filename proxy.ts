@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { verifyAdminSessionToken } from "./app/lib/auth";
-import { checkRateLimit, getClientIp } from "./app/lib/rate-limit";
+import { checkRateLimitAsync, getClientIp } from "./app/lib/rate-limit";
 
 // Lista de User-Agent suspicioși sau crawler-i/scanere malițioase blocate direct la intrare
 const BLOCKED_USER_AGENTS = [
@@ -38,8 +38,8 @@ export async function proxy(request: NextRequest) {
     });
   }
 
-  // 2. Protecție DDoS & Flood: Max 120 cereri / minut per IP pentru întregul site
-  const globalRate = checkRateLimit(`global_${clientIp}`, {
+  // 2. Protecție DDoS & Flood: Max 120 cereri / minut per IP pentru întregul site (distribuit / atomic)
+  const globalRate = await checkRateLimitAsync(`global_${clientIp}`, {
     limit: 120,
     windowMs: 60 * 1000,
   });
@@ -57,7 +57,7 @@ export async function proxy(request: NextRequest) {
   const isDashboard = pathname === "/dashboard" || pathname.startsWith("/dashboard/");
   const isLogin = pathname === "/login" || pathname.startsWith("/login/");
 
-  // 3. Verificare sesiune criptată (HMAC-SHA256)
+  // 3. Verificare sesiune criptată (HMAC-SHA256 cu suport pentru revocare instantanee)
   const authToken = request.cookies.get("auth_token")?.value;
   let isAuthenticated = false;
 
@@ -94,10 +94,10 @@ export async function proxy(request: NextRequest) {
   // Protecție XSS
   response.headers.set("X-XSS-Protection", "1; mode=block");
 
-  // Content Security Policy (CSP) robust
+  // Content Security Policy (CSP) consolidat: fără unsafe-eval, frame-ancestors none, base-uri & form-action self
   response.headers.set(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none';"
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
   );
 
   // HSTS (HTTP Strict Transport Security) - obligă conexiunea HTTPS pe producție

@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import fs from "fs";
 import path from "path";
+import { cookies } from "next/headers";
+import { verifyAdminSessionToken } from "../../lib/auth";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const dataFilePath = path.join(process.cwd(), "data", "messages.json");
+// RZN-01: Folosim exclusiv fișierul local ignorat de Git pentru a nu stoca date personale în repository
+const dataFilePath = path.join(process.cwd(), "data", "messages.local.json");
 
 interface Message {
   id: string;
@@ -20,12 +23,18 @@ interface Message {
 function getStoredMessages(): Message[] {
   try {
     if (!fs.existsSync(dataFilePath)) {
+      // Dacă există temporar vechiul fișier de migrare, îl citim dar scriem doar în messages.local.json
+      const legacyPath = path.join(process.cwd(), "data", "messages.json");
+      if (fs.existsSync(legacyPath)) {
+        const legacyData = fs.readFileSync(legacyPath, "utf8");
+        return JSON.parse(legacyData) || [];
+      }
       return [];
     }
     const data = fs.readFileSync(dataFilePath, "utf8");
     return JSON.parse(data) || [];
   } catch (error) {
-    console.error("Eroare la citirea messages.json:", error);
+    console.error("Eroare la citirea mesajelor locale:", (error as any)?.message);
     return [];
   }
 }
@@ -38,20 +47,32 @@ function saveStoredMessages(messages: Message[]): void {
     }
     fs.writeFileSync(dataFilePath, JSON.stringify(messages, null, 2), "utf8");
   } catch (error) {
-    console.error("Eroare la salvarea messages.json:", error);
+    console.error("Eroare la salvarea mesajelor locale:", (error as any)?.message);
   }
 }
 
-// Sincronizează automat direct din Resend API pentru a garanta că toate email-urile apar în dashboard
+/**
+ * RZN-01: Sincronizare sigură din Resend
+ * Filtrează STRICT emailurile de contact și exclude explicit orice notificare de autentificare, 2FA sau securitate.
+ */
 async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
   try {
+    if (!process.env.RESEND_API_KEY) return localMessages;
+
     const listRes = await resend.emails.list();
     const emails = listRes.data?.data || [];
 
-    // Căutăm email-urile de contact trimise către Daniel
-    const contactEmails = emails.filter(
-      (e) => e.subject && (e.subject.includes("[SWING]") || e.subject.includes("[Contact Nou]"))
-    );
+    // RZN-01: Căutăm doar email-urile legitime de contact, excluzând 2FA și codurile de securitate
+    const contactEmails = emails.filter((e) => {
+      if (!e.subject) return false;
+      const lower = e.subject.toLowerCase();
+      // Excludere strictă pentru orice mesaj legat de 2FA sau securitate
+      if (lower.includes("2fa") || lower.includes("securitate") || lower.includes("verificare") || lower.includes("autentificare")) {
+        return false;
+      }
+      // Păstrăm exclusiv prefixele dedicate de contact
+      return e.subject.includes("[SWING CONTACT]") || e.subject.includes("[Contact Nou]") || e.subject.startsWith("[SWING] Mesaj nou de la");
+    });
 
     let hasNew = false;
     for (const item of contactEmails) {
@@ -59,30 +80,39 @@ async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
       if (!exists) {
         let name = "Client Nou";
         if (item.subject) {
-          const matchSwing = item.subject.match(/\[SWING\] Mesaj nou de la (.+)/i);
+          const matchContactPrefix = item.subject.match(/\[SWING CONTACT\] Mesaj nou de la (.+)/i);
+          const matchLegacyPrefix = item.subject.match(/\[SWING\] Mesaj nou de la (.+)/i);
           const matchContact = item.subject.match(/\[Contact Nou\] - ([^(]+)/i);
-          if (matchSwing && matchSwing[1]) {
-            name = matchSwing[1].trim();
+
+          if (matchContactPrefix && matchContactPrefix[1]) {
+            name = matchContactPrefix[1].trim();
+          } else if (matchLegacyPrefix && matchLegacyPrefix[1]) {
+            name = matchLegacyPrefix[1].trim();
           } else if (matchContact && matchContact[1]) {
             name = matchContact[1].trim();
           }
         }
 
         const email = (item.reply_to && item.reply_to[0]) || "";
-
         let messageText = "Mesaj recepționat prin formularul de contact.";
+
         try {
           const detail = await resend.emails.get(item.id);
-          if (detail.data?.text) {
-            const textParts = detail.data.text.split("Mesaj:\n");
-            if (textParts.length > 1) {
-              messageText = textParts[1].split("\n\n---")[0].trim();
-            } else {
-              messageText = detail.data.text.trim();
+          if (detail.data) {
+            const bodyContent = detail.data.text || detail.data.html || "";
+            // Verificare redundantă: dacă din greșeală corpul conține un cod 2FA, îl ignorăm total
+            if (bodyContent.includes("verificare în 2 pași") || bodyContent.includes("Codul tău de securitate 2FA")) {
+              continue;
+            }
+            if (detail.data.text) {
+              const textMatch = detail.data.text.match(/Mesaj:\s*([\s\S]+?)(?:\n\n---|\n---|$)/i);
+              if (textMatch && textMatch[1]) {
+                messageText = textMatch[1].trim();
+              }
             }
           }
         } catch {
-          // păstrează textul fallback
+          // Continuă cu textul implicit dacă corpul nu poate fi descărcat
         }
 
         localMessages.unshift({
@@ -90,7 +120,7 @@ async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
           name,
           email,
           message: messageText,
-          created_at: item.created_at,
+          created_at: item.created_at || new Date().toISOString(),
           status: "pending",
         });
         hasNew = true;
@@ -101,14 +131,11 @@ async function syncFromResend(localMessages: Message[]): Promise<Message[]> {
       saveStoredMessages(localMessages);
     }
   } catch (syncErr) {
-    console.error("Eroare la sincronizarea automată din Resend:", syncErr);
+    console.error("Eroare la sincronizarea din Resend:", (syncErr as any)?.message);
   }
 
   return localMessages;
 }
-
-import { cookies } from "next/headers";
-import { verifyAdminSessionToken } from "../../lib/auth";
 
 async function requireAdminAuth() {
   const cookieStore = await cookies();
@@ -118,7 +145,7 @@ async function requireAdminAuth() {
   return session.valid;
 }
 
-// GET: Sincronizează din Resend și returnează toate mesajele în timp real (cele mai noi primele)
+// GET: Sincronizează din Resend și returnează toate mesajele în timp real
 export async function GET() {
   try {
     const isAuthed = await requireAdminAuth();
@@ -136,14 +163,16 @@ export async function GET() {
     messages.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
     return NextResponse.json({ success: true, messages });
   } catch (err: any) {
+    console.error("Eroare la preluarea mesajelor:", err?.message);
+    // RZN-07: Nu transmitem detalii interne de eroare
     return NextResponse.json(
-      { error: err?.message || "Eroare la preluarea mesajelor." },
+      { error: "Nu s-au putut prelua mesajele în acest moment." },
       { status: 500 }
     );
   }
 }
 
-// PATCH: Actualizează statusul unui mesaj (ex: replied, reply_text)
+// PATCH: Actualizează statusul unui mesaj
 export async function PATCH(req: Request) {
   try {
     const isAuthed = await requireAdminAuth();
@@ -154,8 +183,18 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const { id, status, reply_text } = await req.json();
-    if (!id) {
+    let body: any;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Formatul cererii este invalid." },
+        { status: 400 }
+      );
+    }
+
+    const { id, status, reply_text } = body || {};
+    if (!id || typeof id !== "string") {
       return NextResponse.json({ error: "ID-ul este obligatoriu." }, { status: 400 });
     }
 
@@ -163,21 +202,22 @@ export async function PATCH(req: Request) {
     const index = messages.findIndex((m) => m.id === id);
 
     if (index === -1) {
-      return NextResponse.json({ error: "Mesajul nu a fost găsit." }, { status: 404 });
+      return NextResponse.json({ error: "Mesajul solicitat nu a fost găsit." }, { status: 404 });
     }
 
     messages[index] = {
       ...messages[index],
       status: status || messages[index].status,
-      reply_text: reply_text !== undefined ? reply_text : messages[index].reply_text,
+      reply_text: reply_text !== undefined ? String(reply_text).slice(0, 4000) : messages[index].reply_text,
       replied_at: status === "replied" ? new Date().toISOString() : messages[index].replied_at,
     };
 
     saveStoredMessages(messages);
     return NextResponse.json({ success: true, message: messages[index] });
   } catch (err: any) {
+    console.error("Eroare la actualizarea mesajului:", err?.message);
     return NextResponse.json(
-      { error: err?.message || "Eroare la actualizarea mesajului." },
+      { error: "A apărut o problemă la actualizarea mesajului." },
       { status: 500 }
     );
   }
@@ -207,8 +247,9 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (err: any) {
+    console.error("Eroare la ștergerea mesajului:", err?.message);
     return NextResponse.json(
-      { error: err?.message || "Eroare la ștergerea mesajului." },
+      { error: "A apărut o problemă la ștergerea mesajului." },
       { status: 500 }
     );
   }

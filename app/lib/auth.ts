@@ -1,19 +1,35 @@
 /**
  * Securitate & Criptare Token-uri de Sesiune și 2FA (HMAC-SHA256)
- * Nu expune parole, previne atacurile de tip timing și manipularea cookie-urilor.
+ * RZN-02: Fără PIN implicit sau predictibil, suport pentru coduri de recuperare cu utilizare unică.
+ * RZN-03: AUTH_SECRET strict obligatoriu (minim 32 caractere, fără fallback-uri nesigure).
+ * RZN-06: Sesiuni administrative revocabile server-side cu jti, expirare la 12 ore și epoch global.
  */
+
+import { isSessionRevoked, revokeSession, revokeAllSessions } from "./session-store";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 
+export class SecurityConfigurationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "SecurityConfigurationError";
+  }
+}
+
+/**
+ * Validează și returnează AUTH_SECRET.
+ * RZN-03: Refuză pornirea funcțiilor administrative dacă secretul lipsește sau nu respectă cerințele.
+ * Nu folosește fallback derivat din alte credențiale și nu loghează valoarea secretului.
+ */
 export function getAuthSecret(): string {
   const secret = process.env.AUTH_SECRET;
-  if (secret && secret.trim().length >= 16) {
-    return secret.trim();
+  if (!secret || typeof secret !== "string" || secret.trim().length < 32) {
+    throw new SecurityConfigurationError(
+      "AUTH_SECRET este obligatoriu și trebuie să aibă minimum 32 de caractere cu entropie ridicată. Configurează AUTH_SECRET în variabilele de mediu."
+    );
   }
-  // Fallback bazat pe variabile de mediu existente dacă AUTH_SECRET nu este definit
-  const fallbackSource = `${process.env.ADMIN_EMAIL || "admin"}_${process.env.RESEND_API_KEY || "swing_auth"}_fallback_key`;
-  return fallbackSource;
+  return secret.trim();
 }
 
 async function getCryptoKey(secret: string): Promise<CryptoKey> {
@@ -61,8 +77,8 @@ function bytesToHex(bytes: Uint8Array): string {
     .join("");
 }
 
-export async function signData(payload: object, secret?: string): Promise<string> {
-  const keySecret = secret || getAuthSecret();
+export async function signData(payload: object, customSecret?: string): Promise<string> {
+  const keySecret = customSecret || getAuthSecret();
   const key = await getCryptoKey(keySecret);
   const jsonStr = JSON.stringify(payload);
   const payloadB64 = base64UrlEncode(encoder.encode(jsonStr));
@@ -72,7 +88,7 @@ export async function signData(payload: object, secret?: string): Promise<string
   return `${payloadB64}.${sigHex}`;
 }
 
-export async function verifyData<T = any>(token: string, secret?: string): Promise<T | null> {
+export async function verifyData<T = any>(token: string, customSecret?: string): Promise<T | null> {
   try {
     if (!token || typeof token !== "string" || !token.includes(".")) {
       return null;
@@ -82,7 +98,7 @@ export async function verifyData<T = any>(token: string, secret?: string): Promi
       return null;
     }
 
-    const keySecret = secret || getAuthSecret();
+    const keySecret = customSecret || getAuthSecret();
     const key = await getCryptoKey(keySecret);
     const sigBytes = hexToBytes(sigHex);
     const dataToVerify = encoder.encode(payloadB64);
@@ -95,7 +111,6 @@ export async function verifyData<T = any>(token: string, secret?: string): Promi
     const jsonStr = decoder.decode(base64UrlDecode(payloadB64));
     const data = JSON.parse(jsonStr) as T;
 
-    // Verifică expirarea dacă există câmpul exp
     if (data && typeof (data as any).exp === "number") {
       if (Date.now() > (data as any).exp) {
         return null; // Expirat
@@ -109,7 +124,7 @@ export async function verifyData<T = any>(token: string, secret?: string): Promi
 }
 
 /**
- * Generează un cod numeric aleatoriu de 6 cifre pentru 2FA
+ * Generează un cod numeric de 6 cifre criptografic aleatoriu
  */
 export function generate2FACode(): string {
   const array = new Uint32Array(1);
@@ -131,12 +146,17 @@ export async function createPending2FAToken(email: string, code: string): Promis
     type: "2fa_pending",
     email,
     codeHash,
+    jti: crypto.randomUUID(),
     exp: Date.now() + 10 * 60 * 1000, // 10 minute
   });
 }
 
 /**
- * Verifică codul 2FA primit
+ * RZN-02: Verificare cod 2FA
+ * Elimină complet orice PIN implicit (ex: 839201).
+ * Acceptă exclusiv:
+ * 1. Codul dinamic de 6 cifre expediat pe email
+ * 2. Un PIN de urgență explicit configurat în ADMIN_2FA_PIN (fără valori implicite)
  */
 export async function verify2FACode(
   pendingToken: string,
@@ -144,68 +164,114 @@ export async function verify2FACode(
 ): Promise<{ success: boolean; email?: string; error?: string }> {
   const cleanCode = inputCode.trim();
   if (!cleanCode || cleanCode.length < 6) {
-    return { success: false, error: "Codul 2FA trebuie să aibă 6 cifre." };
+    return { success: false, error: "Codul 2FA trebuie să conțină minimum 6 caractere." };
   }
 
-  // Permite și codul de urgență / PIN backup (din env sau implicit 839201)
-  const emergencyPin = (process.env.ADMIN_2FA_PIN || "839201").trim();
-  if (cleanCode === emergencyPin) {
-    const payload = await verifyData(pendingToken);
-    if (payload && payload.type === "2fa_pending") {
-      return { success: true, email: payload.email };
-    }
-  }
-
+  // 1. Verifică integritatea și expirarea tokenului 2FA temporar
   const payload = await verifyData<{
     type: string;
     email: string;
     codeHash: string;
+    jti: string;
     exp: number;
   }>(pendingToken);
 
   if (!payload || payload.type !== "2fa_pending") {
-    return { success: false, error: "Sesiunea 2FA a expirat sau este invalidă. Te rugăm să te autentifici din nou." };
+    return {
+      success: false,
+      error: "Sesiunea de verificare a expirat sau este invalidă. Autentifică-te din nou.",
+    };
   }
 
+  // 2. Verificare cod de rezervă explicit configurat în ADMIN_2FA_PIN (fără fallback hardcodat)
+  const configuredEmergencyPin = process.env.ADMIN_2FA_PIN?.trim();
+  if (configuredEmergencyPin && configuredEmergencyPin.length >= 6) {
+    if (cleanCode === configuredEmergencyPin) {
+      return { success: true, email: payload.email };
+    }
+  }
+
+  // 3. Verificare cod dinamic hash-uit
   const secret = getAuthSecret();
   const key = await getCryptoKey(secret);
   const inputHashBuffer = await crypto.subtle.sign("HMAC", key, encoder.encode(cleanCode));
   const inputHash = bytesToHex(new Uint8Array(inputHashBuffer));
 
   if (inputHash !== payload.codeHash) {
-    return { success: false, error: "Codul 2FA introdus este incorect." };
+    return { success: false, error: "Codul de verificare introdus este incorect." };
   }
 
   return { success: true, email: payload.email };
 }
 
+export interface AdminSessionPayload {
+  sub: "admin";
+  email: string;
+  role: "admin";
+  jti: string;
+  iat: number;
+  exp: number;
+}
+
 /**
- * Creează un token criptat de sesiune admin valid 7 zile
+ * RZN-06: Creează token de sesiune administrativă cu jti și durată redusă la 12 ore
  */
 export async function createAdminSessionToken(email: string): Promise<string> {
+  const now = Date.now();
+  const jti = crypto.randomUUID();
+  const exp = now + 12 * 60 * 60 * 1000; // 12 ore
+
   return await signData({
     sub: "admin",
     email,
     role: "admin",
-    iat: Date.now(),
-    exp: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 zile
+    jti,
+    iat: now,
+    exp,
   });
 }
 
 /**
- * Validează un token de sesiune admin
+ * RZN-06: Validează sesiunea admin, inclusiv verificarea revocării pe server
  */
-export async function verifyAdminSessionToken(token: string): Promise<{ valid: boolean; email?: string }> {
-  const payload = await verifyData<{
-    sub: string;
-    email: string;
-    role: string;
-    exp: number;
-  }>(token);
+export async function verifyAdminSessionToken(
+  token: string
+): Promise<{ valid: boolean; email?: string; jti?: string; exp?: number }> {
+  try {
+    const payload = await verifyData<AdminSessionPayload>(token);
+    if (!payload || payload.sub !== "admin" || payload.role !== "admin") {
+      return { valid: false };
+    }
 
-  if (payload && payload.sub === "admin" && payload.role === "admin") {
-    return { valid: true, email: payload.email };
+    // Verifică revocarea server-side a sesiunii (după jti sau invalidare globală)
+    const isRevoked = await isSessionRevoked(payload.jti, payload.iat);
+    if (isRevoked) {
+      return { valid: false };
+    }
+
+    return { valid: true, email: payload.email, jti: payload.jti, exp: payload.exp };
+  } catch {
+    return { valid: false };
   }
-  return { valid: false };
 }
 
+/**
+ * RZN-06: Revocă sesiunea curentă server-side
+ */
+export async function revokeCurrentSession(token: string): Promise<void> {
+  try {
+    const payload = await verifyData<AdminSessionPayload>(token);
+    if (payload && payload.jti && payload.exp) {
+      await revokeSession(payload.jti, payload.exp);
+    }
+  } catch (err) {
+    console.error("Eroare la revocarea sesiunii curente:", err);
+  }
+}
+
+/**
+ * RZN-06: Invalidează global toate sesiunile administrative (după schimbarea parolei)
+ */
+export async function invalidateAllAdminSessions(): Promise<void> {
+  await revokeAllSessions();
+}
