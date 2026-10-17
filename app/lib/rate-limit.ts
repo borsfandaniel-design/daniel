@@ -1,7 +1,12 @@
 /**
- * RZN-04: Rate Limiting Distribuit & Prevenire DDoS / Brute-Force
- * OBS-01: Integrare cu identificarea securizată a IP-ului clientului
- * Suportă Upstash Redis REST pentru medii serverless / multi-instance cu fallback local și tratare explicită a erorilor.
+ * SWI-10 (fost RZN-04 / RZN-10): Rate Limiting Distribuit & Prevenire DDoS / Brute-Force
+ * SWI-11: Integrare cu identificarea securizată a IP-ului clientului
+ *
+ * CERINȚE DE SECURITATE:
+ * 1. Redis este obligatoriu în producție.
+ * 2. Nu permite fallback silențios la Map în memorie când Redis nu funcționează în producție.
+ * 3. În caz de indisponibilitate în producție, aplică o politică defensivă controlată (fail-closed / throttled).
+ * 4. Fallback-ul local este permis exclusiv în dezvoltare.
  */
 
 import { getClientIp, isValidIp } from "./client-ip";
@@ -18,6 +23,7 @@ export interface RateLimitResult {
   remaining: number;
   resetAt: number;
   retryAfterSeconds: number;
+  error?: string;
 }
 
 interface LocalMemoryRecord {
@@ -25,10 +31,10 @@ interface LocalMemoryRecord {
   resetAt: number;
 }
 
-// Stocare locală de rezervă (folosită în dev sau când serviciul distribuit este indisponibil)
+// Stocare locală în memorie (permisă EXCLUSIV în dezvoltare)
 const localStore = new Map<string, LocalMemoryRecord>();
 
-if (typeof setInterval !== "undefined") {
+if (typeof setInterval !== "undefined" && process.env.NODE_ENV !== "production") {
   setInterval(() => {
     const now = Date.now();
     for (const [key, record] of localStore.entries()) {
@@ -91,7 +97,7 @@ async function checkDistributedRedisRateLimit(
     const ttlSeconds = Math.ceil(options.windowMs / 1000);
     const key = `ratelimit:${identifier}`;
 
-    // Pipeline atomic Redis: INCR urmat de EXPIRE la prima incrementare
+    // Pipeline atomic Redis: INCR urmat de TTL
     const pipeline = [
       ["INCR", key],
       ["TTL", key],
@@ -121,7 +127,7 @@ async function checkDistributedRedisRateLimit(
     const count = Number(data[0]?.result);
     let ttl = Number(data[1]?.result);
 
-    // Dacă cheia nu avea TTL (-1), setăm TTL
+    // Dacă cheia nu avea TTL (-1 sau la prima cerere), setăm TTL atomic
     if (count === 1 || ttl <= 0) {
       await fetch(`${url}/EXPIRE/${key}/${ttlSeconds}`, {
         method: "POST",
@@ -150,18 +156,26 @@ async function checkDistributedRedisRateLimit(
       retryAfterSeconds: 0,
     };
   } catch (err) {
-    console.warn("Serviciul distribuit de rate limiting este temporar indisponibil. Se aplică fallback local:", (err as any)?.message);
+    console.warn("Eroare comunicare cu serviciul Redis rate limit:", (err as any)?.message);
     return null;
   }
 }
 
 /**
- * Verifică rata de cereri apelând store-ul distribuit dacă este configurat, cu fallback local sigur
+ * Verifică rata de cereri apelând store-ul distribuit.
+ *
+ * În PRODUCȚIE:
+ * - Nu permite fallback silențios la Map în memorie.
+ * - Dacă Redis lipsește sau este indisponibil, aplică o politică defensivă fail-closed controlată.
+ *
+ * În DEZVOLTARE:
+ * - Folosește Redis dacă este configurat, altfel memorie locală.
  */
 export async function checkRateLimitAsync(
   identifier: string,
   options: RateLimitOptions
 ): Promise<RateLimitResult> {
+  const isProduction = process.env.NODE_ENV === "production";
   const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
   const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 
@@ -172,17 +186,34 @@ export async function checkRateLimitAsync(
     }
   }
 
-  // Fallback local garantat
+  // SWI-10: Tratare în producție fără fallback silențios la Map
+  if (isProduction) {
+    console.error(
+      `SECURITATE: Serviciul distribuit Redis de rate limiting este indisponibil în producție pentru '${identifier}'. Se aplică politica de apărare fail-closed.`
+    );
+    return {
+      success: false,
+      remaining: 0,
+      resetAt: Date.now() + 60000,
+      retryAfterSeconds: 60,
+      error: "Serviciul de securitate este temporar indisponibil. Te rugăm să încerci din nou peste câteva momente.",
+    };
+  }
+
+  // Fallback local garantat EXCLUSIV pentru dezvoltare
   return checkLocalRateLimit(identifier, options);
 }
 
 /**
- * Versiune sincronă compatibilă (folosește memoria locală direct)
+ * Versiune sincronă compatibilă (folosită doar în dev)
  */
 export function checkRateLimit(
   identifier: string,
   options: RateLimitOptions
 ): RateLimitResult {
+  if (process.env.NODE_ENV === "production") {
+    console.warn("checkRateLimit sincron este apelat în producție. Se recomandă checkRateLimitAsync.");
+  }
   return checkLocalRateLimit(identifier, options);
 }
 
@@ -199,15 +230,11 @@ export async function resetRateLimitAsync(identifier: string): Promise<void> {
     try {
       await fetch(`${redisUrl}/DEL/ratelimit:${identifier}`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${tokenFromUrl(redisToken)}` },
+        headers: { Authorization: `Bearer ${redisToken.trim()}` },
         cache: "no-store",
       });
     } catch {}
   }
-}
-
-function tokenFromUrl(token: string): string {
-  return token.trim();
 }
 
 export function resetRateLimit(identifier: string): void {

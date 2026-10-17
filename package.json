@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test test/security.test.ts"
+    "test": "node ./node_modules/jiti/lib/jiti-cli.mjs ./test/security.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -15,7 +15,7 @@
     "framer-motion": "^13.5.1",
     "git": "^0.1.5",
     "lucide-react": "^1.48.0",
-    "next": "16.2.6",
+    "next": "16.2.12",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "resend": "^6.28.1"
@@ -26,7 +26,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
+    "eslint-config-next": "16.2.12",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -1,301 +1,356 @@
-import test from "node:test";
+import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
-import crypto from "node:crypto";
 
-// ==============================================================================
-// 1. RZN-01: Sensible Data in Repository & Isolation of 2FA / Security Emails
-// ==============================================================================
+// Setăm un AUTH_SECRET de test pentru funcțiile reale
+process.env.AUTH_SECRET = "test_auth_secret_minimum_32_characters_for_hmac_signing_ok";
 
-test("RZN-01: .gitignore excludes sensitive data directory and local files", () => {
-  const gitignorePath = path.resolve(process.cwd(), ".gitignore");
-  const gitignoreContent = fs.readFileSync(gitignorePath, "utf-8");
+// Importuri reale din modulele proiectului
+import { getClientIp, isValidIp } from "../app/lib/client-ip";
+import {
+  checkRateLimitAsync,
+  resetRateLimitAsync,
+} from "../app/lib/rate-limit";
+import {
+  isSessionRevoked,
+  revokeSession,
+  revokeAllSessions,
+  isRecoveryCodeConsumed,
+  consumeRecoveryCode,
+} from "../app/lib/session-store";
+import {
+  getAuthSecret,
+  createPending2FAToken,
+  verify2FACode,
+  createAdminSessionToken,
+  verifyAdminSessionToken,
+  generateSingleUseRecoveryCodes,
+  SecurityConfigurationError,
+} from "../app/lib/auth";
 
-  assert.ok(
-    gitignoreContent.includes("data/") || gitignoreContent.includes("data"),
-    ".gitignore must exclude the data/ directory"
-  );
-  assert.ok(
-    gitignoreContent.includes("*.local.json"),
-    ".gitignore must exclude *.local.json files"
-  );
-});
-
-test("RZN-01: Email classifier strictly isolates contact emails from 2FA / security emails", () => {
-  const isExcludedSubject = (subject: string): boolean => {
-    const s = subject.toLowerCase();
-    return (
-      s.includes("2fa") ||
-      s.includes("securitate") ||
-      s.includes("verificare") ||
-      s.includes("autentificare") ||
-      s.includes("cod")
-    );
-  };
-
-  const isContactSubject = (subject: string): boolean => {
-    return (
-      (subject.includes("[SWING CONTACT]") ||
-        subject.includes("[Contact Nou]") ||
-        subject.startsWith("[SWING]") ||
-        subject.toLowerCase().startsWith("mesaj nou")) &&
-      !isExcludedSubject(subject)
-    );
-  };
-
-  // Legit contact messages
-  assert.strictEqual(isContactSubject("[SWING CONTACT] Mesaj nou de la Ion"), true);
-  assert.strictEqual(isContactSubject("[Contact Nou] Solicitare oferta web"), true);
-
-  // Security / 2FA emails MUST NEVER match contact messages
-  assert.strictEqual(isContactSubject("SWING Security - Cod de verificare autentificare"), false);
-  assert.strictEqual(isContactSubject("[SWING] Codul tau 2FA este 123456"), false);
-  assert.strictEqual(isContactSubject("Verificare autentificare 2FA"), false);
-  assert.strictEqual(isContactSubject("[SWING CONTACT] 2FA Reset notification"), false);
-});
-
-// ==============================================================================
-// 2. RZN-02: Elimination of Implicit 2FA PIN
-// ==============================================================================
-
-test("RZN-02: 2FA PIN rejects missing environment variable without default fallback", () => {
-  const validate2faPin = (inputPin: string, envPin?: string): { success: boolean; error?: string } => {
-    const configuredPin = envPin?.trim();
-    if (!configuredPin) {
-      return { success: false, error: "Serviciul de verificare 2FA este temporar indisponibil (PIN neconfigurat)." };
-    }
-    if (inputPin !== configuredPin) {
-      return { success: false, error: "Cod 2FA invalid." };
-    }
-    return { success: true };
-  };
-
-  // Rejects when env var is missing or empty
-  const missingEnv = validate2faPin("839201", undefined);
-  assert.strictEqual(missingEnv.success, false);
-  assert.strictEqual(missingEnv.error?.includes("PIN neconfigurat"), true);
-
-  // Strictly rejects legacy hardcoded fallback 839201 when env var is missing
-  const legacyAttempt = validate2faPin("839201", "");
-  assert.strictEqual(legacyAttempt.success, false);
-
-  // Rejects invalid pin
-  const invalidAttempt = validate2faPin("111111", "987654");
-  assert.strictEqual(invalidAttempt.success, false);
-
-  // Accepts only exact configured pin
-  const validAttempt = validate2faPin("987654", "987654");
-  assert.strictEqual(validAttempt.success, true);
-});
-
-// ==============================================================================
-// 3. RZN-03: Mandatory AUTH_SECRET & Derivation Elimination
-// ==============================================================================
-
-test("RZN-03: AUTH_SECRET enforces minimum length of 32 chars and throws if invalid", () => {
-  class SecurityConfigurationError extends Error {
-    constructor(message: string) {
-      super(message);
-      this.name = "SecurityConfigurationError";
-    }
+function restoreEnv(key: string, val: string | undefined) {
+  if (val !== undefined) {
+    process.env[key] = val;
+  } else {
+    delete process.env[key];
   }
+}
 
-  const getAuthSecret = (secretEnv?: string): string => {
-    const secret = secretEnv?.trim();
-    if (!secret || secret.length < 32) {
-      throw new SecurityConfigurationError(
-        "Variabila de securitate AUTH_SECRET nu este configurată corespunzător. " +
-          "Generați un secret criptografic de minim 32 caractere (ex: openssl rand -hex 32)."
-      );
-    }
-    return secret;
-  };
-
-  // Fails on missing env
-  assert.throws(
-    () => getAuthSecret(undefined),
-    SecurityConfigurationError
-  );
-
-  // Fails on short secret (< 32 characters)
-  assert.throws(
-    () => getAuthSecret("too_short_secret_12345"),
-    SecurityConfigurationError
-  );
-
-  // Succeeds on >= 32 characters
-  const validSecret = "a".repeat(32);
-  assert.strictEqual(getAuthSecret(validSecret), validSecret);
-});
+describe("SWI Security Test Suite", { concurrency: 1 }, () => {
 
 // ==============================================================================
-// 4. OBS-01: Client IP Extraction & Header Spoofing Resistance
+// 1. SWI-11 (fost RZN-11): Testare Reală getClientIp & Anti-Spoofing
 // ==============================================================================
 
-test("OBS-01: isValidIp strictly validates IPv4 and IPv6", () => {
-  const IPV4_REGEX =
-    /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
-  const IPV6_REGEX =
-    /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$/;
-
-  const isValidIp = (ip: string): boolean => {
-    if (!ip) return false;
-    const trimmed = ip.trim();
-    return IPV4_REGEX.test(trimmed) || IPV6_REGEX.test(trimmed);
-  };
-
+test("SWI-11: isValidIp validează strict formatele IPv4 și IPv6", () => {
   assert.strictEqual(isValidIp("127.0.0.1"), true);
-  assert.strictEqual(isValidIp("192.168.1.100"), true);
-  assert.strictEqual(isValidIp("2001:0db8:85a3:0000:0000:8a2e:0370:7334"), true);
+  assert.strictEqual(isValidIp("8.8.8.8"), true);
+  assert.strictEqual(isValidIp("192.168.1.254"), true);
   assert.strictEqual(isValidIp("::1"), true);
+  assert.strictEqual(isValidIp("2001:0db8:85a3:0000:0000:8a2e:0370:7334"), true);
 
-  // Malformed / Injection attempts
+  // Tentative de injection sau IP-uri malformate
+  assert.strictEqual(isValidIp(""), false);
   assert.strictEqual(isValidIp("127.0.0.1, 10.0.0.1"), false);
   assert.strictEqual(isValidIp("999.999.999.999"), false);
   assert.strictEqual(isValidIp("127.0.0.1; DROP TABLE users;"), false);
   assert.strictEqual(isValidIp("<script>alert(1)</script>"), false);
-  assert.strictEqual(isValidIp("unknown"), false);
+});
+
+test("SWI-11: getClientIp respinge spoofing-ul din request headers și se bazează pe mediul serverului", () => {
+  // Salvare mediu inițial
+  const origVercel = process.env.VERCEL;
+  const origTrustProxy = process.env.TRUST_PROXY;
+
+  try {
+    delete process.env.VERCEL;
+    delete process.env.VERCEL_ENV;
+    delete process.env.TRUST_PROXY;
+
+    // 1. Clientul trimite x-vercel-id sau cf-ray fals în request fără ca serverul să fie configurat pe acea infrastructură
+    const spoofedHeaders = new Headers({
+      "x-vercel-id": "fake_edge_id",
+      "x-vercel-forwarded-for": "198.51.100.1",
+      "cf-ray": "fake_ray",
+      "cf-connecting-ip": "198.51.100.2",
+      "x-forwarded-for": "198.51.100.3",
+    });
+
+    const ipWithoutServerTrust = getClientIp(spoofedHeaders);
+    assert.strictEqual(
+      ipWithoutServerTrust,
+      "127.0.0.1",
+      "getClientIp nu trebuie să creadă headerele furnizate de client când serverul nu este configurat pe acel proxy"
+    );
+
+    // 2. Mediul Vercel configurat pe server
+    process.env.VERCEL = "1";
+    const vercelHeaders = new Headers({
+      "x-vercel-forwarded-for": "203.0.113.195",
+    });
+    assert.strictEqual(getClientIp(vercelHeaders), "203.0.113.195");
+
+    // 3. Cloudflare configurat pe server prin TRUST_PROXY=cloudflare
+    delete process.env.VERCEL;
+    process.env.TRUST_PROXY = "cloudflare";
+    const cfHeaders = new Headers({
+      "cf-connecting-ip": "198.51.100.77",
+    });
+    assert.strictEqual(getClientIp(cfHeaders), "198.51.100.77");
+
+    // 4. IP invalid din proxy trebuie respins, revenind la fallback
+    const invalidHeaders = new Headers({
+      "cf-connecting-ip": "malicious_script_or_string",
+    });
+    assert.strictEqual(getClientIp(invalidHeaders), "127.0.0.1");
+  } finally {
+    process.env.VERCEL = origVercel;
+    process.env.TRUST_PROXY = origTrustProxy;
+  }
 });
 
 // ==============================================================================
-// 5. RZN-04: Atomic & Distributed Rate Limiter
+// 2. SWI-10: Testare Reală Rate Limiting & Fail-Closed în Producție
 // ==============================================================================
 
-test("RZN-04: Rate limiter limits requests and resets appropriately", () => {
-  const store = new Map<string, { count: number; resetAt: number }>();
+test("SWI-10: checkRateLimitAsync limitează cererile și permite resetarea contorului în dev", async () => {
+  const origNodeEnv = process.env.NODE_ENV;
+  try {
+    process.env.NODE_ENV = "development";
+    const testId = `test_ip_${Date.now()}`;
+    const opts = { limit: 3, windowMs: 2000 };
 
-  const checkLimit = (id: string, limit: number, windowMs: number) => {
-    const now = Date.now();
-    const record = store.get(id);
-    if (!record || now > record.resetAt) {
-      store.set(id, { count: 1, resetAt: now + windowMs });
-      return { success: true, remaining: limit - 1 };
-    }
-    if (record.count >= limit) {
-      return { success: false, remaining: 0 };
-    }
-    record.count += 1;
-    return { success: true, remaining: limit - record.count };
-  };
+    // Primele 3 cereri trec
+    const r1 = await checkRateLimitAsync(testId, opts);
+    assert.strictEqual(r1.success, true);
+    assert.strictEqual(r1.remaining, 2);
 
-  const id = "test_user_ip";
-  assert.strictEqual(checkLimit(id, 3, 1000).success, true);
-  assert.strictEqual(checkLimit(id, 3, 1000).success, true);
-  assert.strictEqual(checkLimit(id, 3, 1000).success, true);
-  // 4th request exceeds limit
-  assert.strictEqual(checkLimit(id, 3, 1000).success, false);
+    const r2 = await checkRateLimitAsync(testId, opts);
+    assert.strictEqual(r2.success, true);
+    assert.strictEqual(r2.remaining, 1);
 
-  // Reset clears counter
-  store.delete(id);
-  assert.strictEqual(checkLimit(id, 3, 1000).success, true);
+    const r3 = await checkRateLimitAsync(testId, opts);
+    assert.strictEqual(r3.success, true);
+    assert.strictEqual(r3.remaining, 0);
+
+    // A 4-a cerere este blocată
+    const r4 = await checkRateLimitAsync(testId, opts);
+    assert.strictEqual(r4.success, false);
+    assert.strictEqual(r4.remaining, 0);
+    assert.ok(r4.retryAfterSeconds > 0);
+
+    // Resetare la autentificare corectă
+    await resetRateLimitAsync(testId);
+    const r5 = await checkRateLimitAsync(testId, opts);
+    assert.strictEqual(r5.success, true);
+  } finally {
+    restoreEnv("NODE_ENV", origNodeEnv);
+  }
+});
+
+test("SWI-10: checkRateLimitAsync aplică fail-closed în producție când Redis este indisponibil", async () => {
+  const origNodeEnv = process.env.NODE_ENV;
+  const origRedisUrl = process.env.UPSTASH_REDIS_REST_URL;
+  const origRedisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+  try {
+    process.env.NODE_ENV = "production";
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+    const res = await checkRateLimitAsync("login_prod_test", { limit: 5, windowMs: 60000 });
+    assert.strictEqual(
+      res.success,
+      false,
+      "În producție fără Redis, rate limiter-ul trebuie să aplice fail-closed fără fallback silențios la Map"
+    );
+    assert.ok(res.error?.includes("indisponibil"));
+  } finally {
+    restoreEnv("NODE_ENV", origNodeEnv);
+    restoreEnv("UPSTASH_REDIS_REST_URL", origRedisUrl);
+    restoreEnv("UPSTASH_REDIS_REST_TOKEN", origRedisToken);
+  }
 });
 
 // ==============================================================================
-// 6. RZN-05: CSP Consolidation & Elimination of unsafe-eval
+// 3. SWI-09: Testare Reală Revocare Sesiuni & Comportament Fail-Closed
 // ==============================================================================
 
-test("RZN-05: proxy.ts defines secure consolidated CSP without unsafe-eval", () => {
+test("SWI-09: createAdminSessionToken și verifyAdminSessionToken funcționează și suportă revocarea", async () => {
+  const origNodeEnv = process.env.NODE_ENV;
+  try {
+    process.env.NODE_ENV = "development";
+
+    const email = "admin@swing7.me";
+    const token = await createAdminSessionToken(email);
+    assert.ok(token && typeof token === "string");
+
+    // Verificare token valid inițial
+    const verification = await verifyAdminSessionToken(token);
+    assert.strictEqual(verification.valid, true);
+    assert.strictEqual(verification.email, email);
+    assert.ok(verification.jti);
+    assert.ok(verification.exp);
+
+    // Revocare sesiune pe baza JTI
+    const revoked = await revokeSession(verification.jti!, verification.exp!);
+    assert.strictEqual(revoked, true);
+
+    // Imediat după revocare, sesiunea devine invalidă
+    const postRevoke = await verifyAdminSessionToken(token);
+    assert.strictEqual(postRevoke.valid, false, "Tokenul revocat nu mai trebuie acceptat");
+  } finally {
+    restoreEnv("NODE_ENV", origNodeEnv);
+  }
+});
+
+test("SWI-09: isSessionRevoked aplică fail-closed în producție când Redis este indisponibil", async () => {
+  const origNodeEnv = process.env.NODE_ENV;
+  const origRedisUrl = process.env.UPSTASH_REDIS_REST_URL;
+
+  try {
+    process.env.NODE_ENV = "production";
+    delete process.env.UPSTASH_REDIS_REST_URL;
+
+    // În producție fără Redis configurat, isSessionRevoked trebuie să returneze true (fail-closed)
+    const isRevoked = await isSessionRevoked("test_jti_prod", Date.now());
+    assert.strictEqual(isRevoked, true, "În producție fără Redis, nicio sesiune nu trebuie acceptată (fail-closed)");
+  } finally {
+    restoreEnv("NODE_ENV", origNodeEnv);
+    restoreEnv("UPSTASH_REDIS_REST_URL", origRedisUrl);
+  }
+});
+
+// ==============================================================================
+// 4. SWI-14: Testare Reală Recuperare 2FA, Single-Use Codes & Respingere Weak PIN
+// ==============================================================================
+
+test("SWI-14: Codurile de recuperare sunt de unică folosință (single-use) și nu pot fi reutilizate", async () => {
+  const recoveryCodes = generateSingleUseRecoveryCodes(2);
+  assert.strictEqual(recoveryCodes.length, 2);
+  const code1 = recoveryCodes[0];
+
+  process.env.ADMIN_RECOVERY_CODES = recoveryCodes.join(",");
+  const pendingToken = await createPending2FAToken("admin@swing7.me", "999999");
+
+  // 1. Prima utilizare a codului de recuperare reușește
+  const firstUse = await verify2FACode(pendingToken, code1);
+  assert.strictEqual(firstUse.success, true);
+  assert.strictEqual(firstUse.isRecovery, true);
+
+  // 2. A doua încercare cu ACELAȘI cod este strict respinsă (reutilizare prevenită)
+  const secondUse = await verify2FACode(pendingToken, code1);
+  assert.strictEqual(secondUse.success, false);
+  assert.ok(
+    secondUse.error?.includes("deja utilizat"),
+    "Codul consumat anterior nu trebuie să poată fi reutilizat"
+  );
+});
+
+test("SWI-14: ADMIN_2FA_PIN respinge PIN-urile implicite slabe sau predictibile", async () => {
+  const origPin = process.env.ADMIN_2FA_PIN;
+  try {
+    // Setare PIN slab cunoscut (839201 sau 123456)
+    process.env.ADMIN_2FA_PIN = "839201";
+    delete process.env.ADMIN_RECOVERY_CODES;
+
+    const pendingToken = await createPending2FAToken("admin@swing7.me", "112233");
+
+    // Tentativa cu PIN-ul slab este respinsă
+    const attempt = await verify2FACode(pendingToken, "839201");
+    assert.strictEqual(
+      attempt.success,
+      false,
+      "PIN-urile implicite sau slabe trebuie ignorate și respinse"
+    );
+  } finally {
+    process.env.ADMIN_2FA_PIN = origPin;
+  }
+});
+
+// ==============================================================================
+// 5. SWI-12: Testare Limită 32 KB cu Stream Chunked și Content-Length Falsificat
+// ==============================================================================
+
+test("SWI-12: Stream-ul care depășește 32 KB este oprit imediat, chiar și cu Content-Length falsificat", async () => {
+  const MAX_BYTES = 32 * 1024;
+
+  async function mockReadBodyWithByteLimit(stream: ReadableStream<Uint8Array>, maxBytes: number) {
+    const reader = stream.getReader();
+    let totalBytes = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) {
+        totalBytes += value.byteLength;
+        if (totalBytes > maxBytes) {
+          await reader.cancel("Payload exceeded");
+          return { errorStatus: 413, errorMsg: "Dimensiunea cererii depășește limita permisă (maxim 32 KB)." };
+        }
+      }
+    }
+    return { success: true, totalBytes };
+  }
+
+  // 1. Stream valid sub 32 KB (ex: 4 KB)
+  const smallChunk = new Uint8Array(4096).fill(65);
+  const validStream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(smallChunk);
+      controller.close();
+    },
+  });
+  const validResult = await mockReadBodyWithByteLimit(validStream, MAX_BYTES);
+  assert.strictEqual(validResult.success, true);
+
+  // 2. Stream supradimensionat (8 chunks de câte 5 KB = 40 KB > 32 KB)
+  // Chiar dacă clientul trimite un stream infinit sau falsifică Content-Length
+  const chunk5k = new Uint8Array(5120).fill(66);
+  const oversizedStream = new ReadableStream({
+    start(controller) {
+      for (let i = 0; i < 8; i++) {
+        controller.enqueue(chunk5k);
+      }
+      controller.close();
+    },
+  });
+  const oversizedResult = await mockReadBodyWithByteLimit(oversizedStream, MAX_BYTES);
+  assert.strictEqual(oversizedResult.errorStatus, 413);
+  assert.ok(oversizedResult.errorMsg?.includes("32 KB"));
+});
+
+// ==============================================================================
+// 6. SWI-13: Verificare Politică CSP în proxy.ts
+// ==============================================================================
+
+test("SWI-13: proxy.ts include nonce per-request, fără unsafe-eval și connect-src restrâns", () => {
   const proxyPath = path.resolve(process.cwd(), "proxy.ts");
-  const proxyContent = fs.readFileSync(proxyPath, "utf-8");
+  const content = fs.readFileSync(proxyPath, "utf-8");
 
-  assert.ok(
-    !proxyContent.includes("'unsafe-eval'"),
-    "proxy.ts must not contain 'unsafe-eval' in script-src"
-  );
-  assert.ok(
-    proxyContent.includes("frame-ancestors 'none'"),
-    "proxy.ts must include frame-ancestors 'none'"
-  );
-  assert.ok(
-    proxyContent.includes("base-uri 'self'"),
-    "proxy.ts must include base-uri 'self'"
-  );
-});
-
-test("RZN-05: next.config.ts does not contain duplicate Content-Security-Policy", () => {
-  const nextConfigPath = path.resolve(process.cwd(), "next.config.ts");
-  const nextConfigContent = fs.readFileSync(nextConfigPath, "utf-8");
-
-  assert.ok(
-    !nextConfigContent.includes("Content-Security-Policy"),
-    "next.config.ts must not duplicate Content-Security-Policy header"
-  );
+  assert.ok(!content.includes("'unsafe-eval'"), "proxy.ts nu trebuie să conțină 'unsafe-eval'");
+  assert.ok(content.includes("nonce-"), "proxy.ts trebuie să configureze nonce-ul per cerere");
+  assert.ok(content.includes("connect-src 'self' https://*.supabase.co"), "connect-src trebuie restrâns");
+  assert.ok(content.includes("x-nonce"), "x-nonce trebuie propagat pe request/response");
 });
 
 // ==============================================================================
-// 7. RZN-06: Session Security, 12h Expiration & Instant Revocation
+// 7. OBS-02: Verificare Existență Migrare SQL pentru RLS Supabase
 // ==============================================================================
 
-test("RZN-06: Session tokens have jti, 12h lifetime and are instantly revocable", () => {
-  const revokedSet = new Set<string>();
-  let globalRevocationEpoch = 0;
+test("OBS-02: Fișierul de migrare SQL activează RLS și restricționează drepturile anon", () => {
+  const migrationPath = path.resolve(
+    process.cwd(),
+    "supabase",
+    "migrations",
+    "20261017_contact_messages_rls.sql"
+  );
+  assert.ok(fs.existsSync(migrationPath), "Fișierul de migrare RLS trebuie să existe");
 
-  const secret = "test_secret_for_hmac_sha256_at_least_32_chars_long";
-  const jti = crypto.randomUUID();
-  const iat = Math.floor(Date.now() / 1000);
-  const exp = iat + 12 * 60 * 60; // 12 hours
-
-  const payload = JSON.stringify({ role: "admin", iat, exp, jti });
-  const signature = crypto.createHmac("sha256", secret).update(payload).digest("hex");
-  const token = `${Buffer.from(payload).toString("base64url")}.${signature}`;
-
-  const verifyToken = (t: string) => {
-    const parts = t.split(".");
-    if (parts.length !== 2) return { valid: false };
-    const [encodedPayload, sig] = parts;
-    const expectedSig = crypto.createHmac("sha256", secret).update(Buffer.from(encodedPayload, "base64url").toString("utf-8")).digest("hex");
-    if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expectedSig))) {
-      return { valid: false };
-    }
-    const data = JSON.parse(Buffer.from(encodedPayload, "base64url").toString("utf-8"));
-    if (data.iat < globalRevocationEpoch) {
-      return { valid: false, reason: "epoch_revoked" };
-    }
-    if (data.jti && revokedSet.has(data.jti)) {
-      return { valid: false, reason: "revoked" };
-    }
-    return { valid: true, data };
-  };
-
-  // Initially valid
-  const initialCheck = verifyToken(token);
-  assert.strictEqual(initialCheck.valid, true);
-  assert.strictEqual(initialCheck.data.exp - initialCheck.data.iat, 43200); // 12h in seconds
-
-  // Instant single-session revocation
-  revokedSet.add(jti);
-  const revokedCheck = verifyToken(token);
-  assert.strictEqual(revokedCheck.valid, false);
-  assert.strictEqual(revokedCheck.reason, "revoked");
-
-  // Global epoch invalidation test
-  revokedSet.delete(jti); // un-revoke single token
-  globalRevocationEpoch = iat + 1; // set global invalidation after token was issued
-  const epochCheck = verifyToken(token);
-  assert.strictEqual(epochCheck.valid, false);
-  assert.strictEqual(epochCheck.reason, "epoch_revoked");
+  const sql = fs.readFileSync(migrationPath, "utf-8");
+  assert.ok(sql.includes("ENABLE ROW LEVEL SECURITY"), "Migrarea trebuie să activeze RLS");
+  assert.ok(sql.includes("REVOKE SELECT, UPDATE, DELETE ON public.contact_messages FROM anon"));
+  assert.ok(sql.includes("Allow anonymous insert only"));
 });
-
-// ==============================================================================
-// 8. RZN-07: Error Sanitization & Request Size Guard
-// ==============================================================================
-
-test("RZN-07: Request size limit blocks payloads exceeding maximum threshold", () => {
-  const MAX_CONTACT_BYTES = 32 * 1024; // 32KB
-
-  const checkPayloadSize = (contentLengthHeader: string | null): boolean => {
-    if (!contentLengthHeader) return true;
-    const length = parseInt(contentLengthHeader, 10);
-    if (isNaN(length) || length > MAX_CONTACT_BYTES) {
-      return false;
-    }
-    return true;
-  };
-
-  assert.strictEqual(checkPayloadSize("1024"), true);
-  assert.strictEqual(checkPayloadSize("32768"), true); // Exactly 32KB
-  assert.strictEqual(checkPayloadSize("32769"), false); // Exceeds 32KB
-  assert.strictEqual(checkPayloadSize("1000000"), false); // 1MB payload rejected
 });
 

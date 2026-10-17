@@ -76,8 +76,19 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 4. Continuă cererea și aplică anteturi de securitate militare (Strict Security Headers)
-  const response = NextResponse.next();
+  // 4. SWI-13: Generare nonce criptografic per cerere și propagare pe requestHeaders
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+
+  const response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
+
+  // Expunere x-nonce pe răspuns pentru verificare și consumare server components
+  response.headers.set("x-nonce", nonce);
 
   // Protecție anti-clickjacking (site-ul nu poate fi încorporat în iframes ascunse)
   response.headers.set("X-Frame-Options", "DENY");
@@ -94,11 +105,20 @@ export async function proxy(request: NextRequest) {
   // Protecție XSS
   response.headers.set("X-XSS-Protection", "1; mode=block");
 
-  // Content Security Policy (CSP) consolidat: fără unsafe-eval, frame-ancestors none, base-uri & form-action self
-  response.headers.set(
-    "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https: blob:; font-src 'self' data: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
-  );
+  // SWI-13: Content Security Policy (CSP) consolidat cu nonce per cerere, fără unsafe-eval, connect-src restrâns la Supabase & self
+  const cspHeader = [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'unsafe-inline'`,
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: https: blob:",
+    "font-src 'self' data:",
+    "connect-src 'self' https://*.supabase.co",
+    "frame-ancestors 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+  ].join("; ");
+
+  response.headers.set("Content-Security-Policy", cspHeader);
 
   // HSTS (HTTP Strict Transport Security) - obligă conexiunea HTTPS pe producție
   if (process.env.NODE_ENV === "production") {

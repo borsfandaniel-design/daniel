@@ -5,10 +5,17 @@
  * RZN-06: Sesiuni administrative revocabile server-side cu jti, expirare la 12 ore și epoch global.
  */
 
-import { isSessionRevoked, revokeSession, revokeAllSessions } from "./session-store";
+import {
+  isSessionRevoked,
+  revokeSession,
+  revokeAllSessions,
+  isRecoveryCodeConsumed,
+  consumeRecoveryCode,
+} from "./session-store";
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
+const WEAK_PINS = new Set(["123456", "839201", "000000", "111111", "999999", "654321", "123123"]);
 
 export class SecurityConfigurationError extends Error {
   constructor(message: string) {
@@ -152,16 +159,46 @@ export async function createPending2FAToken(email: string, code: string): Promis
 }
 
 /**
- * RZN-02: Verificare cod 2FA
- * Elimină complet orice PIN implicit (ex: 839201).
- * Acceptă exclusiv:
- * 1. Codul dinamic de 6 cifre expediat pe email
- * 2. Un PIN de urgență explicit configurat în ADMIN_2FA_PIN (fără valori implicite)
+ * SWI-14: Generează un set de coduri de recuperare criptografice unice (ex: format SWING-XXXX-XXXX)
+ */
+export function generateSingleUseRecoveryCodes(count = 6): string[] {
+  const codes: string[] = [];
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // Base32 fără caractere ambigue (O, 0, I, 1)
+  for (let i = 0; i < count; i++) {
+    const randomBytes = new Uint8Array(8);
+    crypto.getRandomValues(randomBytes);
+    let part1 = "";
+    let part2 = "";
+    for (let j = 0; j < 4; j++) {
+      part1 += chars[randomBytes[j] % chars.length];
+      part2 += chars[randomBytes[j + 4] % chars.length];
+    }
+    codes.push(`SWING-${part1}-${part2}`);
+  }
+  return codes;
+}
+
+/**
+ * Normalizare cod de recuperare (elimină spații, cratime și convertește la majuscule)
+ */
+function normalizeRecoveryCode(raw: string): string {
+  return raw.replace(/[-\s]/g, "").toUpperCase();
+}
+
+/**
+ * SWI-14 (fost RZN-02 / RZN-14): Verificare securizată a codului 2FA
+ *
+ * Ierarhie de acceptare:
+ * 1. Codul OTP dinamic de 6 cifre expediat pe email (valabil 10 minute).
+ * 2. Coduri de recuperare unice generate criptografic (ADMIN_RECOVERY_CODES),
+ *    verificate prin hash și marcate atomic ca utilizate (single-use).
+ * 3. PIN de rezervă configurat explicit (ADMIN_2FA_PIN), cu respingerea strictă
+ *    a valorilor implicite/slabe (ex: 123456, 839201).
  */
 export async function verify2FACode(
   pendingToken: string,
   inputCode: string
-): Promise<{ success: boolean; email?: string; error?: string }> {
+): Promise<{ success: boolean; email?: string; error?: string; isRecovery?: boolean }> {
   const cleanCode = inputCode.trim();
   if (!cleanCode || cleanCode.length < 6) {
     return { success: false, error: "Codul 2FA trebuie să conțină minimum 6 caractere." };
@@ -183,25 +220,69 @@ export async function verify2FACode(
     };
   }
 
-  // 2. Verificare cod de rezervă explicit configurat în ADMIN_2FA_PIN (fără fallback hardcodat)
-  const configuredEmergencyPin = process.env.ADMIN_2FA_PIN?.trim();
-  if (configuredEmergencyPin && configuredEmergencyPin.length >= 6) {
-    if (cleanCode === configuredEmergencyPin) {
-      return { success: true, email: payload.email };
+  const secret = getAuthSecret();
+  const key = await getCryptoKey(secret);
+
+  // 2. SWI-14: Verificare cod dinamic OTP (HMAC-SHA256)
+  const inputOtpHashBuffer = await crypto.subtle.sign("HMAC", key, encoder.encode(cleanCode));
+  const inputOtpHash = bytesToHex(new Uint8Array(inputOtpHashBuffer));
+
+  if (inputOtpHash === payload.codeHash) {
+    return { success: true, email: payload.email, isRecovery: false };
+  }
+
+  // 3. SWI-14: Verificare coduri de recuperare criptografice unice (ADMIN_RECOVERY_CODES)
+  const recoveryCodesEnv = process.env.ADMIN_RECOVERY_CODES?.trim();
+  if (recoveryCodesEnv) {
+    const validCodes = recoveryCodesEnv.split(",").map((c) => c.trim()).filter(Boolean);
+    const normalizedInput = normalizeRecoveryCode(cleanCode);
+
+    for (const validCode of validCodes) {
+      if (normalizeRecoveryCode(validCode) === normalizedInput) {
+        // Hash unic al codului pentru stocare și verificare atomică
+        const recHashBuffer = await crypto.subtle.sign(
+          "HMAC",
+          key,
+          encoder.encode(`rec_${normalizedInput}`)
+        );
+        const recHash = bytesToHex(new Uint8Array(recHashBuffer));
+
+        const isUsed = await isRecoveryCodeConsumed(recHash);
+        if (isUsed) {
+          return {
+            success: false,
+            error: "Acest cod de recuperare a fost deja utilizat. Folosește un alt cod de rezervă.",
+          };
+        }
+
+        // Marcare atomică ca utilizat (single-use)
+        const consumed = await consumeRecoveryCode(recHash);
+        if (!consumed) {
+          return {
+            success: false,
+            error: "Eroare la validarea codului de recuperare (posibil cod deja utilizat).",
+          };
+        }
+
+        return { success: true, email: payload.email, isRecovery: true };
+      }
     }
   }
 
-  // 3. Verificare cod dinamic hash-uit
-  const secret = getAuthSecret();
-  const key = await getCryptoKey(secret);
-  const inputHashBuffer = await crypto.subtle.sign("HMAC", key, encoder.encode(cleanCode));
-  const inputHash = bytesToHex(new Uint8Array(inputHashBuffer));
-
-  if (inputHash !== payload.codeHash) {
-    return { success: false, error: "Codul de verificare introdus este incorect." };
+  // 4. Verificare fallback PIN de urgență explicit (ADMIN_2FA_PIN)
+  const configuredEmergencyPin = process.env.ADMIN_2FA_PIN?.trim();
+  if (configuredEmergencyPin && configuredEmergencyPin.length >= 6) {
+    // Respingere valori implicite slabe sau predictibile
+    if (WEAK_PINS.has(configuredEmergencyPin)) {
+      console.error(
+        "SECURITATE CRITICĂ: ADMIN_2FA_PIN conține o valoare slabă/predictibilă interzisă. PIN-ul este ignorat."
+      );
+    } else if (cleanCode === configuredEmergencyPin) {
+      return { success: true, email: payload.email, isRecovery: true };
+    }
   }
 
-  return { success: true, email: payload.email };
+  return { success: false, error: "Codul de verificare introdus este incorect." };
 }
 
 export interface AdminSessionPayload {
