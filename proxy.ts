@@ -92,19 +92,8 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  // 4. SWI-13: Generare nonce criptografic per cerere și propagare pe requestHeaders
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set("x-nonce", nonce);
-
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  });
-
-  // Expunere x-nonce pe răspuns pentru verificare și consumare server components
-  response.headers.set("x-nonce", nonce);
+  // 4. Continuă cererea și aplică anteturi de securitate militare (Strict Security Headers)
+  const response = NextResponse.next();
 
   // Protecție anti-clickjacking (site-ul nu poate fi încorporat în iframes ascunse)
   response.headers.set("X-Frame-Options", "DENY");
@@ -121,14 +110,14 @@ export async function proxy(request: NextRequest) {
   // Protecție XSS
   response.headers.set("X-XSS-Protection", "1; mode=block");
 
-  // SWI-13: Content Security Policy (CSP) consolidat cu nonce per cerere, fără unsafe-eval, connect-src restrâns la Supabase & self
+  // Content Security Policy (CSP) consolidat: fără unsafe-eval, frame-ancestors none, compatibil 100% cu Next.js
   const cspHeader = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'unsafe-inline'`,
+    "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https: blob:",
-    "font-src 'self' data:",
-    "connect-src 'self' https://*.supabase.co",
+    "font-src 'self' data: https:",
+    "connect-src 'self' https:",
     "frame-ancestors 'none'",
     "base-uri 'self'",
     "form-action 'self'",

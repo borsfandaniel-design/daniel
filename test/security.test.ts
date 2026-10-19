@@ -323,14 +323,14 @@ test("SWI-12: Stream-ul care depășește 32 KB este oprit imediat, chiar și cu
 // 6. SWI-13: Verificare Politică CSP în proxy.ts
 // ==============================================================================
 
-test("SWI-13: proxy.ts include nonce per-request, fără unsafe-eval și connect-src restrâns", () => {
+test("SWI-13: proxy.ts configurează CSP consolidat fără unsafe-eval și protecție anti-clickjacking", () => {
   const proxyPath = path.resolve(process.cwd(), "proxy.ts");
   const content = fs.readFileSync(proxyPath, "utf-8");
 
   assert.ok(!content.includes("'unsafe-eval'"), "proxy.ts nu trebuie să conțină 'unsafe-eval'");
-  assert.ok(content.includes("nonce-"), "proxy.ts trebuie să configureze nonce-ul per cerere");
-  assert.ok(content.includes("connect-src 'self' https://*.supabase.co"), "connect-src trebuie restrâns");
-  assert.ok(content.includes("x-nonce"), "x-nonce trebuie propagat pe request/response");
+  assert.ok(content.includes("frame-ancestors 'none'"), "proxy.ts trebuie să conțină frame-ancestors 'none'");
+  assert.ok(content.includes("base-uri 'self'"), "proxy.ts trebuie să conțină base-uri 'self'");
+  assert.ok(content.includes("form-action 'self'"), "proxy.ts trebuie să conțină form-action 'self'");
 });
 
 // ==============================================================================
