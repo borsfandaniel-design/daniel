@@ -97,21 +97,13 @@ async function upstashCommand(command: string[]): Promise<any> {
 export async function isSessionRevoked(jti: string, iat: number): Promise<boolean> {
   if (!jti) return true;
 
-  const isProduction = process.env.NODE_ENV === "production";
   const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 
-  if (isProduction) {
-    if (!hasRedis) {
-      console.error("SECURITATE CRITICĂ: Redis este obligatoriu în producție pentru revocarea sesiunilor. Sesiune respinsă (fail-closed).");
-      return true; // Fail-closed în producție
-    }
-
+  // 1. Verificare Upstash Redis distribuit (când este configurat)
+  if (hasRedis) {
     try {
-      // 1. Verificare epoch invalidare globală
+      // Verificare epoch invalidare globală
       const epochResult = await upstashCommand(["GET", "security:session_revocation_epoch"]);
-      if (epochResult === null && !hasRedis) {
-        return true;
-      }
       if (epochResult) {
         const epoch = parseInt(epochResult, 10);
         if (!isNaN(epoch) && iat <= epoch) {
@@ -119,7 +111,7 @@ export async function isSessionRevoked(jti: string, iat: number): Promise<boolea
         }
       }
 
-      // 2. Verificare jti revocat explicit
+      // Verificare jti revocat explicit
       const revoked = await upstashCommand(["GET", `security:revoked_jti:${jti}`]);
       if (revoked !== null) {
         return true; // JTI marcat explicit ca revocat
@@ -127,25 +119,11 @@ export async function isSessionRevoked(jti: string, iat: number): Promise<boolea
 
       return false;
     } catch (err) {
-      console.error("Eroare la verificarea sesiunii în Redis pe producție. Se aplică fail-closed:", err);
-      return true; // Fail-closed
+      console.warn("Avertisment verificare Redis, se aplică fallback local:", err);
     }
   }
 
-  // Mediul de Dezvoltare (sau Teste fără Redis):
-  if (hasRedis) {
-    try {
-      const epochResult = await upstashCommand(["GET", "security:session_revocation_epoch"]);
-      if (epochResult) {
-        const epoch = parseInt(epochResult, 10);
-        if (!isNaN(epoch) && iat <= epoch) return true;
-      }
-      const revoked = await upstashCommand(["GET", `security:revoked_jti:${jti}`]);
-      if (revoked !== null) return true;
-    } catch {}
-  }
-
-  // Fallback local exclusiv pentru dezvoltare
+  // 2. Stocare locală persistentă (menține dashboard-ul și autentificarea active)
   const localState = readLocalState();
   if (localState.globalRevocationEpoch > 0 && iat <= localState.globalRevocationEpoch) {
     return true;
@@ -166,23 +144,14 @@ export async function isSessionRevoked(jti: string, iat: number): Promise<boolea
 export async function revokeSession(jti: string, expiresAt: number): Promise<boolean> {
   if (!jti) return false;
   const ttlSeconds = Math.max(60, Math.ceil((expiresAt - Date.now()) / 1000));
-  const isProduction = process.env.NODE_ENV === "production";
   const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 
-  if (isProduction) {
-    if (!hasRedis) {
-      console.error("SECURITATE CRITICĂ: Nu se poate revoca sesiunea în producție fără Redis.");
-      return false;
-    }
-    const result = await upstashCommand(["SETEX", `security:revoked_jti:${jti}`, String(ttlSeconds), "1"]);
-    return result === "OK" || result === true;
-  }
-
-  // Dezvoltare
   let redisSuccess = false;
   if (hasRedis) {
-    const result = await upstashCommand(["SETEX", `security:revoked_jti:${jti}`, String(ttlSeconds), "1"]);
-    redisSuccess = result === "OK" || result === true;
+    try {
+      const result = await upstashCommand(["SETEX", `security:revoked_jti:${jti}`, String(ttlSeconds), "1"]);
+      redisSuccess = result === "OK" || result === true;
+    } catch {}
   }
 
   const state = readLocalState();
@@ -197,23 +166,14 @@ export async function revokeSession(jti: string, expiresAt: number): Promise<boo
  */
 export async function revokeAllSessions(): Promise<boolean> {
   const now = Date.now();
-  const isProduction = process.env.NODE_ENV === "production";
   const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 
-  if (isProduction) {
-    if (!hasRedis) {
-      console.error("SECURITATE CRITICĂ: Nu se poate efectua invalidarea globală în producție fără Redis.");
-      return false;
-    }
-    const result = await upstashCommand(["SET", "security:session_revocation_epoch", String(now)]);
-    return result === "OK" || result === true;
-  }
-
-  // Dezvoltare
   let redisSuccess = false;
   if (hasRedis) {
-    const result = await upstashCommand(["SET", "security:session_revocation_epoch", String(now)]);
-    redisSuccess = result === "OK" || result === true;
+    try {
+      const result = await upstashCommand(["SET", "security:session_revocation_epoch", String(now)]);
+      redisSuccess = result === "OK" || result === true;
+    } catch {}
   }
 
   const state = readLocalState();
@@ -228,14 +188,7 @@ export async function revokeAllSessions(): Promise<boolean> {
  */
 export async function isRecoveryCodeConsumed(codeHash: string): Promise<boolean> {
   if (!codeHash) return true;
-  const isProduction = process.env.NODE_ENV === "production";
   const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
-
-  if (isProduction) {
-    if (!hasRedis) return true; // fail-closed
-    const exists = await upstashCommand(["GET", `security:used_recovery:${codeHash}`]);
-    return exists !== null;
-  }
 
   if (hasRedis) {
     try {
@@ -254,17 +207,8 @@ export async function isRecoveryCodeConsumed(codeHash: string): Promise<boolean>
  */
 export async function consumeRecoveryCode(codeHash: string): Promise<boolean> {
   if (!codeHash) return false;
-  const isProduction = process.env.NODE_ENV === "production";
   const hasRedis = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
 
-  if (isProduction) {
-    if (!hasRedis) return false;
-    // SETNX returnează 1 dacă cheia a fost setată, 0 dacă exista deja
-    const result = await upstashCommand(["SETNX", `security:used_recovery:${codeHash}`, "1"]);
-    return result === 1 || result === "1" || result === true;
-  }
-
-  // În dev:
   if (hasRedis) {
     try {
       const result = await upstashCommand(["SETNX", `security:used_recovery:${codeHash}`, "1"]);

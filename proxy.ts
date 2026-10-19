@@ -23,6 +23,18 @@ export async function proxy(request: NextRequest) {
   const clientIp = getClientIp(request);
 
   // 1. Blocare scanere de vulnerabilități, bot-uri malițioase și crawl-uri neautorizate
+  const isProbePath =
+    pathname.includes(".php") ||
+    pathname.startsWith("/wp-") ||
+    pathname.startsWith("/.env") ||
+    pathname.startsWith("/xmlrpc") ||
+    pathname.startsWith("/phpmyadmin") ||
+    pathname.startsWith("/.git");
+
+  if (isProbePath) {
+    return new NextResponse("Not Found", { status: 404 });
+  }
+
   const isMaliciousBot = BLOCKED_USER_AGENTS.some((bot) => userAgent.includes(bot)) ||
     referer.includes("slop-detect.com") ||
     origin.includes("slop-detect.com");
@@ -38,20 +50,24 @@ export async function proxy(request: NextRequest) {
     });
   }
 
-  // 2. Protecție DDoS & Flood: Max 120 cereri / minut per IP pentru întregul site (distribuit / atomic)
-  const globalRate = await checkRateLimitAsync(`global_${clientIp}`, {
-    limit: 120,
-    windowMs: 60 * 1000,
-  });
+  // 2. Protecție DDoS & Flood: Max 300 cereri / minut per IP real pentru întregul site
+  const isPrefetch = request.headers.get("purpose") === "prefetch" || request.headers.get("x-purpose") === "prefetch";
 
-  if (!globalRate.success) {
-    return new NextResponse("Too Many Requests. Rate limit exceeded to prevent server overload.", {
-      status: 429,
-      headers: {
-        "Retry-After": String(globalRate.retryAfterSeconds),
-        "Content-Type": "text/plain",
-      },
+  if (!isPrefetch) {
+    const globalRate = await checkRateLimitAsync(`global_${clientIp}`, {
+      limit: 300,
+      windowMs: 60 * 1000,
     });
+
+    if (!globalRate.success) {
+      return new NextResponse("Too Many Requests. Rate limit exceeded to prevent server overload.", {
+        status: 429,
+        headers: {
+          "Retry-After": String(globalRate.retryAfterSeconds),
+          "Content-Type": "text/plain",
+        },
+      });
+    }
   }
 
   const isDashboard = pathname === "/dashboard" || pathname.startsWith("/dashboard/");
