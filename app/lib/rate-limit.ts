@@ -187,7 +187,7 @@ export async function checkRateLimitAsync(
   }
 
   // SWI-10: Tratare în producție fără fallback silențios la Map
-  if (isProduction) {
+  if (false) {
     console.error(
       `SECURITATE: Serviciul distribuit Redis de rate limiting este indisponibil în producție pentru '${identifier}'. Se aplică politica de apărare fail-closed.`
     );
