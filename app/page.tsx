@@ -25,8 +25,10 @@ import {
   Ghost,
   Flame,
   Moon,
+  Sun,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FloatingPumpkins } from "./components/FloatingPumpkins";
 
 //--- DICȚIONAR PENTRU TRADUCERI (RO / EN) ---
 const translations = {
@@ -251,9 +253,13 @@ const translations = {
 function FuturisticNavbar({
   lang,
   setLang,
+  theme,
+  toggleTheme,
 }: {
   lang: "ro" | "en";
   setLang: (l: "ro" | "en") => void;
+  theme: "light" | "dark";
+  toggleTheme: () => void;
 }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
@@ -282,11 +288,24 @@ function FuturisticNavbar({
   }, []);
 
   const navLinks = [
-    { name: t.navAbout, href: "#about", id: "about" },
-    { name: t.navServices, href: "#services", id: "services" },
-    { name: t.navSkills, href: "#skills", id: "skills" },
-    { name: t.navContact, href: "#contact", id: "contact" },
+    { name: t.navAbout, slug: lang === "ro" ? "despre" : "about", id: "about" },
+    { name: t.navServices, slug: lang === "ro" ? "servicii" : "services", id: "services" },
+    { name: t.navSkills, slug: lang === "ro" ? "abilitati" : "skills", id: "skills" },
+    { name: t.navContact, slug: "contact", id: "contact" },
   ];
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    id: string,
+    slug: string
+  ) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    window.history.pushState(null, "", `/${slug}`);
+  };
 
   return (
     <>
@@ -294,12 +313,20 @@ function FuturisticNavbar({
         <div
           className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
             isScrolled
-              ? "bg-white/95 border border-[#FF5400]/40 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,84,0,0.12)]"
-              : "bg-white/90 border border-zinc-200 backdrop-blur-md shadow-xs"
+              ? "bg-white/95 dark:bg-zinc-900/95 border border-[#FF5400]/40 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,84,0,0.12)]"
+              : "bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-md shadow-xs"
           }`}
         >
-          <a href="#" className="flex items-center gap-3 pl-1 group relative z-10">
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white border border-[#FF5400]/30 shadow-xs group-hover:scale-105 transition-transform">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              window.history.pushState(null, "", "/");
+            }}
+            className="flex items-center gap-3 pl-1 group relative z-10"
+          >
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white dark:bg-zinc-800 border border-[#FF5400]/30 shadow-xs group-hover:scale-105 transition-transform">
               <img
                 src="/logo.png"
                 alt="Swing Logo"
@@ -312,13 +339,9 @@ function FuturisticNavbar({
                   }
                 }}
               />
-              <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF5400] border border-white shadow-xs"></span>
-              </span>
             </div>
             <div className="flex flex-col">
-              <span className="font-black tracking-[0.2em] text-xs text-zinc-950 group-hover:text-[#FF5400] transition-colors">
+              <span className="font-black tracking-[0.2em] text-xs text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
                 SWING
               </span>
               <span className="text-[8px] text-[#FF5400] font-bold tracking-widest uppercase font-mono">
@@ -333,9 +356,12 @@ function FuturisticNavbar({
               return (
                 <a
                   key={link.id}
-                  href={link.href}
+                  href={`/${link.slug}`}
+                  onClick={(e) => handleNavClick(e, link.id, link.slug)}
                   className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
-                    isActive ? "text-white" : "text-zinc-600 hover:text-[#FF5400]"
+                    isActive
+                      ? "text-white"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-[#FF5400] dark:hover:text-[#FF5400]"
                   }`}
                 >
                   {isActive && (
@@ -352,13 +378,31 @@ function FuturisticNavbar({
           </nav>
 
           <div className="flex items-center gap-2 relative z-10">
-            <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 relative shadow-xs">
+            {/* Buton Dark Mode / Light Mode */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Comută pe modul luminos" : "Comută pe modul întunecat"}
+              title={theme === "dark" ? "Mod Luminos" : "Mod Întunecat"}
+              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-[#FFA24C] hover:border-[#FF5400] transition-all cursor-pointer shadow-xs flex items-center justify-center hover:scale-105 active:scale-95"
+            >
+              {theme === "dark" ? (
+                <Sun size={15} className="text-[#FFA24C] transition-transform duration-300" />
+              ) : (
+                <Moon size={15} className="text-zinc-700 transition-transform duration-300" />
+              )}
+            </button>
+
+            {/* Selector Limbă */}
+            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative shadow-xs">
               <Globe size={13} className="text-[#FF5400] ml-1.5 mr-1 hidden sm:block" />
               <button
                 type="button"
                 onClick={() => setLang("ro")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "ro" ? "text-white" : "text-zinc-600 hover:text-zinc-950"
+                  lang === "ro"
+                    ? "text-white"
+                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 {lang === "ro" && (
@@ -374,7 +418,9 @@ function FuturisticNavbar({
                 type="button"
                 onClick={() => setLang("en")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
-                  lang === "en" ? "text-white" : "text-zinc-600 hover:text-zinc-950"
+                  lang === "en"
+                    ? "text-white"
+                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 {lang === "en" && (
@@ -405,11 +451,11 @@ function FuturisticNavbar({
             initial={{ opacity: 0, y: 20, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            className="fixed inset-0 z-30 bg-white/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-orange-500/20"
+            className="fixed inset-0 z-30 bg-white/98 dark:bg-zinc-950/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-orange-500/20"
           >
             <div className="space-y-6">
-              <div className="flex items-center justify-between border-b border-zinc-200 pb-4">
-                <span className="text-xs font-bold text-zinc-950 uppercase tracking-wider">
+              <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
+                <span className="text-xs font-bold text-zinc-950 dark:text-zinc-100 uppercase tracking-wider">
                   Meniu Navigare
                 </span>
                 <span className="text-[10px] font-mono text-[#FF5400] font-bold">SWING STUDIO</span>
@@ -418,9 +464,17 @@ function FuturisticNavbar({
                 {navLinks.map((link, idx) => (
                   <a
                     key={link.id}
-                    href={link.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-white border border-zinc-200 text-base font-bold text-zinc-950 hover:border-[#FF5400] hover:text-[#FF5400] transition-all active:scale-[0.98] shadow-xs"
+                    href={`/${link.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMobileMenuOpen(false);
+                      const element = document.getElementById(link.id);
+                      if (element) {
+                        element.scrollIntoView({ behavior: "smooth" });
+                      }
+                      window.history.pushState(null, "", `/${link.slug}`);
+                    }}
+                    className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-base font-bold text-zinc-950 dark:text-zinc-100 hover:border-[#FF5400] hover:text-[#FF5400] dark:hover:text-[#FF5400] transition-all active:scale-[0.98] shadow-xs"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-xs font-mono text-[#FF5400]">0{idx + 1}</span>
@@ -431,7 +485,7 @@ function FuturisticNavbar({
                 ))}
               </div>
             </div>
-            <div className="space-y-4 pt-6 border-t border-zinc-200">
+            <div className="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
               <div className="flex items-center justify-between text-xs text-zinc-500 font-mono font-medium">
                 <span className="text-[#FF5400] font-bold">Moisă Ionuț Daniel</span>
                 <span>SWING STUDIO</span>
@@ -449,10 +503,14 @@ function TermsPage({
   onBack,
   lang,
   setLang,
+  theme,
+  toggleTheme,
 }: {
   onBack: () => void;
   lang: "ro" | "en";
   setLang: (l: "ro" | "en") => void;
+  theme: "light" | "dark";
+  toggleTheme: () => void;
 }) {
   const t = translations[lang];
   const terms = t.terms;
@@ -462,58 +520,77 @@ function TermsPage({
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-sans antialiased py-12 px-4 sm:px-8 relative z-20">
+    <div className="min-h-screen bg-white dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 font-sans antialiased py-12 px-4 sm:px-8 relative z-20 transition-colors duration-300">
       <div className="max-w-4xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white transition-all cursor-pointer font-bold"
+            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-700 transition-all cursor-pointer font-bold"
           >
             <ArrowLeft size={14} />
             <span>{t.backBtn}</span>
           </button>
 
-          <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 relative shadow-xs">
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setLang("ro")}
-              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
-              }`}
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-[#FFA24C] hover:border-[#FF5400] transition-all cursor-pointer shadow-xs flex items-center justify-center hover:scale-105 active:scale-95"
             >
-              RO
+              {theme === "dark" ? (
+                <Sun size={15} className="text-[#FFA24C]" />
+              ) : (
+                <Moon size={15} className="text-zinc-700" />
+              )}
             </button>
-            <button
-              type="button"
-              onClick={() => setLang("en")}
-              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
-              }`}
-            >
-              EN
-            </button>
+
+            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative shadow-xs">
+              <button
+                type="button"
+                onClick={() => setLang("ro")}
+                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                  lang === "ro"
+                    ? "bg-[#FF5400] text-white"
+                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                }`}
+              >
+                RO
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                  lang === "en"
+                    ? "bg-[#FF5400] text-white"
+                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                }`}
+              >
+                EN
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="bg-white border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
-          <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
+        <div className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+          <div className="flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-6">
             <Scale className="text-[#FF5400]" size={32} />
             <div>
-              <h1 className="text-2xl font-extrabold text-zinc-950">{t.termsTitle}</h1>
-              <p className="text-xs font-mono text-zinc-500">{terms.subtitle}</p>
+              <h1 className="text-2xl font-extrabold text-zinc-950 dark:text-white">{t.termsTitle}</h1>
+              <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{terms.subtitle}</p>
             </div>
           </div>
 
           <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
-            <span className="text-zinc-950 font-semibold flex items-center gap-2">
+            <span className="text-zinc-950 dark:text-zinc-100 font-semibold flex items-center gap-2">
               <ShieldCheck size={16} className="text-[#FF5400]" />
               {terms.compliance}
             </span>
             <span className="text-zinc-400">2026</span>
           </div>
 
-          <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
+          <div className="space-y-6 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal">
             <section className="space-y-2">
               <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
                 {terms.s1Title}
@@ -613,6 +690,7 @@ function TermsPage({
 
 export default function Home() {
   const [lang, setLang] = useState<"ro" | "en">("ro");
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -625,6 +703,49 @@ export default function Home() {
   );
   const [currentPage, setCurrentPage] = useState<"home" | "terms">("home");
   const t = translations[lang];
+
+  useEffect(() => {
+    // Sincronizare Dark / Light mode din localStorage sau preferințe OS
+    const savedTheme = localStorage.getItem("swing_theme") as "light" | "dark" | null;
+    const initialTheme =
+      savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initialTheme);
+    if (initialTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    // Navigare curată pe rute fără '#' (e.g. /despre, /servicii, /abilitati, /contact)
+    const path = window.location.pathname.replace(/^\//, "").toLowerCase();
+    const pathToIdMap: Record<string, string> = {
+      about: "about",
+      despre: "about",
+      services: "services",
+      servicii: "services",
+      skills: "skills",
+      abilitati: "skills",
+      contact: "contact",
+    };
+    const targetId = pathToIdMap[path];
+    if (targetId) {
+      setTimeout(() => {
+        const el = document.getElementById(targetId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 150);
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem("swing_theme", next);
+    if (next === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -692,17 +813,28 @@ export default function Home() {
   };
 
   if (currentPage === "terms") {
-    return <TermsPage onBack={() => setCurrentPage("home")} lang={lang} setLang={setLang} />;
+    return (
+      <TermsPage
+        onBack={() => setCurrentPage("home")}
+        lang={lang}
+        setLang={setLang}
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-white text-zinc-950 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative">
-      <FuturisticNavbar lang={lang} setLang={setLang} />
+    <div className="min-h-screen bg-white dark:bg-[#09090b] text-zinc-950 dark:text-zinc-100 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative transition-colors duration-300">
+      <FuturisticNavbar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} />
 
       {/* MINIMAL AMBIENT GLOW */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-[#FF5400]/[0.05] to-transparent rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-[#FF5400]/[0.05] dark:from-[#FF5400]/[0.08] to-transparent rounded-full blur-3xl pointer-events-none" />
       </div>
+
+      {/* FLOATING PUMPKINS BACKGROUND */}
+      <FloatingPumpkins />
 
       <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-32 md:space-y-40">
         {/* HERO SECTION */}
@@ -711,16 +843,12 @@ export default function Home() {
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-orange-500/30 shadow-xs"
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-orange-500/30 shadow-xs"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#FF5400]"></span>
-              </span>
-              <span className="text-xs font-mono font-bold tracking-wider text-zinc-900 uppercase">
+              <span className="text-xs font-mono font-bold tracking-wider text-zinc-900 dark:text-zinc-200 uppercase">
                 {t.seasonalTag}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 text-[#FF5400] font-bold uppercase tracking-wider border border-zinc-800">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 dark:bg-zinc-800 text-[#FF5400] font-bold uppercase tracking-wider border border-zinc-800 dark:border-zinc-700">
                 {t.seasonalBadge}
               </span>
             </motion.div>
@@ -729,7 +857,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-950 leading-[1.08]"
+              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.08]"
             >
               {t.heroTitlePart1}
               <span className="text-[#FF5400]">{t.heroTitlePart2}</span>
@@ -739,7 +867,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-zinc-600 max-w-2xl mx-auto font-normal leading-relaxed"
+              className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed"
             >
               {t.heroSubtitle}
             </motion.p>
@@ -751,31 +879,36 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-8 relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
+              className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-8 relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
             >
               <div className="space-y-5 flex-1">
                 <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs shrink-0">
+                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs shrink-0">
                     <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 leading-tight">
+                    <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white leading-tight">
                       {t.profileName}
                     </h3>
                     <p className="text-xs font-mono font-bold tracking-widest uppercase flex items-center gap-1.5 mt-0.5">
                       <span className="text-[#FF5400]">SWING</span>
                       <span className="text-zinc-300"></span>
-                      <span className="text-zinc-500">STUDIO</span>
+                      <span className="text-zinc-500 dark:text-zinc-400">STUDIO</span>
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-zinc-600 leading-relaxed font-normal">
+                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-normal">
                   {t.profileBio}
                 </p>
               </div>
               <div className="shrink-0 self-start sm:self-center">
                 <a
-                  href="#contact"
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                    window.history.pushState(null, "", "/contact");
+                  }}
                   className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
                 >
                   <span>{t.talkBtn}</span>
@@ -794,7 +927,7 @@ export default function Home() {
                 <span className="w-2 h-0.5 bg-[#FF5400]" />
                 {t.servicesTagline}
               </span>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
+              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
                 {lang === "ro" ? (
                   <>Cum te pot ajuta <span className="text-[#FF5400]">să crești</span></>
                 ) : (
@@ -811,21 +944,21 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative overflow-hidden"
+                className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative overflow-hidden"
               >
                 <div className="space-y-6 relative z-10">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
                       {service.icon}
                     </div>
                     <span className="text-xs font-mono font-bold text-zinc-400 group-hover:text-[#FF5400] transition-colors">
                       0{index + 1} 
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold text-zinc-950 group-hover:text-[#FF5400] transition-colors">
+                  <h3 className="text-xl font-bold text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
                     {service.title}
                   </h3>
-                  <p className="text-sm text-zinc-600 leading-relaxed font-normal">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
                     {service.desc}
                   </p>
                 </div>
@@ -841,7 +974,7 @@ export default function Home() {
               <span className="w-2 h-0.5 bg-[#FF5400]" />
               {t.skillsTagline}
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
+            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
               {lang === "ro" ? (
                 <>Abilități & <span className="text-[#FF5400]">Unelte</span></>
               ) : (
@@ -858,27 +991,26 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-7 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative"
+                className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-7 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
                       {skill.icon}
                     </div>
-                   
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-black text-zinc-950 group-hover:text-[#FF5400] transition-colors">
+                    <h3 className="text-2xl font-black text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
                       {skill.name}
                     </h3>
                     <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-bold uppercase tracking-wider">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FF5400]" />
-                      <span className="text-zinc-500">{lang === "ro" ? "Ce pot să fac:" : "What I can do:"}</span>
+                      <span className="text-zinc-500 dark:text-zinc-400">{lang === "ro" ? "Ce pot să fac:" : "What I can do:"}</span>
                     </div>
                   </div>
 
-                  <p className="text-sm text-zinc-600 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
                     {skill.desc}
                   </p>
                 </div>
@@ -889,29 +1021,29 @@ export default function Home() {
 
         {/* CONTACT */}
         <section id="contact" className="scroll-mt-40">
-          <div className="bg-white border-2 border-orange-500/30 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-sm">
+          <div className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/30 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-sm">
             <div className="max-w-2xl space-y-8 relative z-10">
               <div className="space-y-3">
                 <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest flex items-center gap-2">
                   <span className="w-2 h-0.5 bg-[#FF5400]" />
                 {t.contactTagline}
                 </span>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950">
+                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
                   {lang === "ro" ? (
                     <>Hai să <span className="text-[#FF5400]">colaborăm</span></>
                   ) : (
                     <>Let&apos;s <span className="text-[#FF5400]">connect</span></>
                   )}
                 </h2>
-                <p className="text-sm text-zinc-600 leading-relaxed">
+                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   {t.contactSubtitle}
                 </p>
 
                 {/* NOTĂ PERSONALĂ DANIEL MOISĂ */}
                 <div className="pt-2">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 border border-orange-500/25 text-xs text-zinc-900 font-medium">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/25 text-xs text-zinc-900 dark:text-zinc-200 font-medium">
                     <span className="font-mono font-bold text-[#FF5400]">SWING</span>
-                    <span className="text-zinc-700">{t.contactNote}</span>
+                    <span className="text-zinc-700 dark:text-zinc-300">{t.contactNote}</span>
                   </div>
                 </div>
               </div>
@@ -919,7 +1051,7 @@ export default function Home() {
               <form onSubmit={handleFormSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
+                    <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                       {t.fieldName}
                     </label>
                     <div className="relative">
@@ -929,14 +1061,14 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.placeholderName}
-                        className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
+                        className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
                       />
                       <User size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
+                    <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                       {t.fieldEmail}
                     </label>
                     <div className="relative">
@@ -946,7 +1078,7 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.placeholderEmail}
-                        className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
+                        className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
                       />
                       <Mail size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                     </div>
@@ -954,7 +1086,7 @@ export default function Home() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-wider">
+                  <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                     {t.fieldMessage}
                   </label>
                   <div className="relative">
@@ -964,7 +1096,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.placeholderMessage}
-                      className="w-full bg-white border-2 border-zinc-200 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 placeholder:text-zinc-400 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-xs"
+                      className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-xs"
                     />
                     <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
                   </div>
@@ -992,17 +1124,17 @@ export default function Home() {
                     onChange={(e) =>
                       setFormData({ ...formData, acceptedTerms: e.target.checked })
                     }
-                    className="mt-1 w-4 h-4 rounded border-zinc-300 bg-white text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
+                    className="mt-1 w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
                   />
                   <label
                     htmlFor="terms"
-                    className="text-xs text-zinc-600 leading-normal cursor-pointer select-none"
+                    className="text-xs text-zinc-600 dark:text-zinc-400 leading-normal cursor-pointer select-none"
                   >
                     {t.termsCheckbox}{" "}
                     <button
                       type="button"
                       onClick={() => setCurrentPage("terms")}
-                      className="text-[#FF5400] underline hover:text-zinc-950 font-bold transition-colors cursor-pointer"
+                      className="text-[#FF5400] underline hover:text-zinc-950 dark:hover:text-white font-bold transition-colors cursor-pointer"
                     >
                       {t.termsLink}
                     </button>
@@ -1025,14 +1157,14 @@ export default function Home() {
                 </button>
 
                 {formStatus === "success" && (
-                  <div className="flex items-center gap-2.5 text-emerald-600 text-sm font-bold pt-2">
-                    <CheckCircle2 size={18} className="text-emerald-600" />
+                  <div className="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400 text-sm font-bold pt-2">
+                    <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400" />
                     <span>{t.successMsg}</span>
                   </div>
                 )}
 
                 {formStatus === "error" && (
-                  <div className="flex items-center gap-2.5 text-red-600 text-sm font-bold pt-2">
+                  <div className="flex items-center gap-2.5 text-red-600 dark:text-red-400 text-sm font-bold pt-2">
                     <AlertCircle size={18} />
                     <span>{t.errorMsg}</span>
                   </div>
@@ -1044,7 +1176,7 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-orange-500/20 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 font-mono">
+      <footer className="border-t border-orange-500/20 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
         <div className="flex flex-wrap items-center justify-center gap-6 font-bold">
           <button
