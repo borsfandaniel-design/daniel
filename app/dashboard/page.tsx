@@ -603,19 +603,19 @@ export default function DashboardPage() {
                     onClick={() => applyQuickTemplate("offer")}
                     className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
                   >
-                    💼 Ofertă adaptată
+                    Ofertă adaptată
                   </button>
                   <button
                     onClick={() => applyQuickTemplate("call")}
                     className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
                   >
-                    📞 Programare apel 15m
+                    Programare apel 15m
                   </button>
                   <button
                     onClick={() => applyQuickTemplate("quick")}
                     className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
                   >
-                    ⚡ Confirmare primire
+                    Confirmare primire
                   </button>
                 </div>
               </div>

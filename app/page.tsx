@@ -2,31 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import {
-  Palette,
-  Send,
-  CalendarCheck,
-  CheckCircle2,
-  Mail,
-  User,
-  AlertCircle,
-  MessageSquare,
-  Sparkles,
-  Menu,
-  X,
-  ArrowUpRight,
-  Target,
-  Zap,
-  ChevronRight,
-  ShieldCheck,
-  Scale,
-  Globe,
-  Cpu,
-  ArrowLeft,
-  Ghost,
-  Flame,
-  Moon,
-  Sun,
-} from "lucide-react";
+  CodeIcon,
+  CalendarIcon,
+  UserIcon,
+  MailIcon,
+  MessageIcon,
+  SendIcon,
+  CheckIcon,
+  AlertIcon,
+  SunIcon,
+  MoonIcon,
+  MenuIcon,
+  CloseIcon,
+  ArrowLeftIcon,
+  ShieldIcon,
+  ScaleIcon,
+} from "./components/Icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { FloatingPumpkins } from "./components/FloatingPumpkins";
 
@@ -93,7 +84,7 @@ const translations = {
     backBtn: "Înapoi la pagina principală",
     footerRights: "All rights reserved.",
     terms: {
-      subtitle: "SWING Studio / Daniel Moisă — Ultima actualizare: Octombrie 2026",
+      subtitle: "SWING Studio / Daniel Moisă - Ultima actualizare: Octombrie 2026",
       compliance: "Conformitate Legislație RO & UE / GDPR Compliance",
       s1Title: "1. Prestatorul",
       s1Text: "Acest site este operat de SWING (Daniel Moisă, \"Prestatorul\"), email: borsfandaniel@gmail.com.",
@@ -156,7 +147,7 @@ const translations = {
     profileName: "Moisă Ionuț Daniel",
     profileRole: "SWING STUDIO",
     profileBio:
-      "I work directly with founders and B2B teams to build high-performance web systems, sharp sales copy, and qualified appointment pipelines — without unnecessary agency overhead.",
+      "I work directly with founders and B2B teams to build high-performance web systems, sharp sales copy, and qualified appointment pipelines without unnecessary agency overhead.",
     talkBtn: "Let's talk",
     missionTitle: "From the first cold impression to booked sales conversations.",
     statAttention: "Zero Ghosting",
@@ -202,7 +193,7 @@ const translations = {
     backBtn: "Back to main page",
     footerRights: "All rights reserved.",
     terms: {
-      subtitle: "SWING Studio / Daniel Moisă — Last updated: October 2026",
+      subtitle: "SWING Studio / Daniel Moisă - Last updated: October 2026",
       compliance: "RO & EU Law Compliance / GDPR Compliance",
       s1Title: "1. Service Provider",
       s1Text: "This website is operated by SWING (Daniel Moisă, \"Provider\"), email: borsfandaniel@gmail.com.",
@@ -309,13 +300,9 @@ function FuturisticNavbar({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 pt-5 transition-all duration-300 pointer-events-none flex justify-center">
+      <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-8 pt-5 pointer-events-none flex justify-center">
         <div
-          className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-all duration-500 pointer-events-auto ${
-            isScrolled
-              ? "bg-white/95 dark:bg-zinc-900/95 border border-[#FF5400]/40 backdrop-blur-2xl shadow-[0_10px_30px_rgba(255,84,0,0.12)]"
-              : "bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-800 backdrop-blur-md shadow-xs"
-          }`}
+          className={`relative max-w-4xl w-full flex items-center justify-between px-4 py-2.5 rounded-full transition-colors duration-200 pointer-events-auto bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-sm`}
         >
           <a
             href="/"
@@ -326,7 +313,7 @@ function FuturisticNavbar({
             }}
             className="flex items-center gap-3 pl-1 group relative z-10"
           >
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white dark:bg-zinc-800 border border-[#FF5400]/30 shadow-xs group-hover:scale-105 transition-transform">
+            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0">
               <img
                 src="/logo.png"
                 alt="Swing Logo"
@@ -341,7 +328,7 @@ function FuturisticNavbar({
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-black tracking-[0.2em] text-xs text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
+              <span className="font-bold tracking-wider text-xs text-zinc-950 dark:text-white">
                 SWING
               </span>
               <span className="text-[8px] text-[#FF5400] font-bold tracking-widest uppercase font-mono">
@@ -358,16 +345,16 @@ function FuturisticNavbar({
                   key={link.id}
                   href={`/${link.slug}`}
                   onClick={(e) => handleNavClick(e, link.id, link.slug)}
-                  className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
+                  className={`relative px-4 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase transition-colors duration-200 ${
                     isActive
                       ? "text-white"
-                      : "text-zinc-600 dark:text-zinc-400 hover:text-[#FF5400] dark:hover:text-[#FF5400]"
+                      : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="futuristicTab"
-                      className="absolute inset-0 bg-[#FF5400] rounded-full shadow-[0_2px_12px_rgba(255,84,0,0.35)]"
+                      className="absolute inset-0 bg-[#FF5400] rounded-full"
                       transition={{ type: "spring", stiffness: 450, damping: 35 }}
                     />
                   )}
@@ -384,31 +371,30 @@ function FuturisticNavbar({
               onClick={toggleTheme}
               aria-label={theme === "dark" ? "Comută pe modul luminos" : "Comută pe modul întunecat"}
               title={theme === "dark" ? "Mod Luminos" : "Mod Întunecat"}
-              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-[#FFA24C] hover:border-[#FF5400] transition-all cursor-pointer shadow-xs flex items-center justify-center hover:scale-105 active:scale-95"
+              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 hover:text-[#FF5400] dark:hover:text-[#FF5400] transition-colors cursor-pointer flex items-center justify-center"
             >
               {theme === "dark" ? (
-                <Sun size={15} className="text-[#FFA24C] transition-transform duration-300" />
+                <SunIcon size={15} className="text-zinc-200" />
               ) : (
-                <Moon size={15} className="text-zinc-700 transition-transform duration-300" />
+                <MoonIcon size={15} className="text-zinc-700" />
               )}
             </button>
 
             {/* Selector Limbă */}
-            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative shadow-xs">
-              <Globe size={13} className="text-[#FF5400] ml-1.5 mr-1 hidden sm:block" />
+            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative">
               <button
                 type="button"
                 onClick={() => setLang("ro")}
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
                   lang === "ro"
                     ? "text-white"
-                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 {lang === "ro" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-[#FF5400] rounded-full shadow-xs"
+                    className="absolute inset-0 bg-[#FF5400] rounded-full"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -420,13 +406,13 @@ function FuturisticNavbar({
                 className={`relative px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
                   lang === "en"
                     ? "text-white"
-                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 {lang === "en" && (
                   <motion.div
                     layoutId="langPill"
-                    className="absolute inset-0 bg-[#FF5400] rounded-full shadow-xs"
+                    className="absolute inset-0 bg-[#FF5400] rounded-full"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -436,10 +422,10 @@ function FuturisticNavbar({
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-full bg-[#FF5400] text-white transition-colors shadow-2xs"
+              className="md:hidden p-2 rounded-full bg-zinc-900 dark:bg-zinc-800 text-white transition-colors"
               aria-label="Toggle Navigation"
             >
-              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileMenuOpen ? <CloseIcon size={18} /> : <MenuIcon size={18} />}
             </button>
           </div>
         </div>
@@ -448,19 +434,19 @@ function FuturisticNavbar({
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.98 }}
-            className="fixed inset-0 z-30 bg-white/98 dark:bg-zinc-950/98 backdrop-blur-3xl md:hidden pt-28 px-6 pb-12 flex flex-col justify-between border-b border-orange-500/20"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="fixed inset-0 z-30 bg-white dark:bg-zinc-950 md:hidden pt-24 px-6 pb-12 flex flex-col justify-between border-b border-zinc-200 dark:border-zinc-800"
           >
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
                 <span className="text-xs font-bold text-zinc-950 dark:text-zinc-100 uppercase tracking-wider">
                   Meniu Navigare
                 </span>
-                <span className="text-[10px] font-mono text-[#FF5400] font-bold">SWING STUDIO</span>
+                <span className="text-[10px] font-mono text-zinc-500 font-bold">SWING STUDIO</span>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {navLinks.map((link, idx) => (
                   <a
                     key={link.id}
@@ -474,20 +460,19 @@ function FuturisticNavbar({
                       }
                       window.history.pushState(null, "", `/${link.slug}`);
                     }}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-base font-bold text-zinc-950 dark:text-zinc-100 hover:border-[#FF5400] hover:text-[#FF5400] dark:hover:text-[#FF5400] transition-all active:scale-[0.98] shadow-xs"
+                    className="flex items-center justify-between p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-sm font-bold text-zinc-950 dark:text-zinc-100 hover:border-zinc-400 dark:hover:border-zinc-600 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-[#FF5400]">0{idx + 1}</span>
+                      <span className="text-xs font-mono text-zinc-400">0{idx + 1}</span>
                       <span>{link.name}</span>
                     </div>
-                    <ChevronRight size={16} className="text-[#FF5400]" />
                   </a>
                 ))}
               </div>
             </div>
             <div className="space-y-4 pt-6 border-t border-zinc-200 dark:border-zinc-800">
               <div className="flex items-center justify-between text-xs text-zinc-500 font-mono font-medium">
-                <span className="text-[#FF5400] font-bold">Moisă Ionuț Daniel</span>
+                <span className="text-zinc-900 dark:text-zinc-100 font-bold">Moisă Ionuț Daniel</span>
                 <span>SWING STUDIO</span>
               </div>
             </div>
@@ -526,9 +511,9 @@ function TermsPage({
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-700 transition-all cursor-pointer font-bold"
+            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 dark:text-zinc-200 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white dark:hover:bg-zinc-700 transition-colors cursor-pointer font-bold"
           >
-            <ArrowLeft size={14} />
+            <ArrowLeftIcon size={14} />
             <span>{t.backBtn}</span>
           </button>
 
@@ -537,23 +522,23 @@ function TermsPage({
               type="button"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-[#FFA24C] hover:border-[#FF5400] transition-all cursor-pointer shadow-xs flex items-center justify-center hover:scale-105 active:scale-95"
+              className="p-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-200 hover:text-[#FF5400] transition-colors cursor-pointer flex items-center justify-center"
             >
               {theme === "dark" ? (
-                <Sun size={15} className="text-[#FFA24C]" />
+                <SunIcon size={15} className="text-zinc-200" />
               ) : (
-                <Moon size={15} className="text-zinc-700" />
+                <MoonIcon size={15} className="text-zinc-700" />
               )}
             </button>
 
-            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative shadow-xs">
+            <div className="flex items-center bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-full p-1 relative">
               <button
                 type="button"
                 onClick={() => setLang("ro")}
-                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
                   lang === "ro"
                     ? "bg-[#FF5400] text-white"
-                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 RO
@@ -561,10 +546,10 @@ function TermsPage({
               <button
                 type="button"
                 onClick={() => setLang("en")}
-                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
+                className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-colors cursor-pointer ${
                   lang === "en"
                     ? "bg-[#FF5400] text-white"
-                    : "text-zinc-600 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
                 }`}
               >
                 EN
@@ -573,18 +558,18 @@ function TermsPage({
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
+        <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-10 space-y-6">
           <div className="flex items-center gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-6">
-            <Scale className="text-[#FF5400]" size={32} />
+            <ScaleIcon className="text-zinc-900 dark:text-zinc-100" size={28} />
             <div>
-              <h1 className="text-2xl font-extrabold text-zinc-950 dark:text-white">{t.termsTitle}</h1>
+              <h1 className="text-2xl font-bold text-zinc-950 dark:text-white">{t.termsTitle}</h1>
               <p className="text-xs font-mono text-zinc-500 dark:text-zinc-400">{terms.subtitle}</p>
             </div>
           </div>
 
-          <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
+          <div className="flex items-center justify-between bg-zinc-50 dark:bg-zinc-800/60 p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 text-xs font-mono">
             <span className="text-zinc-950 dark:text-zinc-100 font-semibold flex items-center gap-2">
-              <ShieldCheck size={16} className="text-[#FF5400]" />
+              <ShieldIcon size={16} className="text-[#FF5400]" />
               {terms.compliance}
             </span>
             <span className="text-zinc-400">2026</span>
@@ -776,12 +761,12 @@ export default function Home() {
     {
       title: t.serv1Title,
       desc: t.serv1Desc,
-      icon: <Cpu size={24} />,
+      icon: <CodeIcon size={20} />,
     },
     {
       title: t.serv2Title,
       desc: t.serv2Desc,
-      icon: <CalendarCheck size={24} />,
+      icon: <CalendarIcon size={20} />,
     },
   ];
 
@@ -789,24 +774,24 @@ export default function Home() {
     ro: [
       {
         name: "Web Development",
-        icon: <Cpu size={20} />,
+        icon: <CodeIcon size={20} />,
         desc: "Construiesc landing pages orientate pe conversie și site-uri moderne de prezentare, ultra-rapide, responsive și optimizate pentru claritate și viteză.",
       },
       {
         name: "Appointment Setting",
-        icon: <CalendarCheck size={20} />,
+        icon: <CalendarIcon size={20} />,
         desc: "Calific contactele primite, elimin obiecțiile timpurii și programez întâlniri 1-la-1 cu factori de decizie direct în calendarul tău de vânzări.",
       },
     ],
     en: [
       {
         name: "Web Development",
-        icon: <Cpu size={20} />,
+        icon: <CodeIcon size={20} />,
         desc: "I develop fast, responsive landing pages and business websites engineered for conversion, speed, and seamless navigation.",
       },
       {
         name: "Appointment Setting",
-        icon: <CalendarCheck size={20} />,
+        icon: <CalendarIcon size={20} />,
         desc: "I qualify prospective leads, handle early objections, and book high-intent 1-on-1 sales calls with decision-makers directly into your calendar.",
       },
     ],
@@ -825,75 +810,49 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#09090b] text-zinc-950 dark:text-zinc-100 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-zinc-950 dark:text-zinc-100 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative transition-colors duration-200">
       <FuturisticNavbar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} />
-
-      {/* MINIMAL AMBIENT GLOW */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-gradient-to-b from-[#FF5400]/[0.05] dark:from-[#FF5400]/[0.08] to-transparent rounded-full blur-3xl pointer-events-none" />
-      </div>
 
       {/* FLOATING PUMPKINS BACKGROUND */}
       <FloatingPumpkins />
 
-      <main className="relative z-10 pt-32 sm:pt-40 pb-32 px-6 sm:px-8 max-w-6xl mx-auto space-y-32 md:space-y-40">
+      <main className="relative z-10 pt-28 sm:pt-36 pb-24 px-4 sm:px-8 max-w-4xl mx-auto space-y-24 md:space-y-32">
         {/* HERO SECTION */}
-        <section id="about" className="scroll-mt-40 space-y-12">
-          <div className="text-center space-y-6 max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white dark:bg-zinc-900 border border-orange-500/30 shadow-xs"
-            >
-              <span className="text-xs font-mono font-bold tracking-wider text-zinc-900 dark:text-zinc-200 uppercase">
+        <section id="about" className="scroll-mt-36 space-y-10">
+          <div className="text-center space-y-5 max-w-3xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+              <span className="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 uppercase">
                 {t.seasonalTag}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 dark:bg-zinc-800 text-[#FF5400] font-bold uppercase tracking-wider border border-zinc-800 dark:border-zinc-700">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 dark:bg-zinc-900 text-[#FF5400] font-bold uppercase tracking-wider">
                 {t.seasonalBadge}
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.08]"
-            >
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.1]">
               {t.heroTitlePart1}
               <span className="text-[#FF5400]">{t.heroTitlePart2}</span>
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
-              className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed"
-            >
+            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed">
               {t.heroSubtitle}
-            </motion.p>
+            </p>
           </div>
 
           {/* CARD PROFILE */}
-          <div className="max-w-3xl mx-auto pt-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2.5rem] p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center justify-between gap-8 relative group transition-all duration-300 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.1)]"
-            >
-              <div className="space-y-5 flex-1">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-800 border border-[#FF5400]/30 flex items-center justify-center p-2 shadow-xs shrink-0">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-sm">
+              <div className="space-y-4 flex-1">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center p-2 shrink-0">
                     <img src="/logo.png" alt="SWING Logo" className="w-full h-full object-contain" />
                   </div>
                   <div>
-                    <h3 className="text-2xl sm:text-3xl font-black text-zinc-950 dark:text-white leading-tight">
+                    <h3 className="text-xl sm:text-2xl font-bold text-zinc-950 dark:text-white leading-tight">
                       {t.profileName}
                     </h3>
-                    <p className="text-xs font-mono font-bold tracking-widest uppercase flex items-center gap-1.5 mt-0.5">
-                      <span className="text-[#FF5400]">SWING</span>
-                      <span className="text-zinc-300"></span>
-                      <span className="text-zinc-500 dark:text-zinc-400">STUDIO</span>
+                    <p className="text-xs font-mono font-bold tracking-wider uppercase text-zinc-500 dark:text-zinc-400">
+                      SWING STUDIO
                     </p>
                   </div>
                 </div>
@@ -901,7 +860,7 @@ export default function Home() {
                   {t.profileBio}
                 </p>
               </div>
-              <div className="shrink-0 self-start sm:self-center">
+              <div className="shrink-0">
                 <a
                   href="/contact"
                   onClick={(e) => {
@@ -909,72 +868,64 @@ export default function Home() {
                     document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                     window.history.pushState(null, "", "/contact");
                   }}
-                  className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-black uppercase tracking-wider transition-all duration-300 shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-sm"
                 >
                   <span>{t.talkBtn}</span>
-                  <ArrowUpRight size={14} />
                 </a>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
-        {/* SERVICII */}
-        <section id="services" className="scroll-mt-40 space-y-12">
-          <div className="flex items-end justify-between border-b border-orange-500/20 pb-6">
-            <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider flex items-center gap-2">
-                <span className="w-2 h-0.5 bg-[#FF5400]" />
-                {t.servicesTagline}
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
-                {lang === "ro" ? (
-                  <>Cum te pot ajuta <span className="text-[#FF5400]">să crești</span></>
-                ) : (
-                  <>How I can help you <span className="text-[#FF5400]">scale</span></>
-                )}
-              </h2>
-            </div>
+        {/* SERVICII (CARDS IN A ROW - NO BENTO GRID) */}
+        <section id="services" className="scroll-mt-36 space-y-8">
+          <div className="space-y-1 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+              {t.servicesTagline}
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
+              {lang === "ro" ? (
+                <>Cum te pot ajuta <span className="text-[#FF5400]">să crești</span></>
+              ) : (
+                <>How I can help you <span className="text-[#FF5400]">scale</span></>
+              )}
+            </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <div className="flex flex-col gap-3 sm:gap-4">
             {servicesList.map((service, index) => (
-              <motion.div
+              <div
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative overflow-hidden"
+                className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-5 transition-colors shadow-sm"
               >
-                <div className="space-y-6 relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
-                      {service.icon}
-                    </div>
-                    <span className="text-xs font-mono font-bold text-zinc-400 group-hover:text-[#FF5400] transition-colors">
-                      0{index + 1} 
-                    </span>
+                <div className="flex items-start sm:items-center gap-4 flex-1">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-900 dark:text-zinc-100 shrink-0">
+                    {service.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
-                    {service.desc}
-                  </p>
+                  <div className="space-y-1">
+                    <h3 className="text-base sm:text-lg font-bold text-zinc-950 dark:text-white">
+                      {service.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+                      {service.desc}
+                    </p>
+                  </div>
                 </div>
-              </motion.div>
+                <span className="text-xs font-mono font-bold text-zinc-400 shrink-0 self-end sm:self-center">
+                  0{index + 1}
+                </span>
+              </div>
             ))}
           </div>
         </section>
 
-        {/* ABILITATI & UNELTE */}
-        <section id="skills" className="scroll-mt-40 space-y-10">
-          <div className="space-y-2 border-b border-orange-500/20 pb-6">
-            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider flex items-center gap-2">
-              <span className="w-2 h-0.5 bg-[#FF5400]" />
+        {/* ABILITATI (CARDS IN A ROW - NO BENTO GRID) */}
+        <section id="skills" className="scroll-mt-36 space-y-8">
+          <div className="space-y-1 border-b border-zinc-200 dark:border-zinc-800 pb-4">
+            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
               {t.skillsTagline}
             </span>
-            <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+            <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
               {lang === "ro" ? (
                 <>Abilități & <span className="text-[#FF5400]">Unelte</span></>
               ) : (
@@ -983,74 +934,66 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {skillsData[lang].map((skill, index) => (
-              <motion.div
+          <div className="flex flex-col gap-3 sm:gap-4">
+            {skillsData[lang].map((skill) => (
+              <div
                 key={skill.name}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/20 hover:border-[#FF5400] rounded-[2rem] p-7 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-[0_12px_36px_rgba(255,84,0,0.12)] relative"
+                className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex flex-col sm:flex-row sm:items-start justify-between gap-5 transition-colors shadow-sm"
               >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white group-active:bg-[#FF5400] group-active:text-white active:bg-[#FF5400] active:text-white [&>svg]:transition-colors transition-all shadow-xs">
-                      {skill.icon}
-                    </div>
+                <div className="flex items-start gap-4 flex-1">
+                  <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 flex items-center justify-center text-zinc-900 dark:text-zinc-100 shrink-0">
+                    {skill.icon}
                   </div>
-
-                  <div>
-                    <h3 className="text-2xl font-black text-zinc-950 dark:text-white group-hover:text-[#FF5400] transition-colors">
-                      {skill.name}
-                    </h3>
-                    <div className="flex items-center gap-1.5 mt-1.5 text-[11px] font-mono font-bold uppercase tracking-wider">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#FF5400]" />
-                      <span className="text-zinc-500 dark:text-zinc-400">{lang === "ro" ? "Ce pot să fac:" : "What I can do:"}</span>
+                  <div className="space-y-1.5 flex-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base sm:text-lg font-bold text-zinc-950 dark:text-white">
+                        {skill.name}
+                      </h3>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-400">
+                        {lang === "ro" ? "Competență" : "Skill"}
+                      </span>
                     </div>
+                    <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal">
+                      {skill.desc}
+                    </p>
                   </div>
-
-                  <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-normal pt-2 border-t border-orange-500/15">
-                    {skill.desc}
-                  </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="scroll-mt-40">
-          <div className="bg-white dark:bg-zinc-900/90 border-2 border-orange-500/30 rounded-[2.5rem] p-8 sm:p-14 relative overflow-hidden shadow-sm">
-            <div className="max-w-2xl space-y-8 relative z-10">
-              <div className="space-y-3">
-                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-widest flex items-center gap-2">
-                  <span className="w-2 h-0.5 bg-[#FF5400]" />
-                {t.contactTagline}
+        <section id="contact" className="scroll-mt-36">
+          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-10 shadow-sm">
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+                  {t.contactTagline}
                 </span>
-                <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-zinc-950 dark:text-white">
+                <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
                   {lang === "ro" ? (
                     <>Hai să <span className="text-[#FF5400]">colaborăm</span></>
                   ) : (
                     <>Let&apos;s <span className="text-[#FF5400]">connect</span></>
                   )}
                 </h2>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                   {t.contactSubtitle}
                 </p>
 
                 {/* NOTĂ PERSONALĂ DANIEL MOISĂ */}
-                <div className="pt-2">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-orange-500/10 dark:bg-orange-500/15 border border-orange-500/25 text-xs text-zinc-900 dark:text-zinc-200 font-medium">
+                <div className="pt-1">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-800 dark:text-zinc-200 font-medium">
                     <span className="font-mono font-bold text-[#FF5400]">SWING</span>
-                    <span className="text-zinc-700 dark:text-zinc-300">{t.contactNote}</span>
+                    <span>{t.contactNote}</span>
                   </div>
                 </div>
               </div>
 
-              <form onSubmit={handleFormSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
                     <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                       {t.fieldName}
                     </label>
@@ -1061,13 +1004,15 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.placeholderName}
-                        className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors pl-11"
                       />
-                      <User size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
+                      <span className="absolute left-3.5 top-3.5 text-zinc-400">
+                        <UserIcon size={18} />
+                      </span>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-1.5">
                     <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                       {t.fieldEmail}
                     </label>
@@ -1078,14 +1023,16 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.placeholderEmail}
-                        className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 shadow-xs"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors pl-11"
                       />
-                      <Mail size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
+                      <span className="absolute left-3.5 top-3.5 text-zinc-400">
+                        <MailIcon size={18} />
+                      </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   <label className="text-[10px] font-mono font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">
                     {t.fieldMessage}
                   </label>
@@ -1096,9 +1043,11 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.placeholderMessage}
-                      className="w-full bg-white dark:bg-zinc-950 border-2 border-zinc-200 dark:border-zinc-800 rounded-2xl px-5 py-3.5 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] transition-colors pl-12 pt-3.5 resize-none shadow-xs"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition-colors pl-11 pt-3 resize-none"
                     />
-                    <MessageSquare size={18} className="absolute left-4 top-3.5 text-[#FF5400]" />
+                    <span className="absolute left-3.5 top-3.5 text-zinc-400">
+                      <MessageIcon size={18} />
+                    </span>
                   </div>
                 </div>
 
@@ -1115,7 +1064,7 @@ export default function Home() {
                 </div>
 
                 {/* LINK TERMENI SI CONDITII */}
-                <div className="flex items-start gap-3 pt-1">
+                <div className="flex items-start gap-2.5 pt-1">
                   <input
                     type="checkbox"
                     id="terms"
@@ -1124,7 +1073,7 @@ export default function Home() {
                     onChange={(e) =>
                       setFormData({ ...formData, acceptedTerms: e.target.checked })
                     }
-                    className="mt-1 w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
+                    className="mt-0.5 w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
                   />
                   <label
                     htmlFor="terms"
@@ -1134,7 +1083,7 @@ export default function Home() {
                     <button
                       type="button"
                       onClick={() => setCurrentPage("terms")}
-                      className="text-[#FF5400] underline hover:text-zinc-950 dark:hover:text-white font-bold transition-colors cursor-pointer"
+                      className="text-zinc-950 dark:text-white underline font-bold transition-colors cursor-pointer"
                     >
                       {t.termsLink}
                     </button>
@@ -1144,28 +1093,28 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="w-full sm:w-auto px-9 py-4 rounded-2xl bg-[#FF5400] hover:bg-[#E04800] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-[0_4px_18px_rgba(255,84,0,0.3)] hover:shadow-[0_6px_24px_rgba(255,84,0,0.4)] flex items-center justify-center gap-3 disabled:opacity-50 hover:-translate-y-0.5 cursor-pointer"
+                  className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-sm flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
                 >
                   {formStatus === "submitting" ? (
                     <span>{t.sendingBtn}</span>
                   ) : (
                     <>
                       <span>{t.sendBtn}</span>
-                      <Send size={15} />
+                      <SendIcon size={14} />
                     </>
                   )}
                 </button>
 
                 {formStatus === "success" && (
-                  <div className="flex items-center gap-2.5 text-emerald-600 dark:text-emerald-400 text-sm font-bold pt-2">
-                    <CheckCircle2 size={18} className="text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 text-sm font-bold pt-1">
+                    <CheckIcon size={18} className="text-emerald-600 dark:text-emerald-400" />
                     <span>{t.successMsg}</span>
                   </div>
                 )}
 
                 {formStatus === "error" && (
-                  <div className="flex items-center gap-2.5 text-red-600 dark:text-red-400 text-sm font-bold pt-2">
-                    <AlertCircle size={18} />
+                  <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-bold pt-1">
+                    <AlertIcon size={18} />
                     <span>{t.errorMsg}</span>
                   </div>
                 )}
@@ -1176,18 +1125,18 @@ export default function Home() {
       </main>
 
       {/* FOOTER */}
-      <footer className="border-t border-orange-500/20 py-10 px-6 sm:px-8 max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8 px-4 sm:px-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
         <p>© {new Date().getFullYear()} SWING (Daniel Moisă). {t.footerRights}</p>
-        <div className="flex flex-wrap items-center justify-center gap-6 font-bold">
+        <div className="flex flex-wrap items-center justify-center gap-5 font-bold">
           <button
             onClick={() => setCurrentPage("terms")}
-            className="hover:text-[#FF5400] transition-colors cursor-pointer"
+            className="hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
           >
             Termeni & Condiții Legal
           </button>
           <button
             onClick={() => setCurrentPage("terms")}
-            className="hover:text-[#FF5400] transition-colors cursor-pointer"
+            className="hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer"
           >
             Confidențialitate GDPR
           </button>
@@ -1195,7 +1144,7 @@ export default function Home() {
             href="https://anpc.ro/"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#FF5400] transition-colors"
+            className="hover:text-zinc-950 dark:hover:text-white transition-colors"
           >
             ANPC
           </a>
@@ -1203,7 +1152,7 @@ export default function Home() {
             href="https://ec.europa.eu/consumers/odr"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#FF5400] transition-colors"
+            className="hover:text-zinc-950 dark:hover:text-white transition-colors"
           >
             Platforma SOL (UE)
           </a>

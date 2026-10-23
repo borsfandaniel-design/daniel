@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Scale, ShieldCheck, ArrowLeft } from "lucide-react";
+import { ScaleIcon, ShieldIcon, ArrowLeftIcon } from "../components/Icons";
 
 const termsContent = {
   ro: {
     backBtn: "Înapoi la pagina principală",
     termsTitle: "TERMENI ȘI CONDIȚII",
-    subtitle: "SWING Studio / Daniel Moisă — Ultima actualizare: Octombrie 2026",
+    subtitle: "SWING Studio / Daniel Moisă - Ultima actualizare: Octombrie 2026",
     compliance: "Conformitate Legislație RO & UE / GDPR Compliance",
     sections: [
       {
@@ -78,7 +78,7 @@ const termsContent = {
   en: {
     backBtn: "Back to main page",
     termsTitle: "TERMS AND CONDITIONS",
-    subtitle: "SWING Studio / Daniel Moisă — Last updated: October 2026",
+    subtitle: "SWING Studio / Daniel Moisă - Last updated: October 2026",
     compliance: "RO & EU Law Compliance / GDPR Compliance",
     sections: [
       {
@@ -161,7 +161,7 @@ export default function TermsPage() {
             href="/" 
             className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white transition-all font-bold cursor-pointer"
           >
-            <ArrowLeft size={14} />
+            <ArrowLeftIcon size={14} />
             <span>{t.backBtn}</span>
           </Link>
 
@@ -190,7 +190,7 @@ export default function TermsPage() {
         {/* Conținutul Termenilor și Condițiilor */}
         <div className="bg-white border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
           <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
-            <Scale className="text-[#FF5400]" size={32} />
+            <ScaleIcon className="text-[#FF5400]" size={32} />
             <div>
               <h1 className="text-2xl font-extrabold text-zinc-950">
                 {t.termsTitle}
@@ -201,7 +201,7 @@ export default function TermsPage() {
 
           <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
             <span className="text-zinc-950 font-semibold flex items-center gap-2">
-              <ShieldCheck size={16} className="text-[#FF5400]" /> {t.compliance}
+              <ShieldIcon size={16} className="text-[#FF5400]" /> {t.compliance}
             </span>
             <span className="text-zinc-400">2026</span>
           </div>

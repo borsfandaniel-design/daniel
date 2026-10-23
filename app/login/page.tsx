@@ -3,18 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Lock,
-  ArrowLeft,
-  ArrowRight,
-  ShieldCheck,
-  Mail,
-  KeyRound,
-  Eye,
-  EyeOff,
-  Smartphone,
-  RefreshCw,
-  CheckCircle2,
-} from "lucide-react";
+  LockIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ShieldIcon,
+  MailIcon,
+  KeyIcon,
+  EyeIcon,
+  EyeOffIcon,
+  SmartphoneIcon,
+  RefreshIcon,
+  CheckIcon,
+} from "../components/Icons";
 import { authenticateUser, verifyTwoFactor, resendTwoFactorCode } from "./actions";
 
 export default function LoginPage() {
@@ -100,42 +100,30 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white text-zinc-950 selection:bg-[#FF5400] selection:text-white p-4 relative overflow-hidden font-sans">
-      {/* GLOW DE FUNDAL */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#FF5400]/[0.06] to-transparent rounded-full blur-3xl" />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(#FF5400 1px, transparent 1px)`,
-            backgroundSize: "28px 28px",
-          }}
-        />
-      </div>
-
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* LINK REVENIRE SITE */}
         <div className="flex items-center justify-between">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-xs font-bold font-mono text-zinc-500 hover:text-[#FF5400] transition-colors uppercase tracking-wider"
+            className="inline-flex items-center gap-2 text-xs font-bold font-mono text-zinc-500 hover:text-zinc-950 transition-colors uppercase tracking-wider"
           >
-            <ArrowLeft size={14} />
+            <ArrowLeftIcon size={14} />
             <span>Înapoi la site</span>
           </Link>
-          <span className="text-[10px] font-mono font-bold text-[#FF5400] uppercase tracking-widest bg-orange-500/10 px-2.5 py-1 rounded-full border border-orange-500/20">
+          <span className="text-[10px] font-mono font-bold text-zinc-600 uppercase tracking-widest bg-zinc-100 px-2.5 py-1 rounded-full border border-zinc-200">
             SWING - 2FA GUARD
           </span>
         </div>
 
         {/* CARD LOGIN */}
-        <div className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] transition-all duration-300 shadow-[0_12px_40px_rgba(255,84,0,0.08)] rounded-[2.5rem] p-8 sm:p-10 space-y-7">
+        <div className="bg-white border border-zinc-200 shadow-sm rounded-2xl p-8 sm:p-10 space-y-7">
           {step === "credentials" ? (
             <>
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/25 text-[#FF5400] shadow-xs mb-1">
-                  <Lock size={26} />
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900 shadow-xs mb-1">
+                  <LockIcon size={22} />
                 </div>
-                <h1 className="text-3xl font-black text-zinc-950 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
                   Panou <span className="text-[#FF5400]">Admin</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
@@ -143,13 +131,15 @@ export default function LoginPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleCredentialsSubmit} className="space-y-5" autoComplete="off">
+              <form onSubmit={handleCredentialsSubmit} className="space-y-4" autoComplete="off">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-zinc-800 uppercase tracking-wider">
                     Adresă Email
                   </label>
                   <div className="relative">
-                    <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
+                      <MailIcon size={16} />
+                    </span>
                     <input
                       type="email"
                       name="email"
@@ -158,7 +148,7 @@ export default function LoginPage() {
                       autoComplete="off"
                       required
                       autoFocus
-                      className="w-full pl-11 pr-4 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
+                      className="w-full pl-11 pr-4 py-2.5 bg-white border border-zinc-200 focus:border-zinc-400 rounded-xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400"
                       placeholder="nume@domain.com"
                     />
                   </div>
@@ -169,7 +159,9 @@ export default function LoginPage() {
                     Parolă de Acces
                   </label>
                   <div className="relative">
-                    <KeyRound size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" />
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400">
+                      <KeyIcon size={16} />
+                    </span>
                     <input
                       type={showPassword ? "text" : "password"}
                       name="password"
@@ -177,7 +169,7 @@ export default function LoginPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       autoComplete="current-password"
                       required
-                      className="w-full pl-11 pr-11 py-3 bg-white border-2 border-orange-500/20 hover:border-orange-500/40 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400 shadow-2xs"
+                      className="w-full pl-11 pr-11 py-2.5 bg-white border border-zinc-200 focus:border-zinc-400 rounded-xl focus:outline-none text-zinc-950 font-medium text-sm transition-colors placeholder:text-zinc-400"
                       placeholder="Introdu parola..."
                     />
                     <button
@@ -186,24 +178,24 @@ export default function LoginPage() {
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700 transition-colors p-1"
                       tabIndex={-1}
                     >
-                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      {showPassword ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
                     </button>
                   </div>
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3.5 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-2xl text-center animate-in fade-in">
-                    ⚠️ {errorMsg}
+                  <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-xl text-center">
+                    {errorMsg}
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-[0.99]"
+                  className="w-full py-3 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
                 >
                   <span>{loading ? "SE VERIFICĂ..." : "CONTINUĂ CU PASUL 2 (2FA)"}</span>
-                  <ArrowRight size={14} />
+                  <ArrowRightIcon size={14} />
                 </button>
               </form>
             </>
@@ -211,10 +203,10 @@ export default function LoginPage() {
             <>
               {/* PASUL 2: VERIFICARE 2FA */}
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/25 text-[#FF5400] shadow-xs mb-1">
-                  <Smartphone size={26} />
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-100 border border-zinc-200 text-zinc-900 shadow-xs mb-1">
+                  <SmartphoneIcon size={22} />
                 </div>
-                <h1 className="text-3xl font-black text-zinc-950 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
                   Verificare <span className="text-[#FF5400]">2FA</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
@@ -223,13 +215,13 @@ export default function LoginPage() {
               </div>
 
               {successInfo && (
-                <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-2xl flex items-center gap-2 animate-in fade-in">
-                  <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-xl flex items-center gap-2">
+                  <CheckIcon size={16} className="text-emerald-600 shrink-0" />
                   <span>{successInfo}</span>
                 </div>
               )}
 
-              <form onSubmit={handleTwoFactorSubmit} className="space-y-5" autoComplete="off">
+              <form onSubmit={handleTwoFactorSubmit} className="space-y-4" autoComplete="off">
                 <div className="space-y-1.5">
                   <label className="block text-xs font-bold text-zinc-800 uppercase tracking-wider text-center">
                     Cod de Securitate (6 Cifre)
@@ -246,25 +238,25 @@ export default function LoginPage() {
                       autoComplete="one-time-code"
                       required
                       autoFocus
-                      className="w-full py-4 px-4 bg-white border-2 border-orange-500/30 focus:border-[#FF5400] rounded-2xl focus:outline-none text-zinc-950 font-mono font-black text-2xl text-center tracking-[8px] transition-colors placeholder:text-zinc-300 shadow-2xs"
+                      className="w-full py-3.5 px-4 bg-white border border-zinc-300 focus:border-zinc-500 rounded-xl focus:outline-none text-zinc-950 font-mono font-black text-2xl text-center tracking-[8px] transition-colors placeholder:text-zinc-300"
                       placeholder="••••••"
                     />
                   </div>
                 </div>
 
                 {errorMsg && (
-                  <div className="p-3.5 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-2xl text-center animate-in fade-in">
-                    ⚠️ {errorMsg}
+                  <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs font-bold rounded-xl text-center">
+                    {errorMsg}
                   </div>
                 )}
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-4 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-black text-xs uppercase tracking-wider rounded-2xl shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)] transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer active:scale-[0.99]"
+                  className="w-full py-3 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
                 >
                   <span>{loading ? "SE AUTENTIFICĂ..." : "CONFIRMĂ & INTRĂ ÎN DASHBOARD"}</span>
-                  <ArrowRight size={14} />
+                  <ArrowRightIcon size={14} />
                 </button>
 
                 <div className="flex items-center justify-between pt-1">
@@ -284,9 +276,9 @@ export default function LoginPage() {
                     type="button"
                     disabled={resending}
                     onClick={handleResendCode}
-                    className="text-xs text-[#FF5400] hover:text-[#E04800] font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                    className="text-xs text-zinc-700 hover:text-zinc-950 font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
                   >
-                    <RefreshCw size={12} className={resending ? "animate-spin" : ""} />
+                    <RefreshIcon size={12} className={resending ? "animate-spin" : ""} />
                     <span>{resending ? "Se trimite..." : "Retrimite codul"}</span>
                   </button>
                 </div>
@@ -294,8 +286,8 @@ export default function LoginPage() {
             </>
           )}
 
-          <div className="pt-2 border-t border-orange-500/10 flex items-center justify-center gap-1.5 text-[11px] font-mono text-zinc-500">
-            <ShieldCheck size={14} className="text-[#FF5400]" />
+          <div className="pt-2 border-t border-zinc-200 flex items-center justify-center gap-1.5 text-[11px] font-mono text-zinc-500">
+            <ShieldIcon size={14} className="text-[#FF5400]" />
             <span>Sesiune Criptată HMAC • SWING STUDIO</span>
           </div>
         </div>
