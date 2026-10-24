@@ -11,7 +11,7 @@ export default function TermeniLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section className="min-h-screen bg-white text-zinc-900 font-sans">
+    <section className="min-h-screen bg-white dark:bg-[#0a0a0a] text-zinc-950 dark:text-zinc-100 font-sans transition-colors duration-200">
       {children}
     </section>
   );

@@ -1,231 +1,462 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ScaleIcon, ShieldIcon, ArrowLeftIcon } from "../components/Icons";
+import {
+  ScaleIcon,
+  ShieldIcon,
+  ArrowLeftIcon,
+  SunIcon,
+  MoonIcon,
+  CheckIcon,
+} from "../components/Icons";
 
-const termsContent = {
+const termsData = {
   ro: {
-    backBtn: "Înapoi la pagina principală",
-    termsTitle: "TERMENI ȘI CONDIȚII",
-    subtitle: "SWING Studio / Daniel Moisă - Ultima actualizare: Octombrie 2026",
-    compliance: "Conformitate Legislație RO & UE / GDPR Compliance",
+    backBtn: "Înapoi la site",
+    pageTitle: "TERMENI ȘI CONDIȚII DE UTILIZARE",
+    pageSubtitle: "SWING Studio | Moisă Ionuț Daniel - Versiunea oficială actualizată la zi (2026)",
+    legalBadge: "Conformitate Legislație România & Uniunea Europeană (GDPR)",
+    introSummary:
+      "Prezentele clauze contractuale și condiții generale guvernează accesul pe acest site web și furnizarea serviciilor profesionale de dezvoltare web, landing pages și appointment setting de către SWING (Moisă Ionuț Daniel). Vă rugăm să citiți cu atenție prevederile înainte de a trimite o solicitare de colaborare.",
+    quickNavTitle: "Navigare rapidă prin secțiuni",
     sections: [
       {
-        title: "1. Prestatorul",
-        text: "Acest site este operat de SWING (Daniel Moisă, \"Prestatorul\"), email: borsfandaniel@gmail.com.",
+        id: "prestator",
+        number: "01",
+        title: "Identificarea Prestatorului",
+        content:
+          "Platforma online SWING și toate serviciile asociate sunt operate și furnizate de către Moisă Ionuț Daniel (denumit în continuare \"Prestatorul\" sau \"SWING\"), cu adresa de corespondență electronică oficială: borsfandaniel@gmail.com. Orice comunicare formală sau notificare legală transmisă către Prestator se realizează prin intermediul acestui canal digital oficial.",
       },
       {
-        title: "2. Obiectul",
-        text: "Site-ul prezintă serviciile Prestatorului: design grafic (Canva Pro, pitch deck-uri, bannere, social media), cold emailing și outreach, appointment setting. Conținutul are caracter informativ și nu reprezintă o ofertă fermă. Colaborarea se stabilește printr-o ofertă sau un contract acceptat în scris de ambele părți (inclusiv prin email).",
+        id: "aplicare",
+        number: "02",
+        title: "Domeniul de Aplicare și Acceptarea Termenilor",
+        content:
+          "Accesarea site-ului, completarea formularului de contact sau inițierea oricărei discuții comerciale reprezintă acceptarea deplină a acestor Termeni și Condiții. Serviciile oferite se adresează cu prioritate persoanelor juridice, companiilor și profesioniștilor independenți (relații B2B). În măsura în care un utilizator acționează în calitate de consumator persoană fizică, acesta beneficiază de toate drepturile conferite de legislația aplicabilă privind protecția consumatorilor din România.",
       },
       {
-        title: "3. Clienți",
-        text: "Serviciile se adresează în principal persoanelor juridice și profesioniștilor (B2B). Dacă ești consumator, se aplică și dispozițiile legale de protecție a consumatorilor.",
+        id: "servicii",
+        number: "03",
+        title: "Descrierea Serviciilor",
+        content:
+          "SWING oferă servicii specializate în mediul digital, incluzând, dar fără a se limita la:",
+        list: [
+          "Dezvoltare web modernă, optimizare de performanță, arhitectură frontend și landing pages concepute pentru conversie maximă;",
+          "Sisteme și procese de calificare a contactelor comerciale și programare de întâlniri de vânzări (Appointment Setting B2B);",
+          "Consultanță strategică privind copywriting-ul comercial, poziționarea ofertelor și optimizarea fluxurilor digitale de achiziție de clienți.",
+        ],
+        extra:
+          "Informațiile prezentate pe site au un caracter informativ și orientativ, neconstituind o ofertă fermă și obligatorie de a contracta în lipsa unei confirmări scrise individuale.",
       },
       {
-        title: "4. Plată",
-        text: "Tarifele și termenele de plată sunt cele din ofertă. Prestatorul poate cere avans. Întârzierea plății permite suspendarea livrării și aplicarea penalităților prevăzute de lege.",
+        id: "contractare",
+        number: "04",
+        title: "Procesul de Contractare și Încheierea Acordului",
+        content:
+          "Colaborarea formală dintre Prestator și Client se perfectează printr-o ofertă comercială agreată în scris (inclusiv prin e-mail sau semnătură electronică) sau printr-un contract individual de prestări servicii. Oferta va stipula în mod expres livrabilele convenite, etapele de implementare, termenele limită de predare și costurile aferente fiecărei faze a proiectului.",
       },
       {
-        title: "5. Livrare și revizii",
-        text: "Termenele sunt cele din ofertă. Reviziile incluse sunt cele menționate în ofertă; cele suplimentare se taxează separat. Întârzierile clientului în furnizarea materialelor sau a feedback-ului prelungesc termenele corespunzător.",
+        id: "preturi",
+        number: "05",
+        title: "Onorarii, Plăți și Mecanisme de Facturare",
+        content:
+          "Prețurile pentru serviciile furnizate sunt exprimate în mod clar în oferta comercială transmisă Clientului. Prestatorul își rezervă dreptul de a solicita un avans obligatoriu (standard 30% - 50%) înainte de demararea lucrărilor efective. Facturile emise au un termen de plată de maximum 5 zile lucrătoare de la emitere, dacă nu s-a stipulat altfel în scris. Întârzierea la plată oferă Prestatorului dreptul legal de a suspenda temporar prestarea serviciilor sau predarea livrabilelor finale până la achitarea integrală.",
       },
       {
-        title: "6. Drepturi de autor",
-        text: "Materialele create rămân proprietatea Prestatorului până la plata integrală. După plata integrală, clientul primește dreptul de a folosi livrabilele finale în scopul convenit. Prestatorul poate prezenta lucrările în portofoliu, dacă nu s-a convenit altfel în scris. Clientul garantează că deține drepturile asupra materialelor furnizate de el. Elementele terțe (fonturi, imagini stock, șabloane) sunt supuse licențelor proprii.",
+        id: "livrare",
+        number: "06",
+        title: "Livrabile, Termene de Execuție și Runda de Revizii",
+        content:
+          "Termenele de livrare convenite încep să curgă din momentul în care Clientul a furnizat integral toate materialele, credențialele, textele și informațiile necesare demarării. Fiecare pachet include un număr standard de 2 runde de revizii constructive în limitele specificațiilor stabilite inițial. Solicitările ce depășesc cadrul agreat sau modificările de viziune formulate ulterior aprobării conceptului vor fi tarifate ca servicii suplimentare.",
       },
       {
-        title: "7. Cold emailing și outreach",
-        bullets: [
-          "a) Clientul răspunde de legalitatea listelor de contacte furnizate sau aprobate de el și de activitatea sa comercială.",
-          "b) Campaniile respectă legislația aplicabilă (GDPR, Legea 506/2004): mesajele indică expeditorul, motivul contactării și o modalitate simplă de dezabonare, iar cererile de dezabonare se respectă prompt.",
-          "c) Prestatorul poate refuza sau opri o campanie despre care are motive rezonabile să credă că încalcă legea, politicile furnizorilor de email sau drepturile terților.",
-          "d) Când prelucrează date în numele clientului, părțile încheie un acord de prelucrare a datelor (DPA) conform art. 28 GDPR.",
-          "e) Prestatorul nu garantează rate de deschidere, de răspuns sau un anumit număr de întâlniri; rezultatele depind de ofertă, piață, listă și mesaj.",
+        id: "proprietate",
+        number: "07",
+        title: "Drepturi de Proprietate Intelectuală și Autor",
+        content:
+          "Toate conceptele, codul sursă, elementele de design și materialele dezvoltate rămân în patrimoniul exclusiv al Prestatorului până la momentul achitării integrale a tuturor facturilor datorate de Client. După plata completă, Clientului i se acordă un drept neexclusiv sau exclusiv (conform contractului) de utilizare comercială a livrabilelor finale. Prestatorul își păstrează dreptul legitim de a menționa proiectul în portofoliul propriu de prezentare, cu excepția cazului în care s-a semnat în prealabil un acord scris de confidențialitate (NDA) expres.",
+      },
+      {
+        id: "appointment",
+        number: "08",
+        title: "Cadrul Specific pentru Appointment Setting și Outreach",
+        content:
+          "Pentru serviciile de outreach și calificare de lead-uri:",
+        list: [
+          "Clientul poartă responsabilitatea juridică deplină privind corectitudinea și legalitatea oricăror baze de date sau informații comerciale pe care le pune la dispoziție;",
+          "Toate campaniile se desfășoară cu respectarea strictă a reglementărilor GDPR și a Legii 506/2004 privind comunicațiile electronice, asigurând identificarea clară a expeditorului și mecanisme automate de dezabonare (opt-out);",
+          "Prestatorul optimizează procesul de calificare și programare a discuțiilor, însă nu garantează vânzarea finală a produselor sau serviciilor Clientului, decizia de achiziție aparținând exclusiv părților terțe.",
         ],
       },
       {
-        title: "8. Appointment setting",
-        text: "O întâlnire este \"calificată\" conform criteriilor agreate în ofertă. Prestatorul nu răspunde pentru închiderea vânzării.",
+        id: "gdpr",
+        number: "09",
+        title: "Protecția Datelor cu Caracter Personal (GDPR)",
+        content:
+          "Datele colectate prin intermediul site-ului (nume, adresă de email, mesaje) sunt prelucrate exclusiv în scopul comunicării comerciale, transmiterii ofertelor și executării contractului, conform Regulamentului (UE) 2016/679 (GDPR). Datele nu sunt înstrăinate sau vândute către terți. Utilizatorul are dreptul de acces, rectificare, ștergere a datelor (\"dreptul de a fi uitat\") și opoziție, drepturi ce pot fi exercitate printr-o simplă solicitare scrisă la adresa borsfandaniel@gmail.com.",
       },
       {
-        title: "9. Confidențialitate",
-        text: "Informațiile non-publice primite de la client sunt tratate confidențial și folosite doar pentru executarea colaborării.",
+        id: "raspundere",
+        number: "10",
+        title: "Limitarea Răspunderii",
+        content:
+          "În limitele permise de legislația română, răspunderea totală a Prestatorului pentru orice pretenție, culpă sau prejudiciu izvorât din sau în legătură cu serviciile furnizate este limitată strict la valoarea sumelor efectiv încasate de la Client pentru proiectul sau etapa respectivă. Prestatorul nu poate fi tras la răspundere pentru daune indirecte, pierderi de oportunități de afaceri sau profituri nerealizate ca urmare a factorilor de piață independenți de controlul său.",
       },
       {
-        title: "10. Limitarea răspunderii",
-        text: "În limitele permise de lege, răspunderea Prestatorului este limitată la suma plătită pentru serviciul în cauză și nu include pierderi indirecte (profit nerealizat, oportunități pierdute). Nu se limitează răspunderea pentru fraudă sau culpă gravă.",
+        id: "litigii",
+        number: "11",
+        title: "Legea Aplicabilă și Soluționarea Litigiilor",
+        content:
+          "Prezentele condiții sunt guvernate de legea română. În cazul oricărei neînțelegeri apărute, părțile vor depune toate diligențele rezonabile pentru soluționarea acesteia pe cale amiabilă în termen de 30 de zile calendaristice. În cazul în care rezolvarea amiabilă nu este posibilă, diferendul va fi deferit spre competentă soluționare instanțelor judecătorești române competente din circumscripția teritorială a Prestatorului.",
       },
       {
-        title: "11. Conținutul site-ului",
-        text: "Textele, elementele grafice și designul site-ului sunt protejate de drepturi de autor și nu pot fi copiate fără acord scris.",
-      },
-      {
-        title: "12. Forță majoră",
-        text: "Nicio parte nu răspunde pentru neexecutarea cauzată de forță majoră, cu notificarea celeilalte părți.",
-      },
-      {
-        title: "13. Reclamații și litigii",
-        text: "Reclamațiile se trimit la adresa de email și primesc răspuns în maximum 30 de zile. Consumatorii se pot adresa ANPC (anpc.ro). Litigiile se rezolvă amiabil, iar în caz contrar de instanțele române competente. Se aplică legea română.",
-      },
-      {
-        title: "14. Modificări",
-        text: "Prestatorul poate actualiza acești termeni. Versiunea în vigoare este cea publicată pe site.",
+        id: "modificari",
+        number: "12",
+        title: "Modificarea Termenilor",
+        content:
+          "Prestatorul își rezervă dreptul de a actualiza sau revizui acești Termeni și Condiții periodic pentru a reflecta cerințele legislative sau modificările aduse serviciilor. Versiunea publicată pe această pagină web constituie forma oficială, valabilă și aplicabilă la data consultării.",
       },
     ],
+    footerNotice: "Pentru orice întrebări privind termenii legali, contactează-ne direct la",
   },
   en: {
-    backBtn: "Back to main page",
-    termsTitle: "TERMS AND CONDITIONS",
-    subtitle: "SWING Studio / Daniel Moisă - Last updated: October 2026",
-    compliance: "RO & EU Law Compliance / GDPR Compliance",
+    backBtn: "Back to website",
+    pageTitle: "TERMS AND CONDITIONS OF USE",
+    pageSubtitle: "SWING Studio | Moisă Ionuț Daniel - Official up-to-date version (2026)",
+    legalBadge: "Compliance with Romanian & EU Legislation (GDPR)",
+    introSummary:
+      "These contractual terms and general conditions govern access to this website and the provision of professional web development, landing pages, and appointment setting services by SWING (Moisă Ionuț Daniel). Please read these provisions carefully before submitting an inquiry.",
+    quickNavTitle: "Quick Section Navigation",
     sections: [
       {
-        title: "1. Service Provider",
-        text: "This website is operated by SWING (Daniel Moisă, \"Provider\"), email: borsfandaniel@gmail.com.",
+        id: "prestator",
+        number: "01",
+        title: "Identification of the Service Provider",
+        content:
+          "The SWING online platform and all associated services are operated and provided by Moisă Ionuț Daniel (referred to as \"Provider\" or \"SWING\"), with official electronic contact address: borsfandaniel@gmail.com. All official legal notices or communications must be directed through this verified digital channel.",
       },
       {
-        title: "2. Subject Matter",
-        text: "The website showcases the Provider's services: graphic design (Canva Pro, pitch decks, banners, social media), cold emailing and outreach, appointment setting. Content is informational and does not represent a binding offer. Collaboration is established through an offer or written contract accepted by both parties (including via email).",
+        id: "aplicare",
+        number: "02",
+        title: "Scope and Acceptance of Terms",
+        content:
+          "Browsing this website, submitting the contact form, or initiating commercial discussions constitutes full acceptance of these Terms and Conditions. Services are primarily tailored for legal entities, registered companies, and independent professionals (B2B). If a user acts as an individual consumer, they retain all statutory consumer protection rights provided under Romanian and EU law.",
       },
       {
-        title: "3. Clients",
-        text: "Services are primarily aimed at legal entities and professionals (B2B). Consumer protection laws apply if you are an individual consumer.",
+        id: "servicii",
+        number: "03",
+        title: "Description of Services",
+        content:
+          "SWING provides dedicated digital services including, but not limited to:",
+        list: [
+          "Modern web development, speed optimization, responsive frontend architecture, and high-converting landing pages;",
+          "B2B qualified appointment setting pipelines, prospect qualification, and sales calendar bookings;",
+          "Direct-response copywriting, commercial offer structure, and strategic customer acquisition advisory.",
+        ],
+        extra:
+          "Information displayed on this website is for presentation purposes and does not constitute a legally binding contractual offer until mutually confirmed in writing.",
       },
       {
-        title: "4. Payment",
-        text: "Rates and payment terms are specified in the offer. The Provider may request an advance payment. Delay in payment permits suspension of delivery and application of statutory penalties.",
+        id: "contractare",
+        number: "04",
+        title: "Contracting Process and Agreement Execution",
+        content:
+          "Formal collaboration between Provider and Client is established through an agreed written commercial proposal (including email or electronic signatures) or an individual service agreement detailing specific deliverables, agreed milestones, project timelines, and fee schedules.",
       },
       {
-        title: "5. Delivery & Revisions",
-        text: "Deadlines are as agreed in the offer. Revisions included are specified in the offer; additional ones are charged separately. Client delays in providing materials or feedback extend deadlines accordingly.",
+        id: "preturi",
+        number: "05",
+        title: "Fees, Payment Terms, and Invoicing",
+        content:
+          "Service fees are clearly specified in each proposal. The Provider reserves the right to require an advance payment (typically 30% - 50%) prior to project kickoff. Invoices are payable within 5 business days of receipt unless explicitly agreed otherwise. Payment delays entitle the Provider to suspend delivery or execution until full payment is received.",
       },
       {
-        title: "6. Copyright",
-        text: "Created materials remain Provider property until paid in full. Upon full payment, the client receives rights to use final deliverables for agreed purposes. Provider may showcase work in portfolios unless agreed otherwise in writing. Client guarantees ownership of provided materials. Third-party elements follow their own licenses.",
+        id: "livrare",
+        number: "06",
+        title: "Deliverables, Milestones, and Revisions Policy",
+        content:
+          "Project delivery deadlines begin once the Client provides all required source materials, access credentials, and briefs. Each project includes up to 2 rounds of constructive revisions within the agreed project scope. Major changes requested outside the original specifications will be quoted as separate work orders.",
       },
       {
-        title: "7. Cold Emailing & Outreach",
-        bullets: [
-          "a) The client is responsible for the legality of contact lists provided or approved and their commercial activity.",
-          "b) Campaigns comply with applicable laws (GDPR, Law 506/2004): messages identify sender, contact reason, and easy opt-out mechanism.",
-          "c) Provider reserves the right to suspend campaigns that reasonably appear to violate laws or third-party rights.",
-          "d) A Data Processing Agreement (DPA) under Art. 28 GDPR is executed when processing data on behalf of client.",
-          "e) Provider does not guarantee open, response rates, or exact booking numbers; results depend on market factors.",
+        id: "proprietate",
+        number: "07",
+        title: "Intellectual Property and Usage Rights",
+        content:
+          "All source code, proprietary design files, and concepts remain the exclusive property of the Provider until all invoices have been settled in full. Following complete payment, the Client receives the agreed usage rights for the final deliverables. The Provider retains the right to display the completed work in its professional portfolio unless a formal NDA was mutually signed in advance.",
+      },
+      {
+        id: "appointment",
+        number: "08",
+        title: "Specific Framework for Appointment Setting",
+        content:
+          "For outreach and appointment setting services:",
+        list: [
+          "The Client holds full legal responsibility for the validity and source compliance of any contact lists or databases provided;",
+          "All outreach adheres strictly to GDPR and applicable direct electronic marketing statutes, including unambiguous sender identification and clear opt-out mechanisms;",
+          "The Provider guarantees structured qualification of booked meetings but does not guarantee final sales closing, which depends on market variables and Client closing ability.",
         ],
       },
       {
-        title: "8. Appointment Setting",
-        text: "A meeting is considered 'qualified' based on criteria defined in the offer. Provider is not responsible for closing sales.",
+        id: "gdpr",
+        number: "09",
+        title: "Personal Data Protection (GDPR)",
+        content:
+          "Personal data collected through this website (name, email address, inquiry text) is processed solely for project correspondence, quotation, and contract fulfillment under Regulation (EU) 2016/679. Data is never sold or transferred to unauthorized third parties. You have the right to request access, rectification, or deletion of your data at any time via borsfandaniel@gmail.com.",
       },
       {
-        title: "9. Confidentiality",
-        text: "Non-public information received from clients is kept strictly confidential and used solely for contract execution.",
+        id: "raspundere",
+        number: "10",
+        title: "Limitation of Liability",
+        content:
+          "To the maximum extent permitted by applicable law, the Provider's total liability for any claim arising from or related to the services shall not exceed the total fees actually received from the Client for that specific engagement. The Provider shall not be held liable for indirect, consequential, or lost business opportunity damages.",
       },
       {
-        title: "10. Limitation of Liability",
-        text: "To the maximum extent permitted by law, Provider's liability is limited to the amount paid for the specific service.",
+        id: "litigii",
+        number: "11",
+        title: "Governing Law and Dispute Resolution",
+        content:
+          "These Terms are governed by and construed in accordance with the laws of Romania. Any dispute shall first be addressed through good-faith amicable negotiation within 30 days. Should amicable resolution fail, the dispute will be submitted to the competent courts of Romania within the Provider's jurisdiction.",
       },
       {
-        title: "11. Website Content",
-        text: "All text, graphics, and design are protected by copyright and cannot be copied without written consent.",
-      },
-      {
-        title: "12. Force Majeure",
-        text: "Neither party is liable for failure caused by force majeure events upon written notification.",
-      },
-      {
-        title: "13. Disputes & Governing Law",
-        text: "Complaints should be sent via email with response given within 30 days. Romanian law applies.",
-      },
-      {
-        title: "14. Amendments",
-        text: "Provider may update these terms. The active version is always published on this page.",
+        id: "modificari",
+        number: "12",
+        title: "Modifications of Terms",
+        content:
+          "The Provider reserves the right to amend these terms at any time. The version published on this page represents the currently applicable framework.",
       },
     ],
+    footerNotice: "For any questions regarding legal compliance or terms, contact us directly at",
   },
 };
 
-export default function TermsPage() {
+export default function TermeniSiConditiiPage() {
   const [lang, setLang] = useState<"ro" | "en">("ro");
-  const t = termsContent[lang];
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    // Sincronizare tema la încărcarea paginii
+    const savedTheme = localStorage.getItem("swing_theme") as "light" | "dark" | null;
+    const initialTheme =
+      savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    setTheme(initialTheme);
+    if (initialTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === "light" ? "dark" : "light";
+    setTheme(next);
+    localStorage.setItem("swing_theme", next);
+    if (next === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
+
+  const t = termsData[lang];
 
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-sans antialiased py-12 px-4 sm:px-8">
-      <div className="max-w-4xl mx-auto space-y-8">
-        
-        {/* Buton de întoarcere la pagina principală & Schimbare limbă */}
-        <div className="flex items-center justify-between">
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 text-xs font-mono text-zinc-900 bg-zinc-100 border border-zinc-200 px-4 py-2 rounded-full hover:bg-zinc-900 hover:text-white transition-all font-bold cursor-pointer"
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-zinc-950 dark:text-zinc-100 transition-colors duration-200">
+      {/* HEADER / NAVBAR SIMPLIFICAT */}
+      <header className="sticky top-0 z-40 bg-white/95 dark:bg-[#0a0a0a]/95 border-b border-zinc-200 dark:border-zinc-800 transition-colors">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 h-16 sm:h-18 flex items-center justify-between gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-3 group shrink-0"
+            title="SWING Studio - Pagina Principală"
           >
-            <ArrowLeftIcon size={14} />
-            <span>{t.backBtn}</span>
+            <img
+              src="/logo.png"
+              alt="SWING Logo"
+              className="h-9 sm:h-11 w-auto object-contain shrink-0"
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+            <div className="flex flex-col">
+              <span className="font-black tracking-[0.16em] text-xs sm:text-sm text-zinc-950 dark:text-white leading-none">
+                SWING
+              </span>
+              <span className="text-[9px] text-zinc-500 dark:text-zinc-400 font-mono font-medium tracking-wider uppercase mt-1">
+                Moisă Ionuț Daniel
+              </span>
+            </div>
           </Link>
 
-          <div className="flex items-center bg-white border border-zinc-200 rounded-full p-1 shadow-xs">
-            <button 
+          <div className="flex items-center gap-2.5">
+            {/* Buton Dark / Light Mode */}
+            <button
               type="button"
-              onClick={() => setLang("ro")}
-              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "ro" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
-              }`}
+              onClick={toggleTheme}
+              aria-label={theme === "dark" ? "Comută pe modul luminos" : "Comută pe modul întunecat"}
+              title={theme === "dark" ? "Mod Luminos" : "Mod Întunecat"}
+              className="w-9 h-9 rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors cursor-pointer flex items-center justify-center"
             >
-              RO
+              {theme === "dark" ? (
+                <SunIcon size={15} className="text-zinc-200" />
+              ) : (
+                <MoonIcon size={15} className="text-zinc-700" />
+              )}
             </button>
-            <button 
-              type="button"
-              onClick={() => setLang("en")}
-              className={`px-3 py-1 text-[11px] font-mono font-bold rounded-full transition-all cursor-pointer ${
-                lang === "en" ? "bg-[#FF5400] text-white" : "text-zinc-600 hover:text-zinc-950"
-              }`}
+
+            {/* Selector Limbă */}
+            <div className="flex items-center bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl p-0.5">
+              <button
+                type="button"
+                onClick={() => setLang("ro")}
+                className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded-lg transition-colors cursor-pointer ${
+                  lang === "ro"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
+                }`}
+              >
+                RO
+              </button>
+              <button
+                type="button"
+                onClick={() => setLang("en")}
+                className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded-lg transition-colors cursor-pointer ${
+                  lang === "en"
+                    ? "bg-white dark:bg-zinc-900 text-zinc-950 dark:text-white shadow-xs"
+                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
+            {/* Buton Înapoi */}
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100 transition-colors cursor-pointer"
             >
-              EN
-            </button>
+              <ArrowLeftIcon size={14} />
+              <span className="hidden sm:inline">{t.backBtn}</span>
+            </Link>
           </div>
         </div>
+      </header>
 
-        {/* Conținutul Termenilor și Condițiilor */}
-        <div className="bg-white border-2 border-orange-500/20 rounded-3xl p-6 sm:p-10 shadow-xs space-y-6">
-          <div className="flex items-center gap-3 border-b border-zinc-200 pb-6">
-            <ScaleIcon className="text-[#FF5400]" size={32} />
-            <div>
-              <h1 className="text-2xl font-extrabold text-zinc-950">
-                {t.termsTitle}
-              </h1>
-              <p className="text-xs font-mono text-zinc-500">{t.subtitle}</p>
-            </div>
+      {/* CONTINUT PRINCIPAL */}
+      <main className="max-w-5xl mx-auto px-4 sm:px-8 py-10 sm:py-16 space-y-10">
+        {/* HERO TITLE */}
+        <div className="space-y-4 border-b border-zinc-200 dark:border-zinc-800 pb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-mono text-zinc-700 dark:text-zinc-300">
+            <ShieldIcon size={14} className="text-[#FF5400]" />
+            <span>{t.legalBadge}</span>
           </div>
 
-          <div className="flex items-center justify-between bg-orange-500/10 p-4 rounded-2xl border border-orange-500/20 text-xs font-mono">
-            <span className="text-zinc-950 font-semibold flex items-center gap-2">
-              <ShieldIcon size={16} className="text-[#FF5400]" /> {t.compliance}
-            </span>
-            <span className="text-zinc-400">2026</span>
+          <div className="flex items-center gap-3">
+            <ScaleIcon size={32} className="text-[#FF5400] shrink-0" />
+            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
+              {t.pageTitle}
+            </h1>
           </div>
 
-          <div className="space-y-6 text-sm text-zinc-600 leading-relaxed font-normal">
-            {t.sections.map((sec) => (
-              <section key={sec.title} className="space-y-2">
-                <h2 className="text-[#FF5400] font-bold text-base uppercase tracking-wider font-mono">
+          <p className="text-xs sm:text-sm font-mono text-zinc-500 dark:text-zinc-400">
+            {t.pageSubtitle}
+          </p>
+
+          <p className="text-sm sm:text-base text-zinc-700 dark:text-zinc-300 leading-relaxed pt-2">
+            {t.introSummary}
+          </p>
+        </div>
+
+        {/* LISTA SECȚIUNILOR LEGALE */}
+        <div className="space-y-6">
+          {t.sections.map((sec) => (
+            <section
+              key={sec.id}
+              id={sec.id}
+              className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3 transition-colors shadow-2xs"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-mono font-black text-[#FF5400] px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+                  {sec.number}
+                </span>
+                <h2 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white">
                   {sec.title}
                 </h2>
-                {sec.text && <p>{sec.text}</p>}
-                {sec.bullets && (
-                  <ul className="list-disc pl-5 space-y-1">
-                    {sec.bullets.map((b, idx) => (
-                      <li key={idx}>{b}</li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            ))}
-          </div>
+              </div>
+
+              <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                {sec.content}
+              </p>
+
+              {sec.list && (
+                <ul className="space-y-2 pt-2">
+                  {sec.list.map((item, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-2.5 text-sm sm:text-base text-zinc-600 dark:text-zinc-300"
+                    >
+                      <span className="mt-1 shrink-0 text-[#FF5400]">
+                        <CheckIcon size={14} />
+                      </span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {sec.extra && (
+                <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed pt-1">
+                  {sec.extra}
+                </p>
+              )}
+            </section>
+          ))}
         </div>
 
-      </div>
+        {/* NOTĂ FINALĂ & LINKURI UTILE */}
+        <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-4">
+          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono">
+            {t.footerNotice}{" "}
+            <a
+              href="mailto:borsfandaniel@gmail.com"
+              className="text-[#FF5400] font-bold underline"
+            >
+              borsfandaniel@gmail.com
+            </a>
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-zinc-500 dark:text-zinc-400 pt-2 border-t border-zinc-200 dark:border-zinc-800">
+            <a
+              href="https://anpc.ro/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-zinc-950 dark:hover:text-white underline transition-colors"
+            >
+              Autoritatea Națională pentru Protecția Consumatorilor (ANPC)
+            </a>
+            <span>•</span>
+            <a
+              href="https://ec.europa.eu/consumers/odr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-zinc-950 dark:hover:text-white underline transition-colors"
+            >
+              Platforma SOL a Comisiei Europene
+            </a>
+          </div>
+        </div>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 py-8 px-4 sm:px-8 max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+        <p>© {new Date().getFullYear()} SWING (Moisă Ionuț Daniel). Toate drepturile rezervate.</p>
+        <Link
+          href="/"
+          className="hover:text-zinc-950 dark:hover:text-white transition-colors font-bold"
+        >
+          {t.backBtn}
+        </Link>
+      </footer>
     </div>
   );
 }
