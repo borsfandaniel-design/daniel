@@ -17,7 +17,6 @@ import {
   CloseIcon,
 } from "./components/Icons";
 import { motion, AnimatePresence } from "framer-motion";
-import { FloatingPumpkins } from "./components/FloatingPumpkins";
 
 //--- DICȚIONAR PENTRU TRADUCERI (RO / EN) ---
 const translations = {
@@ -237,7 +236,7 @@ function FuturisticNavbar({
                   onClick={(e) => handleNavClick(e, link.id, link.slug)}
                   className={`relative px-4 py-2 rounded-lg text-xs font-semibold tracking-wider uppercase transition-colors duration-200 ${
                     isActive
-                      ? "text-[#FF5400] dark:text-[#FF5400] font-bold"
+                      ? "text-[#D62828] dark:text-[#D62828] font-bold"
                       : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100/60 dark:hover:bg-zinc-800/60"
                   }`}
                 >
@@ -245,7 +244,7 @@ function FuturisticNavbar({
                   {isActive && (
                     <motion.div
                       layoutId="fullNavIndicator"
-                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#FF5400] rounded-full"
+                      className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#D62828] rounded-full"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -338,7 +337,7 @@ function FuturisticNavbar({
               </div>
               <div className="pt-3 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
                 <span className="text-xs font-mono text-zinc-500 dark:text-zinc-400">Moisă Ionuț Daniel</span>
-                <span className="text-[10px] font-mono font-bold text-[#FF5400] uppercase tracking-wider">SWING STUDIO</span>
+                <span className="text-[10px] font-mono font-bold text-[#D62828] uppercase tracking-wider">SWING STUDIO</span>
               </div>
             </div>
           </motion.div>
@@ -455,12 +454,12 @@ export default function Home() {
     {
       title: t.serv1Title,
       desc: t.serv1Desc,
-      icon: <CodeIcon size={22} className="text-[#FF5400]" />,
+      icon: <CodeIcon size={22} className="text-[#D62828]" />,
     },
     {
       title: t.serv2Title,
       desc: t.serv2Desc,
-      icon: <CalendarIcon size={22} className="text-[#FF5400]" />,
+      icon: <CalendarIcon size={22} className="text-[#D62828]" />,
     },
   ];
 
@@ -492,11 +491,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-zinc-950 dark:text-zinc-100 selection:bg-[#FF5400] selection:text-white font-sans antialiased overflow-x-hidden relative transition-colors duration-200">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-zinc-950 dark:text-zinc-100 selection:bg-[#D62828] selection:text-white font-sans antialiased overflow-x-hidden relative transition-colors duration-200">
       <FuturisticNavbar lang={lang} setLang={setLang} theme={theme} toggleTheme={toggleTheme} />
-
-      {/* FLOATING PUMPKINS BACKGROUND */}
-      <FloatingPumpkins />
 
       <main className="relative z-10 pt-28 sm:pt-36 pb-24 px-4 sm:px-8 max-w-4xl mx-auto space-y-24 md:space-y-32">
         {/* HERO SECTION */}
@@ -506,14 +502,14 @@ export default function Home() {
               <span className="text-xs font-mono font-bold text-zinc-800 dark:text-zinc-200 uppercase">
                 {t.seasonalTag}
               </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 dark:bg-zinc-900 text-[#FF5400] font-bold uppercase tracking-wider">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-zinc-950 dark:bg-zinc-900 text-[#D62828] font-bold uppercase tracking-wider">
                 {t.seasonalBadge}
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-zinc-950 dark:text-white leading-[1.1]">
               {t.heroTitlePart1}
-              <span className="text-[#FF5400]">{t.heroTitlePart2}</span>
+              <span className="text-[#D62828]">{t.heroTitlePart2}</span>
             </h1>
 
             <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed">
@@ -551,14 +547,14 @@ export default function Home() {
         {/* SERVICII (CARDS IN A ROW - NO BENTO GRID) */}
         <section id="services" className="scroll-mt-36 space-y-8">
           <div className="space-y-1 border-b border-zinc-200 dark:border-zinc-800 pb-4">
-            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+            <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
               {t.servicesTagline}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
               {lang === "ro" ? (
-                <>Cum te pot ajuta <span className="text-[#FF5400]">să crești</span></>
+                <>Cum te pot ajuta <span className="text-[#D62828]">să crești</span></>
               ) : (
-                <>How I can help you <span className="text-[#FF5400]">scale</span></>
+                <>How I can help you <span className="text-[#D62828]">scale</span></>
               )}
             </h2>
           </div>
@@ -593,14 +589,14 @@ export default function Home() {
         {/* ABILITATI (CARDS IN A ROW - NO BENTO GRID) */}
         <section id="skills" className="scroll-mt-36 space-y-8">
           <div className="space-y-1 border-b border-zinc-200 dark:border-zinc-800 pb-4">
-            <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+            <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
               {t.skillsTagline}
             </span>
             <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
               {lang === "ro" ? (
-                <>Abilități & <span className="text-[#FF5400]">Unelte</span></>
+                <>Abilități & <span className="text-[#D62828]">Unelte</span></>
               ) : (
-                <>Skills & <span className="text-[#FF5400]">Tools</span></>
+                <>Skills & <span className="text-[#D62828]">Tools</span></>
               )}
             </h2>
           </div>
@@ -639,14 +635,14 @@ export default function Home() {
           <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl p-6 sm:p-10 shadow-xs">
             <div className="space-y-6">
               <div className="space-y-2">
-                <span className="text-xs font-mono font-bold text-[#FF5400] uppercase tracking-wider">
+                <span className="text-xs font-mono font-bold text-[#D62828] uppercase tracking-wider">
                   {t.contactTagline}
                 </span>
                 <h2 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
                   {lang === "ro" ? (
-                    <>Hai să <span className="text-[#FF5400]">colaborăm</span></>
+                    <>Hai să <span className="text-[#D62828]">colaborăm</span></>
                   ) : (
-                    <>Let&apos;s <span className="text-[#FF5400]">connect</span></>
+                    <>Let&apos;s <span className="text-[#D62828]">connect</span></>
                   )}
                 </h2>
                 <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -656,7 +652,7 @@ export default function Home() {
                 {/* NOTĂ PERSONALĂ DANIEL MOISĂ */}
                 <div className="pt-1">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs text-zinc-800 dark:text-zinc-200 font-medium">
-                    <span className="font-mono font-bold text-[#FF5400]">SWING</span>
+                    <span className="font-mono font-bold text-[#D62828]">SWING</span>
                     <span>{t.contactNote}</span>
                   </div>
                 </div>
@@ -675,7 +671,7 @@ export default function Home() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.placeholderName}
-                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] dark:focus:border-[#FF5400] transition-colors pl-11"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#D62828] dark:focus:border-[#D62828] transition-colors pl-11"
                       />
                       <span className="absolute left-3.5 top-3.5 text-zinc-400">
                         <UserIcon size={18} />
@@ -694,7 +690,7 @@ export default function Home() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.placeholderEmail}
-                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] dark:focus:border-[#FF5400] transition-colors pl-11"
+                        className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#D62828] dark:focus:border-[#D62828] transition-colors pl-11"
                       />
                       <span className="absolute left-3.5 top-3.5 text-zinc-400">
                         <MailIcon size={18} />
@@ -714,7 +710,7 @@ export default function Home() {
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.placeholderMessage}
-                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#FF5400] dark:focus:border-[#FF5400] transition-colors pl-11 pt-3 resize-none"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm text-zinc-950 dark:text-white placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:border-[#D62828] dark:focus:border-[#D62828] transition-colors pl-11 pt-3 resize-none"
                     />
                     <span className="absolute left-3.5 top-3.5 text-zinc-400">
                       <MessageIcon size={18} />
@@ -744,7 +740,7 @@ export default function Home() {
                     onChange={(e) =>
                       setFormData({ ...formData, acceptedTerms: e.target.checked })
                     }
-                    className="mt-0.5 w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-[#FF5400] focus:ring-[#FF5400] cursor-pointer"
+                    className="mt-0.5 w-4 h-4 rounded border-zinc-300 dark:border-zinc-700 text-[#D62828] focus:ring-[#D62828] cursor-pointer"
                   />
                   <label
                     htmlFor="terms"
@@ -763,7 +759,7 @@ export default function Home() {
                 <button
                   type="submit"
                   disabled={formStatus === "submitting"}
-                  className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-xs flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
+                  className="w-full sm:w-auto px-7 py-3 rounded-xl bg-[#D62828] hover:bg-[#B71C1C] text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-xs flex items-center justify-center gap-2.5 disabled:opacity-50 cursor-pointer"
                 >
                   {formStatus === "submitting" ? (
                     <span>{t.sendingBtn}</span>

@@ -254,17 +254,17 @@ export default function DashboardPage() {
     <div className="max-w-7xl mx-auto space-y-6 text-zinc-950 font-sans">
       
       {/* HEADER PRINCIPAL // BARA DE COMANDĂ */}
-      <div className="relative overflow-hidden bg-white border-2 border-orange-500/20 rounded-[2.5rem] p-5 sm:p-7 shadow-sm">
-        <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#FF5400]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden bg-white border-2 border-red-600/20 rounded-[2.5rem] p-5 sm:p-7 shadow-sm">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#D62828]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative z-10">
           <div className="space-y-1.5">
             <div className="flex items-center gap-2.5">
               <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5400] opacity-80"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FF5400]"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D62828] opacity-80"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D62828]"></span>
               </span>
-              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#FF5400]">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#D62828]">
                 FEED STREAM LIVE TRANSMISSION
               </span>
               <span className="text-[10px] font-mono text-zinc-300">|</span>
@@ -273,7 +273,7 @@ export default function DashboardPage() {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-zinc-950">
-              Consolă <span className="text-[#FF5400]">Lead-uri</span> & Mesaje
+              Consolă <span className="text-[#D62828]">Lead-uri</span> & Mesaje
             </h1>
             <p className="text-xs text-zinc-600 font-normal">
               Mesaje recepționate în timp real prin formularul site-ului SWING.
@@ -284,7 +284,7 @@ export default function DashboardPage() {
             <button
               onClick={() => loadMessages(true)}
               disabled={refreshing}
-              className="px-4 py-2.5 rounded-2xl bg-[#FF5400] hover:bg-[#E04800] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)] disabled:opacity-50"
+              className="px-4 py-2.5 rounded-2xl bg-[#D62828] hover:bg-[#B71C1C] text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)] disabled:opacity-50"
               title="Sincronizează acum"
             >
               <RefreshCw size={14} className={refreshing ? "animate-spin" : ""} />
@@ -305,7 +305,7 @@ export default function DashboardPage() {
       {/* METRICI TELEMETRIE HUD */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         {/* Total Mesaje */}
-        <div className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
+        <div className="bg-white border-2 border-red-600/20 hover:border-[#D62828] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
           <div>
             <div className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-wider">
               Total Recepționate
@@ -313,28 +313,28 @@ export default function DashboardPage() {
             <div className="text-2xl sm:text-3xl font-black text-zinc-950 mt-0.5">{total}</div>
             <div className="text-[10px] text-zinc-400 mt-1 font-mono">flux contact activ</div>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white transition-all">
+          <div className="w-11 h-11 rounded-2xl bg-red-600/10 border border-red-600/20 flex items-center justify-center text-[#D62828] group-hover:bg-[#D62828] group-hover:text-white transition-all">
             <Inbox size={20} />
           </div>
         </div>
 
         {/* În Așteptare */}
-        <div className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
+        <div className="bg-white border-2 border-red-600/20 hover:border-[#D62828] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
           <div>
-            <div className="text-[10px] font-mono font-bold text-[#FF5400] uppercase tracking-wider flex items-center gap-1.5">
+            <div className="text-[10px] font-mono font-bold text-[#D62828] uppercase tracking-wider flex items-center gap-1.5">
               <span>În Așteptare</span>
-              {pending > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[#FF5400] animate-ping" />}
+              {pending > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[#D62828] animate-ping" />}
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-[#FF5400] mt-0.5">{pending}</div>
+            <div className="text-2xl sm:text-3xl font-black text-[#D62828] mt-0.5">{pending}</div>
             <div className="text-[10px] text-zinc-400 mt-1 font-mono">necesită răspuns</div>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-orange-500/15 border border-orange-500/25 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white transition-all">
+          <div className="w-11 h-11 rounded-2xl bg-red-600/15 border border-red-600/25 flex items-center justify-center text-[#D62828] group-hover:bg-[#D62828] group-hover:text-white transition-all">
             <Clock size={20} />
           </div>
         </div>
 
         {/* Răspunse */}
-        <div className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
+        <div className="bg-white border-2 border-red-600/20 hover:border-[#D62828] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
           <div>
             <div className="text-[10px] font-mono font-bold text-emerald-700 uppercase tracking-wider">
               Soluționate
@@ -348,7 +348,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Rata Răspuns */}
-        <div className="bg-white border-2 border-orange-500/20 hover:border-[#FF5400] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
+        <div className="bg-white border-2 border-red-600/20 hover:border-[#D62828] rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xs transition-colors group">
           <div>
             <div className="text-[10px] font-mono font-bold text-zinc-500 uppercase tracking-wider">
               Rată Răspuns
@@ -356,14 +356,14 @@ export default function DashboardPage() {
             <div className="text-2xl sm:text-3xl font-black text-zinc-950 mt-0.5">{responseRate}%</div>
             <div className="text-[10px] text-zinc-400 mt-1 font-mono">eficiență conversie</div>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-[#FF5400] group-hover:bg-[#FF5400] group-hover:text-white transition-all">
+          <div className="w-11 h-11 rounded-2xl bg-red-600/10 border border-red-600/20 flex items-center justify-center text-[#D62828] group-hover:bg-[#D62828] group-hover:text-white transition-all">
             <Zap size={20} />
           </div>
         </div>
       </div>
 
       {/* BARA DE CĂUTARE & FILTRE */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border-2 border-orange-500/20 shadow-2xs">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border-2 border-red-600/20 shadow-2xs">
         <div className="relative flex-1 max-w-md">
           <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400" />
           <input
@@ -371,7 +371,7 @@ export default function DashboardPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Filtrează după expeditor, email sau text..."
-            className="w-full bg-white border border-orange-500/20 rounded-xl pl-9 pr-4 py-2 text-xs text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-[#FF5400] transition-all font-medium"
+            className="w-full bg-white border border-red-600/20 rounded-xl pl-9 pr-4 py-2 text-xs text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-[#D62828] transition-all font-medium"
           />
         </div>
 
@@ -380,8 +380,8 @@ export default function DashboardPage() {
             onClick={() => setFilterStatus("all")}
             className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
               filterStatus === "all"
-                ? "bg-[#FF5400] text-white shadow-xs"
-                : "bg-orange-500/5 text-zinc-700 hover:bg-orange-500/10"
+                ? "bg-[#D62828] text-white shadow-xs"
+                : "bg-red-600/5 text-zinc-700 hover:bg-red-600/10"
             }`}
           >
             TOATE ({total})
@@ -390,8 +390,8 @@ export default function DashboardPage() {
             onClick={() => setFilterStatus("pending")}
             className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
               filterStatus === "pending"
-                ? "bg-[#FF5400] text-white shadow-xs"
-                : "bg-orange-500/5 text-zinc-700 hover:bg-orange-500/10"
+                ? "bg-[#D62828] text-white shadow-xs"
+                : "bg-red-600/5 text-zinc-700 hover:bg-red-600/10"
             }`}
           >
             ÎN AȘTEPTARE ({pending})
@@ -400,8 +400,8 @@ export default function DashboardPage() {
             onClick={() => setFilterStatus("replied")}
             className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
               filterStatus === "replied"
-                ? "bg-[#FF5400] text-white shadow-xs"
-                : "bg-orange-500/5 text-zinc-700 hover:bg-orange-500/10"
+                ? "bg-[#D62828] text-white shadow-xs"
+                : "bg-red-600/5 text-zinc-700 hover:bg-red-600/10"
             }`}
           >
             RĂSPUNSE ({replied})
@@ -415,15 +415,15 @@ export default function DashboardPage() {
         {/* COLOANA STÂNGA: FEED STREAM MESAJ */}
         <div className="lg:col-span-5 space-y-2.5 max-h-[650px] overflow-y-auto pr-1">
           {loading && messages.length === 0 ? (
-            <div className="p-12 text-center bg-white rounded-3xl border-2 border-orange-500/20 space-y-3">
-              <Loader2 size={24} className="animate-spin mx-auto text-[#FF5400]" />
+            <div className="p-12 text-center bg-white rounded-3xl border-2 border-red-600/20 space-y-3">
+              <Loader2 size={24} className="animate-spin mx-auto text-[#D62828]" />
               <p className="text-xs font-mono uppercase text-zinc-500 font-bold">
                 Se inițializează fluxul de date...
               </p>
             </div>
           ) : filteredMessages.length === 0 ? (
-            <div className="p-10 text-center bg-white rounded-3xl border-2 border-orange-500/20 space-y-3 shadow-2xs">
-              <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mx-auto text-[#FF5400]">
+            <div className="p-10 text-center bg-white rounded-3xl border-2 border-red-600/20 space-y-3 shadow-2xs">
+              <div className="w-12 h-12 rounded-2xl bg-red-600/10 border border-red-600/20 flex items-center justify-center mx-auto text-[#D62828]">
                 <Radio size={20} className="animate-pulse" />
               </div>
               <h3 className="font-bold text-sm text-zinc-950">Niciun mesaj găsit</h3>
@@ -444,8 +444,8 @@ export default function DashboardPage() {
                   onClick={() => setSelectedMsg(msg)}
                   className={`p-4 rounded-2xl cursor-pointer border-2 transition-all duration-200 relative overflow-hidden group shadow-2xs ${
                     isSelected
-                      ? "bg-[#FF5400] text-white border-[#FF5400] shadow-[0_8px_24px_rgba(255,84,0,0.22)] -translate-y-0.5"
-                      : "bg-white hover:bg-orange-500/[0.04] border-orange-500/20 hover:border-[#FF5400]"
+                      ? "bg-[#D62828] text-white border-[#D62828] shadow-[0_8px_24px_rgba(255,84,0,0.22)] -translate-y-0.5"
+                      : "bg-white hover:bg-red-600/[0.04] border-red-600/20 hover:border-[#D62828]"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
@@ -453,8 +453,8 @@ export default function DashboardPage() {
                       <div
                         className={`w-7 h-7 rounded-lg flex items-center justify-center font-black text-xs shrink-0 ${
                           isSelected
-                            ? "bg-white text-[#FF5400]"
-                            : "bg-[#FF5400] text-white"
+                            ? "bg-white text-[#D62828]"
+                            : "bg-[#D62828] text-white"
                         }`}
                       >
                         {msg.name.charAt(0).toUpperCase()}
@@ -470,7 +470,7 @@ export default function DashboardPage() {
                             : "bg-emerald-100 text-emerald-800"
                           : isSelected
                           ? "bg-white/20 text-white"
-                          : "bg-orange-500/10 text-[#FF5400]"
+                          : "bg-red-600/10 text-[#D62828]"
                       }`}
                     >
                       {isReplied ? "Răspuns" : "Așteaptă"}
@@ -485,7 +485,7 @@ export default function DashboardPage() {
                     {msg.message}
                   </p>
 
-                  <div className={`mt-2.5 pt-2 border-t flex items-center justify-between text-[10px] ${isSelected ? "border-white/20" : "border-orange-500/10"}`}>
+                  <div className={`mt-2.5 pt-2 border-t flex items-center justify-between text-[10px] ${isSelected ? "border-white/20" : "border-red-600/10"}`}>
                     <span className={`font-mono ${isSelected ? "text-white/80" : "text-zinc-400"}`}>
                       {formatTimeAgo(msg.created_at)}
                     </span>
@@ -504,14 +504,14 @@ export default function DashboardPage() {
         </div>
 
         {/* COLOANA DREAPTA: INSPECTOR MESAJ & COMPOSER RĂSPUNS */}
-        <div className="lg:col-span-7 bg-white border-2 border-orange-500/20 rounded-[2.5rem] p-5 sm:p-7 flex flex-col justify-between shadow-sm space-y-6">
+        <div className="lg:col-span-7 bg-white border-2 border-red-600/20 rounded-[2.5rem] p-5 sm:p-7 flex flex-col justify-between shadow-sm space-y-6">
           {selectedMsg ? (
             <div className="space-y-5">
               
               {/* Header Expeditor */}
-              <div className="border-b-2 border-orange-500/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="border-b-2 border-red-600/10 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FF5400] text-white flex items-center justify-center font-black text-lg shadow-[0_4px_16px_rgba(255,84,0,0.25)]">
+                  <div className="w-12 h-12 rounded-2xl bg-[#D62828] text-white flex items-center justify-center font-black text-lg shadow-[0_4px_16px_rgba(255,84,0,0.25)]">
                     {selectedMsg.name.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -522,7 +522,7 @@ export default function DashboardPage() {
                       <span className="text-xs font-mono text-zinc-600">{selectedMsg.email}</span>
                       <button
                         onClick={() => handleCopyEmail(selectedMsg.email)}
-                        className="text-[#FF5400] hover:text-[#E04800] transition-colors p-1"
+                        className="text-[#D62828] hover:text-[#B71C1C] transition-colors p-1"
                         title="Copiază email"
                       >
                         {copiedEmail ? <Check size={12} className="text-emerald-600" /> : <Copy size={12} />}
@@ -534,7 +534,7 @@ export default function DashboardPage() {
                 <div className="flex items-center gap-2 self-start sm:self-auto">
                   <a
                     href={`mailto:${selectedMsg.email}?subject=Re: Mesaj SWING`}
-                    className="px-3.5 py-1.5 rounded-xl bg-orange-500/10 hover:bg-[#FF5400] text-zinc-900 hover:text-white border border-orange-500/20 text-[11px] font-bold font-mono uppercase flex items-center gap-1.5 transition-all shadow-2xs"
+                    className="px-3.5 py-1.5 rounded-xl bg-red-600/10 hover:bg-[#D62828] text-zinc-900 hover:text-white border border-red-600/20 text-[11px] font-bold font-mono uppercase flex items-center gap-1.5 transition-all shadow-2xs"
                     title="Deschide în Gmail"
                   >
                     <ExternalLink size={12} />
@@ -552,21 +552,21 @@ export default function DashboardPage() {
               </div>
 
               {/* Data & ID Transmisie */}
-              <div className="flex items-center justify-between text-[10px] font-mono text-zinc-600 bg-orange-500/[0.04] p-2.5 rounded-xl border border-orange-500/15">
+              <div className="flex items-center justify-between text-[10px] font-mono text-zinc-600 bg-red-600/[0.04] p-2.5 rounded-xl border border-red-600/15">
                 <span>
                   TRANSMIS: {new Date(selectedMsg.created_at).toLocaleString("ro-RO")}
                 </span>
-                <span className="uppercase font-bold text-[#FF5400]">
+                <span className="uppercase font-bold text-[#D62828]">
                   STATUS: {selectedMsg.status === "replied" ? "SOLUȚIONAT" : "AȘTEAPTĂ RĂSPUNS"}
                 </span>
               </div>
 
               {/* Conținut Mesaj Recepționat */}
               <div className="space-y-1.5">
-                <div className="text-[10px] font-mono font-bold uppercase text-[#FF5400] tracking-wider flex items-center gap-1">
+                <div className="text-[10px] font-mono font-bold uppercase text-[#D62828] tracking-wider flex items-center gap-1">
                   <span>MESAJ CLIENT</span>
                 </div>
-                <div className="bg-orange-500/[0.02] p-4 sm:p-5 rounded-2xl border-2 border-orange-500/15 text-xs sm:text-sm leading-relaxed text-zinc-900 whitespace-pre-wrap font-sans shadow-2xs">
+                <div className="bg-red-600/[0.02] p-4 sm:p-5 rounded-2xl border-2 border-red-600/15 text-xs sm:text-sm leading-relaxed text-zinc-900 whitespace-pre-wrap font-sans shadow-2xs">
                   {selectedMsg.message}
                 </div>
               </div>
@@ -592,7 +592,7 @@ export default function DashboardPage() {
               {/* Șabloane Rapide de Răspuns */}
               <div className="space-y-2 pt-1">
                 <div className="flex items-center justify-between text-[10px] font-mono font-bold uppercase text-zinc-500">
-                  <span className="flex items-center gap-1 text-[#FF5400]">
+                  <span className="flex items-center gap-1 text-[#D62828]">
                     <Sparkles size={11} />
                     <span>Șabloane Rapide</span>
                   </span>
@@ -601,19 +601,19 @@ export default function DashboardPage() {
                 <div className="flex flex-wrap gap-1.5">
                   <button
                     onClick={() => applyQuickTemplate("offer")}
-                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-red-600/10 border border-red-600/25 text-[11px] font-medium text-zinc-800 hover:text-[#D62828] transition-all cursor-pointer shadow-2xs"
                   >
                     Ofertă adaptată
                   </button>
                   <button
                     onClick={() => applyQuickTemplate("call")}
-                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-red-600/10 border border-red-600/25 text-[11px] font-medium text-zinc-800 hover:text-[#D62828] transition-all cursor-pointer shadow-2xs"
                   >
                     Programare apel 15m
                   </button>
                   <button
                     onClick={() => applyQuickTemplate("quick")}
-                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-orange-500/10 border border-orange-500/25 text-[11px] font-medium text-zinc-800 hover:text-[#FF5400] transition-all cursor-pointer shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl bg-white hover:bg-red-600/10 border border-red-600/25 text-[11px] font-medium text-zinc-800 hover:text-[#D62828] transition-all cursor-pointer shadow-2xs"
                   >
                     Confirmare primire
                   </button>
@@ -628,14 +628,14 @@ export default function DashboardPage() {
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
                     placeholder={`Scrie un răspuns pentru ${selectedMsg.name}...`}
-                    className="w-full bg-white border-2 border-orange-500/20 focus:border-[#FF5400] rounded-2xl p-4 text-xs sm:text-sm focus:outline-none text-zinc-950 placeholder-zinc-400 resize-none shadow-2xs font-sans transition-colors"
+                    className="w-full bg-white border-2 border-red-600/20 focus:border-[#D62828] rounded-2xl p-4 text-xs sm:text-sm focus:outline-none text-zinc-950 placeholder-zinc-400 resize-none shadow-2xs font-sans transition-colors"
                   />
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-2.5">
                   <button
                     onClick={() => handleMarkAsReplied(selectedMsg.id)}
-                    className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-zinc-600 hover:text-[#FF5400] hover:bg-orange-500/10 transition-all cursor-pointer flex items-center gap-1.5"
+                    className="px-3 py-2 rounded-xl text-xs font-mono font-bold text-zinc-600 hover:text-[#D62828] hover:bg-red-600/10 transition-all cursor-pointer flex items-center gap-1.5"
                     title="Schimbă statusul fără a trimite email"
                   >
                     <CheckCircle2 size={13} />
@@ -645,7 +645,7 @@ export default function DashboardPage() {
                   <button
                     onClick={handleSendReply}
                     disabled={sending || !replyText.trim()}
-                    className="px-6 py-2.5 rounded-2xl bg-[#FF5400] hover:bg-[#E04800] text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-40 cursor-pointer shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
+                    className="px-6 py-2.5 rounded-2xl bg-[#D62828] hover:bg-[#B71C1C] text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all disabled:opacity-40 cursor-pointer shadow-[0_4px_16px_rgba(255,84,0,0.25)] hover:shadow-[0_6px_22px_rgba(255,84,0,0.35)]"
                   >
                     {sending ? (
                       <>
@@ -665,7 +665,7 @@ export default function DashboardPage() {
             </div>
           ) : (
             <div className="text-center py-24 space-y-3 opacity-60">
-              <Inbox size={36} className="mx-auto text-[#FF5400]" />
+              <Inbox size={36} className="mx-auto text-[#D62828]" />
               <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 font-bold">
                 Selectează un mesaj din fluxul din stânga pentru vizualizare completă.
               </p>

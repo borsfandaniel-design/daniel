@@ -347,12 +347,12 @@ export default function TermeniSiConditiiPage() {
         {/* HERO TITLE */}
         <div className="space-y-4 border-b border-zinc-200 dark:border-zinc-800 pb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-xs font-mono text-zinc-700 dark:text-zinc-300">
-            <ShieldIcon size={14} className="text-[#FF5400]" />
+            <ShieldIcon size={14} className="text-[#D62828]" />
             <span>{t.legalBadge}</span>
           </div>
 
           <div className="flex items-center gap-3">
-            <ScaleIcon size={32} className="text-[#FF5400] shrink-0" />
+            <ScaleIcon size={32} className="text-[#D62828] shrink-0" />
             <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-zinc-950 dark:text-white">
               {t.pageTitle}
             </h1>
@@ -376,7 +376,7 @@ export default function TermeniSiConditiiPage() {
               className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-3 transition-colors shadow-2xs"
             >
               <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-black text-[#FF5400] px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
+                <span className="text-xs font-mono font-black text-[#D62828] px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700">
                   {sec.number}
                 </span>
                 <h2 className="text-lg sm:text-xl font-bold text-zinc-950 dark:text-white">
@@ -395,7 +395,7 @@ export default function TermeniSiConditiiPage() {
                       key={idx}
                       className="flex items-start gap-2.5 text-sm sm:text-base text-zinc-600 dark:text-zinc-300"
                     >
-                      <span className="mt-1 shrink-0 text-[#FF5400]">
+                      <span className="mt-1 shrink-0 text-[#D62828]">
                         <CheckIcon size={14} />
                       </span>
                       <span>{item}</span>
@@ -419,7 +419,7 @@ export default function TermeniSiConditiiPage() {
             {t.footerNotice}{" "}
             <a
               href="mailto:borsfandaniel@gmail.com"
-              className="text-[#FF5400] font-bold underline"
+              className="text-[#D62828] font-bold underline"
             >
               borsfandaniel@gmail.com
             </a>

@@ -99,7 +99,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white text-zinc-950 selection:bg-[#FF5400] selection:text-white p-4 relative overflow-hidden font-sans">
+    <div className="min-h-screen flex items-center justify-center bg-white text-zinc-950 selection:bg-[#D62828] selection:text-white p-4 relative overflow-hidden font-sans">
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* LINK REVENIRE SITE */}
         <div className="flex items-center justify-between">
@@ -124,7 +124,7 @@ export default function LoginPage() {
                   <LockIcon size={22} />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
-                  Panou <span className="text-[#FF5400]">Admin</span>
+                  Panou <span className="text-[#D62828]">Admin</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
                   Introdu credențialele de acces pentru a deschide dashboard-ul SWING.
@@ -192,7 +192,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
+                  className="w-full py-3 px-6 bg-[#D62828] hover:bg-[#B71C1C] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
                 >
                   <span>{loading ? "SE VERIFICĂ..." : "CONTINUĂ CU PASUL 2 (2FA)"}</span>
                   <ArrowRightIcon size={14} />
@@ -207,7 +207,7 @@ export default function LoginPage() {
                   <SmartphoneIcon size={22} />
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
-                  Verificare <span className="text-[#FF5400]">2FA</span>
+                  Verificare <span className="text-[#D62828]">2FA</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-zinc-600 font-normal leading-relaxed">
                   Introdu codul numeric de 6 cifre expediat pe email sau PIN-ul de backup.
@@ -253,7 +253,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 px-6 bg-[#FF5400] hover:bg-[#E04800] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
+                  className="w-full py-3 px-6 bg-[#D62828] hover:bg-[#B71C1C] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer shadow-sm"
                 >
                   <span>{loading ? "SE AUTENTIFICĂ..." : "CONFIRMĂ & INTRĂ ÎN DASHBOARD"}</span>
                   <ArrowRightIcon size={14} />
@@ -287,7 +287,7 @@ export default function LoginPage() {
           )}
 
           <div className="pt-2 border-t border-zinc-200 flex items-center justify-center gap-1.5 text-[11px] font-mono text-zinc-500">
-            <ShieldIcon size={14} className="text-[#FF5400]" />
+            <ShieldIcon size={14} className="text-[#D62828]" />
             <span>Sesiune Criptată HMAC • SWING STUDIO</span>
           </div>
         </div>

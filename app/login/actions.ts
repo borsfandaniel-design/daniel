@@ -101,9 +101,9 @@ export async function authenticateUser(formData: FormData) {
         subject: "SWING Security - Cod de verificare autentificare",
         text: `Codul tău de verificare în 2 pași pentru panoul SWING este: ${code2FA}\n\nAcest cod este valabil 10 minute.\nDacă nu ai inițiat tu această acțiune, schimbă imediat parola în mediul de hosting!`,
         html: `
-          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; background-color: #ffffff; border: 2px solid #FF5400; border-radius: 20px; padding: 32px; color: #09090b;">
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 520px; margin: 0 auto; background-color: #ffffff; border: 2px solid #D62828; border-radius: 20px; padding: 32px; color: #09090b;">
             <div style="border-bottom: 1px solid #f4f4f5; padding-bottom: 16px; margin-bottom: 24px;">
-              <span style="font-size: 11px; font-weight: 800; font-family: monospace; color: #FF5400; letter-spacing: 2px; text-transform: uppercase;">SWING // SECURITY GUARD</span>
+              <span style="font-size: 11px; font-weight: 800; font-family: monospace; color: #D62828; letter-spacing: 2px; text-transform: uppercase;">SWING // SECURITY GUARD</span>
               <h2 style="margin: 8px 0 0; font-size: 22px; font-weight: 900; color: #09090b; letter-spacing: -0.5px;">Verificare în 2 Pași (2FA)</h2>
             </div>
             
@@ -111,10 +111,10 @@ export async function authenticateUser(formData: FormData) {
               A fost inițiată o încercare de autentificare în Dashboard-ul SWING de la adresa IP <code style="background: #f4f4f5; padding: 2px 6px; border-radius: 6px; font-weight: 700;">${clientIp}</code>.
             </p>
 
-            <div style="background-color: #FFF7ED; border: 2px dashed #FF5400; border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px;">
-              <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: #C2410C; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">Codul tău de securitate 2FA</div>
-              <div style="font-size: 38px; font-family: monospace; font-weight: 900; letter-spacing: 8px; color: #EA580C;">${code2FA}</div>
-              <div style="font-size: 11px; color: #9A3412; margin-top: 8px;">Valabil timp de 10 minute • O singură utilizare</div>
+            <div style="background-color: #FEF2F2; border: 2px dashed #D62828; border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px;">
+              <div style="font-size: 11px; font-family: monospace; font-weight: 700; color: #B91C1C; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">Codul tău de securitate 2FA</div>
+              <div style="font-size: 38px; font-family: monospace; font-weight: 900; letter-spacing: 8px; color: #D62828;">${code2FA}</div>
+              <div style="font-size: 11px; color: #7F1D1D; margin-top: 8px;">Valabil timp de 10 minute • O singură utilizare</div>
             </div>
 
             <p style="font-size: 12px; color: #71717a; line-height: 1.5; margin: 0;">
